@@ -1,10 +1,12 @@
 Idea TC: Adoptable Pet Site  
-Databases: Users, Pets, Item Types, Items  
+Databases: Users, Pets, Item Types, Items, (Stretch) Comments  
 
 User Stories:  
   - Login
   - Logout 
   - Edit user data fields (password, etc.)  
+  - (Stretch) leave comments on user pages
+  - (Stretch) edit/delete comments
 
 Pet Stories: 
   - Create a pet from scratch 
