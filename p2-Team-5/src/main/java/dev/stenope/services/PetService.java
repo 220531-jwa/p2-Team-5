@@ -1,14 +1,16 @@
-package dev.stenope.respositories;
+package dev.stenope.services;
+
+import dev.stenope.respositories.PetDAO;
 
 import java.util.List;
 
 import dev.stenope.models.Pet;
-import dev.stenope.utils.ConnectionUtil;
 
-public class PetDAO {
-	private static ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
+public class PetService {
+
+	static PetDAO petDao = new PetDAO();
 	
-	public Pet createPet(Pet p) {
+public Pet createPet(Pet p) {
 		
 		return null;
 	}
