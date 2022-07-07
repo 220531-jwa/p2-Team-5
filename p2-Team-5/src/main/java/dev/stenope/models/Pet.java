@@ -10,5 +10,6 @@ public class Pet {
 	private int fun;
 	private int food; 
 	private int level;
+	private PetType type;
 	
 }
