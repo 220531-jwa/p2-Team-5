@@ -12,6 +12,11 @@ public class UserService {
 		return null;
 	}
 	
+	public User login() {
+		
+		return null;
+	}
+	
 	public User getUserByID(int id) {
 		return null;
 	}
