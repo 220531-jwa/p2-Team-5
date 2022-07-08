@@ -4,8 +4,16 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import org.openqa.selenium.WebDriver;
+
+import dev.stenope.pages.UserProfilePage;
+import dev.stenope.runners.UserProfileRunner;
+
 public class UserProfileSteps {
 
+	public static WebDriver driver = UserProfileRunner.driver;
+	public static UserProfilePage userPage = UserProfileRunner.userProfile;
+	
 	@Given("a User Exists")
 	public void a_user_exists() {
 	    // Write code here that turns the phrase above into concrete actions
@@ -14,8 +22,8 @@ public class UserProfileSteps {
 
 	@When("The User Page is loaded")
 	public void the_user_page_is_loaded() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		driver.get("http://localhost:8080/userPage.html");
+	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Then("The User display name is displayed")

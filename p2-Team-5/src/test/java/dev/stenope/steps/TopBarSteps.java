@@ -1,10 +1,19 @@
 package dev.stenope.steps;
 
+import org.openqa.selenium.WebDriver;
+
+import dev.stenope.pages.TopBarPage;
+import dev.stenope.runners.TopBarRunner;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+
+
 public class TopBarSteps {
+	
+	public static WebDriver driver = TopBarRunner.driver;
+	public static TopBarPage topBar = TopBarRunner.topBar;
 
 	@Given("The User is logged in")
 	public void the_user_is_logged_in() {
@@ -14,13 +23,13 @@ public class TopBarSteps {
 
 	@Given("The User is on the Home Page")
 	public void the_user_is_on_the_home_page() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		driver.get("http://localhost:8080/homePage.html");
+	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@When("The User clicks on the User Profile")
 	public void the_user_clicks_on_the_user_profile() {
-	    // Write code here that turns the phrase above into concrete actions
+		// Write code here that turns the phrase above into concrete actions
 	    throw new io.cucumber.java.PendingException();
 	}
 
@@ -56,14 +65,14 @@ public class TopBarSteps {
 
 	@Given("The User is on the User Profile")
 	public void the_user_is_on_the_user_profile() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		driver.get("http://localhost:8080/userPage.html");
+	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Given("The User is on the Pet Profile")
 	public void the_user_is_on_the_pet_profile() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		driver.get("http://localhost:8080/petPage.html");
+	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Given("The User is on the Inventory")
