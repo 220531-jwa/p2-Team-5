@@ -19,19 +19,37 @@
 
 Feature: petprofile page
 
-  Scenario: Pet data is properly displayed
-    Given the pet exists
+  Scenario Outline: Pet data is properly displayed
+    Given pet <id> exists
     When browser navigates to petpage
     Then pet data is displayed 
+    
+    Examples: 
+    	| id |
+    	| 1  | 
+    	| 2  | 
+    	| 5  | 
+    	| 10 | 
+    	| 25 | 
+    	| 100| 
 
-  Scenario: Pet data is properly edited 
-  	Given the pet exists 
+  Scenario Outline: Pet data is properly edited 
+  	Given pet <id> exists 
   	And the user is logged in as the pet`s owner 
   	And browser is on petpage 
   	When user types into pet data 
   	And user submits pet data
   	And user refreshes 
   	Then pet data is displayed
+  	
+  	Examples: 
+    	| id |
+    	| 1  | 
+    	| 2  | 
+    	| 5  | 
+    	| 10 | 
+    	| 25 | 
+    	| 100| 
   
   #Scenario Outline: Title of your scenario outline
     #Given I want to write a step with <name>
