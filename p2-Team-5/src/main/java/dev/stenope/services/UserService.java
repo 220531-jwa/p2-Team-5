@@ -12,7 +12,7 @@ public class UserService {
 		return null;
 	}
 	
-	public User login() {
+	public User login(User u) {
 		
 		return null;
 	}
