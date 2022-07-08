@@ -15,6 +15,11 @@ public class ItemService {
 		return false;
 	}
 	
+	public boolean changeItemOwner(Item i) {
+		
+		return false;
+	}
+	
 	public Item getItemByID(int id) {
 		
 		return null;

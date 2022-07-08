@@ -9,6 +9,10 @@ public class UserController {
 		
 	}
 	
+	public static void login(Context ctx) {
+		
+	}
+	
 	public static void getUserByID(Context ctx) {
 		
 	}

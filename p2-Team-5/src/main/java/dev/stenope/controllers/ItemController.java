@@ -8,6 +8,10 @@ public class ItemController {
 		
 	}
 	
+	public static void changeItemOwner(Context ctx) {
+		
+	}
+	
 	public static void getItem(Context ctx) {
 		
 	}
