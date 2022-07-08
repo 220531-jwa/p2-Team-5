@@ -1,4 +1,4 @@
-#Author: your.email@your.domain.com
+#Author: TC_Prater
 #Keywords Summary :
 #Feature: List of scenarios.
 #Scenario: Business rule through list of steps with arguments.
@@ -27,11 +27,11 @@ Feature: petprofile page
   Scenario: Pet data is properly edited 
   	Given the pet exists 
   	And the user is logged in as the pet`s owner 
-  	And browser navigates to petpage 
+  	And browser is on petpage 
   	When user types into pet data 
   	And user submits pet data
   	And user refreshes 
-  	Then new pet data is displayed
+  	Then pet data is displayed
   
   #Scenario Outline: Title of your scenario outline
     #Given I want to write a step with <name>
