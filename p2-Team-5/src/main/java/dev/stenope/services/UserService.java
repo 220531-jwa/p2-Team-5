@@ -7,9 +7,8 @@ public class UserService {
 
 	static UserDAO userDao = new UserDAO();
 	
-	public User getUserByUserName(String uName) {
-		
-		return null;
+	UserService(UserDAO u) {
+		userDao = u;
 	}
 	
 	public User login(User u) {
