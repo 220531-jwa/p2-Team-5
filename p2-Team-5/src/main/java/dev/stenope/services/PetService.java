@@ -10,6 +10,10 @@ public class PetService {
 
 	static PetDAO petDao = new PetDAO();
 	
+	PetService(PetDAO p) {
+		petDao = p;
+	}
+	
 	public Pet createPet(Pet p) {
 		
 		return null;

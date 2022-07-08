@@ -49,8 +49,14 @@ public class UserServiceTest {
 	@Test
 	public void getUserByIDTest() {
 		User testUser = new User(1, "User", "Pass", "Test", "Test", 0);
-		when(mockUserDao.getUserByID(testUser.getId())).thenReturn(testUser);
+		when(mockUserDao.getUserByID(1)).thenReturn(testUser);
 		assertEquals(userService.getUserByID(1), testUser);
+	}
+	
+	@Test
+	public void getUserByIDInvalidTest() {
+		when(mockUserDao.getUserByID(-1)).thenReturn(null);
+		assertEquals(userService.getUserByID(-1), null);
 	}
 	
 	
