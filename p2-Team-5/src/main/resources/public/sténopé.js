@@ -55,10 +55,7 @@ function loginCheck()
             sessionStorage.setItem("uname",uname);
             window.location.assign("homePage.html");
         }
-    else {
-        console.log("Login failed");
-        alert("Login failed");
-    }
+    else {console.log("Login failed");}
 }
 
 //marketplace 
