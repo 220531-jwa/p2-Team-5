@@ -7,12 +7,12 @@
         <title>HomePage</title>
     </head>
 
-    <body>
+    <body onload="populateTopBar()">
         <div id="topBarInsert"></div>
         <h4>Login</h4>
         <label>Username: <input type="text" id="uNameBox"></label>
         <label>Password: <input type="password" id="pKeyBox"></label>
-        <button onclick="">Submit</button> <button onclick="">👁</button>
+        <button onclick="loginCheck()">Submit</button> <button onclick="hidePass()">👁</button>
         <script src="sténopé.js"></script>
     </body>
 </html>
