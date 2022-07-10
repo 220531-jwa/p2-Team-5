@@ -23,16 +23,14 @@ Feature: Login
 		
 		@tag1
 		Scenario Outline: Positive
-			When the User inputs a correct <username> and <password>
+			When the User inputs a correct <username> and <password> and clicks the login button
 			Then the User is logged in and directed to the HomePage
 			
 		@tag2
 		Scenario Outline: Negative
-			When the User inputs an incorrect <username> or <password>
+			When the User inputs an incorrect <username> or <password> and clicks the login button
 			Then the User is given an error message
 
     Examples: 
       | username  | password |
-      | testName  | testPass |
-      | notName		| notPass  |
 
