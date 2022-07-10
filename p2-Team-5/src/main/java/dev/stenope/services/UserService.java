@@ -5,14 +5,18 @@ import dev.stenope.respositories.UserDAO;
 
 public class UserService {
 
-	static UserDAO userDao = new UserDAO();
+	private static UserDAO userDao;
+	
+	public UserService(UserDAO userDao) {
+		this.userDao = userDao;
+	}
 	
 	public User getUserByUserName(String uName) {
 		
 		return null;
 	}
 	
-	public User login() {
+	public User login(User goshdangUser) {
 		
 		return null;
 	}

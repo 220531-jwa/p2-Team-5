@@ -11,6 +11,11 @@ public class Pet {
 	private int food; 
 	private int level;
 	private PetType type;
+	
+	public Pet() {
+		super();
+	}
+	
 	public Pet(int id, int uID, int sID, String pName, String pSet, int fun, int food, int level, PetType type) {
 		super();
 		this.id = id;
