@@ -20,7 +20,9 @@ import io.cucumber.java.en.When;
 public class InventorySteps {
 	public static WebDriver realHumanBeing = InventoryRunner.realHumanBeing;
 	public static InventoryPage inventoryPage = InventoryRunner.inventoryPage;
-	
+	/**
+	 * Scenario 1
+	 */
 	@Given("the User has Pets")
 	public void the_user_has_pets() {
 	    // Write code here that turns the phrase above into concrete actions
@@ -39,6 +41,9 @@ public class InventorySteps {
 	    throw new io.cucumber.java.PendingException();
 	}
 
+	/**
+	 * Scenario 2
+	 */
 	@Given("the User is on the InventoryPage")
 	public void the_user_is_on_the_inventory_page() {
 	    // Write code here that turns the phrase above into concrete actions
@@ -57,6 +62,9 @@ public class InventorySteps {
 	    throw new io.cucumber.java.PendingException();
 	}
 
+	/**
+	 * Scenario 3
+	 */
 	@Given("an Item dropdown is loaded")
 	public void an_item_dropdown_is_loaded() {
 	    // Write code here that turns the phrase above into concrete actions
@@ -75,6 +83,9 @@ public class InventorySteps {
 	    throw new io.cucumber.java.PendingException();
 	}
 
+	/**
+	 * Scenario 4
+	 */
 	@Given("the Pet exists")
 	public void the_pet_exists() {
 	    // Write code here that turns the phrase above into concrete actions
