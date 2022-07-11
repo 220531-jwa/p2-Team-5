@@ -20,4 +20,8 @@ public class PetController {
 	public static void getPetList(Context ctx) {
 		
 	}
+	
+	public static void getPetTypes(Context ctx) {
+		
+	}
 }

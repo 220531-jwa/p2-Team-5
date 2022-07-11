@@ -3,6 +3,7 @@ package dev.stenope.services;
 import java.util.List;
 
 import dev.stenope.models.Item;
+import dev.stenope.models.ItemType;
 import dev.stenope.respositories.ItemDAO;
 import dev.stenope.respositories.PetDAO;
 
@@ -42,6 +43,11 @@ public class ItemService {
 	}
 	
 	public List<Item> getPetItemList(int id) {
+		
+		return null;
+	}
+	
+	public List<ItemType> getItemTypes() {
 		
 		return null;
 	}

@@ -28,4 +28,8 @@ public class ItemController {
 		
 	}
 	
+	public static void getItemTypes(Context ctx) {
+		
+	}
+	
 }

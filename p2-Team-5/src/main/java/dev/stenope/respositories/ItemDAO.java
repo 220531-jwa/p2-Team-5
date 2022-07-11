@@ -3,6 +3,7 @@ package dev.stenope.respositories;
 import java.util.List;
 
 import dev.stenope.models.Item;
+import dev.stenope.models.ItemType;
 import dev.stenope.utils.ConnectionUtil;
 
 public class ItemDAO {
@@ -29,7 +30,12 @@ public class ItemDAO {
 		return null;
 	}
 	
-public List<Item> getPetItemList(int id) {
+	public List<Item> getPetItemList(int id) {
+		
+		return null;
+	}
+	
+	public List<ItemType> getItemTypes () {
 		
 		return null;
 	}
