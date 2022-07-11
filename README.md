@@ -4,7 +4,7 @@ Guidelines and requirements for Project 2
 > Create a full-stack application to develop associate skills and create familiarity with using testing and behavior-driven development cycles.
 
 ## High Concept
-A resource-management focused adoptable pets app using multiple databases to track items and pet states, as well as enable inter-user communication. 
+A resource-management focused adoptable pets app using multiple database tables to track items and pet states, as well as enable inter-user communication. 
 
 ### Presentation date: July 18, 2022
 
