@@ -1,4 +1,4 @@
-package dev.stenope.servicetests;
+package dev.stenope.services;
 
 import static org.mockito.Mockito.*;
 
@@ -10,10 +10,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import dev.stenope.models.User;
 import dev.stenope.respositories.UserDAO;
-import dev.stenope.services.UserService;
 
+@ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
-private static UserService userService;
+
+	private static UserService userService;
+	
 	private static UserDAO mockUserDao;
 	
 	@BeforeAll
@@ -71,4 +73,6 @@ private static UserService userService;
 		when(mockUserDao.editUser(testUser)).thenReturn(false);
 		assertEquals(userService.editUser(testUser), false);
 	}
+	
+	
 }
