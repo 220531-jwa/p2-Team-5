@@ -14,9 +14,16 @@
             <ul>
                 <li>UserItemTest1
                     <select name="userItemDropdown">
-                        <option>Use</option>\
-                        <option>Give to Pet</option>
-                        <option>Drop</option>
+                        <option onclick="useItem()">Use</option>\
+                        <option onclick="giveToPet()">Give to Pet</option>
+                        <option onclick="dropItem()">Drop</option>
+                    </select>
+                </li>
+                <li>UserItemTest2
+                    <select name="userItemDropdown">
+                        <option onclick="useItem()">Use</option>\
+                        <option onclick="giveToPet()">Give to Pet</option>
+                        <option onclick="dropItem()">Drop</option>
                     </select>
                 </li>
             </ul>
@@ -28,8 +35,8 @@
             <ul>
                 <li>PetItemTest1
                     <select name="petItemDropdown">
-                        <option>Use</option>
-                        <option>Drop</option>
+                        <option onclick="petUseItem()">Use</option>
+                        <option onclick="petDropItem()">Drop</option>
                     </select>
                 </li>
             </ul>

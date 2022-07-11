@@ -20,11 +20,24 @@ private WebDriver realHumanBeing;
 	@FindBy(id = "petBackpack")
 	public WebElement petsInventory;
 	
-	@FindBy(name = "userItemDropdown")
-	public WebElement userItemDropdown;
-	public Select userItemDropdownSelect = new Select(userItemDropdown);
+	@FindBy(name = "userItemDropdown1")
+	public WebElement userItemDropdown1;
+	public Select userItemDropdownSelect1 = new Select(userItemDropdown1);
+	
+	@FindBy(name = "userItemDropdown2")
+	public WebElement userItemDropdown2;
+	public Select userItemDropdownSelect2 = new Select(userItemDropdown2);
 	
 	@FindBy(name = "petItemDropdown")
 	public WebElement petItemDropdown;
 	public Select petItemDropdownSelect = new Select(petItemDropdown);
+	
+	@FindBy(xpath = "/html/body/div[2]/ul/li")
+	public WebElement UserItemTest1;
+	
+	@FindBy(xpath = "/html/body/div[2]/ul/li[2]")
+	public WebElement UserItemTest2;
+	
+	@FindBy(xpath = "/html/body/div[3]/ul/li")
+	public WebElement PetItemTest1;
 }
