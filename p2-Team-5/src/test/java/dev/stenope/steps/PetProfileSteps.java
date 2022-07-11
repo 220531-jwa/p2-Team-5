@@ -5,8 +5,8 @@ import static org.junit.Assert.assertNotEquals;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.Select;
 
-import dev.stenope.models.Pet;
 import dev.stenope.pages.PetProfilePage;
 import dev.stenope.respositories.PetDAO;
 import dev.stenope.respositories.UserDAO;
@@ -31,7 +31,7 @@ public class PetProfileSteps {
 
 	@Then("pet data is displayed")
 	public void pet_data_is_displayed() {
-		assertNotEquals(p3.readPetData("pName"),null);
+		assertEquals(p3.readPetData("pName"),"asdf");
 	}
 
 	@Given("the user is logged in as the pet`s owner")
@@ -39,9 +39,9 @@ public class PetProfileSteps {
 		UserDAO uDAO = new UserDAO();
 		PetDAO pDAO = new PetDAO();
 		String ownerName = driver.findElement(By.id("userLink")).getText().substring(2);
-//		int ownerID = uDAO.getUserByUserName(ownerName).getID();
+		int ownerID = uDAO.getUserByUserName(ownerName).getId();
 		boolean success = false;
-//		if (pDAO.getPetListByUserID(ownerID).contains(pDAO.getPetByID(id))) {success=true;}
+		if (pDAO.getPetListByUserID(ownerID).contains(pDAO.getPetByID(id))) {success=true;}
 		assertEquals(success,true);
 	}
 	
@@ -52,8 +52,9 @@ public class PetProfileSteps {
 
 	@When("user types into pet data")
 	public void user_types_into_pet_data() {
-		Pet p = new Pet();
-		//bit where each property of p is typed into some field. 
+		p3.dataDiv.findElement(By.id("petName")).sendKeys("asdf");
+		Select s = new Select(p3.dataDiv.findElement(By.id("petPSet")));
+		s.selectByIndex(4); 
 	}
 
 	@When("user submits pet data")
