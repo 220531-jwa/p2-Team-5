@@ -3,6 +3,10 @@ package dev.stenope.controllers;
 import io.javalin.http.Context;
 
 public class ItemController {
+	
+	public static void createItem(Context ctx) {
+		
+	}
 
 	public static void modifyItem(Context ctx) {
 		
@@ -17,6 +21,14 @@ public class ItemController {
 	}
 	
 	public static void getItemList(Context ctx) {
+		
+	}
+	
+	public static void getPetItemList(Context ctx) {
+		
+	}
+	
+	public static void getItemTypes(Context ctx) {
 		
 	}
 	

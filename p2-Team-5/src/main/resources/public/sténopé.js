@@ -64,6 +64,34 @@ function loginCheck()
 //marketplace 
 
 //userPage 
+function populateUserPage()
+{
+    populateTopBar();
+    let uName = "";
+    let pKey = "";
+    let dName = ""; 
+    let dBlurb = "";
+    let pSet = 0;
+    document.getElementById("uDataHere").innerHTML = 
+        `<label>Username: <input id="username" type="text" value="${uName}" readonly></label><br>
+        <label style="display:none">Password: <input id="passkey" type="text" value="${pKey}" readonly></label><br>
+        <label>Pronouns: 
+            <select id="userPSet" disabled>
+                <option value="0">${pronouns[0]}</option>
+                <option value="1">${pronouns[1]}</option>
+                <option value="2">${pronouns[2]}</option>
+                <option value="3">${pronouns[3]}</option>
+                <option value="4">${pronouns[4]}</option>
+                <option value="5">${pronouns[5]}</option>
+                <option value="6">${pronouns[6]}</option>
+            </select>
+        </label><br>
+        <label>Name: <input id="dName" type="text" value="${dName}" readonly></label><br>
+        <label>Description: <textarea id="dBlurb" readonly></label><br>`;
+        document.getElementById("userPSet").selectedIndex = pSet;
+    document.getElementById("dBlurb").value = dBlurb;
+    document.getElementById("commentsHere").innerHTML = "";
+}
 
 //petPage
 function populatePetPage()
