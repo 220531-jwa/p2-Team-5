@@ -53,12 +53,12 @@ public class InventorySteps {
 
 	@When("the User clicks on and Item")
 	public void the_user_clicks_on_and_item() {
-	    inventoryPage.userItemDropdown.click();
+	    inventoryPage.userItemDropdown1.click();
 	}
 
 	@Then("a dropdown or popup should appear that allows the Item to be assigned to places")
 	public void a_dropdown_or_popup_should_appear_that_allows_the_item_to_be_assigned_to_places() {
-		assertEquals(inventoryPage.userItemDropdownSelect.getOptions().size(), 2);
+		assertEquals(inventoryPage.userItemDropdownSelect1.getOptions().size(), 2);
 	}
 
 	/**
@@ -66,18 +66,17 @@ public class InventorySteps {
 	 */
 	@Given("an Item dropdown is loaded")
 	public void an_item_dropdown_is_loaded() {
-		inventoryPage.userItemDropdown.click();
+		inventoryPage.userItemDropdown1.click();
 	}
 
 	@When("the User selects an option and presses the submit button")
 	public void the_user_selects_an_option_and_presses_the_submit_button() {
-		inventoryPage.userItemDropdownSelect.selectByVisibleText("Use");
+		inventoryPage.userItemDropdownSelect1.selectByVisibleText("Use");
 	}
 
 	@Then("the option�s associated action should be executed")
 	public void the_option_s_associated_action_should_be_executed() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+	    assertEquals(inventoryPage.UserItemTest1.isDisplayed(), false);
 	}
 
 	/**
@@ -91,13 +90,12 @@ public class InventorySteps {
 
 	@When("an Item is assigned to the Pet inventory")
 	public void an_item_is_assigned_to_the_pet_inventory() {
-		inventoryPage.userItemDropdown.click();
-		inventoryPage.userItemDropdownSelect.selectByVisibleText("Give to Pet");
+		inventoryPage.userItemDropdown2.click();
+		inventoryPage.userItemDropdownSelect2.selectByVisibleText("Give to Pet");
 	}
 
 	@Then("the Item appears in the Pet inventory")
 	public void the_item_appears_in_the_pet_inventory() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		assertEquals(inventoryPage.UserItemTest2.isDisplayed(), true);
 	}
 }
