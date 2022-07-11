@@ -35,6 +35,8 @@ function populateTopBar()
      + `<button id="userLink" onclick="location.href='userPage.html'">🧑 ${uname}</button>`;
 }
 
+//homepage
+
 //loginPage
 function hidePass()
 {
@@ -62,6 +64,8 @@ function loginCheck()
 }
 
 //marketplace 
+
+//inventory
 
 //userPage 
 function populateUserPage()
