@@ -4,7 +4,6 @@ public class Pet {
 
 	private int id;
 	private int uID; //owner ID
-	private int sID; //Src Image ID
 	private String pName; //Pet name
 	private int pSet; //Pronouns
 	private int fun;
@@ -16,11 +15,10 @@ public class Pet {
 		super();
 	}
 	
-	public Pet(int id, int uID, int sID, String pName, int pSet, int fun, int food, int level, PetType type) {
+	public Pet(int id, int uID, String pName, int pSet, int fun, int food, int level, PetType type) {
 		super();
 		this.id = id;
 		this.uID = uID;
-		this.sID = sID;
 		this.pName = pName;
 		this.pSet = pSet;
 		this.fun = fun;
@@ -39,12 +37,6 @@ public class Pet {
 	}
 	public void setuID(int uID) {
 		this.uID = uID;
-	}
-	public int getsID() {
-		return sID;
-	}
-	public void setsID(int sID) {
-		this.sID = sID;
 	}
 	public String getpName() {
 		return pName;
@@ -84,7 +76,7 @@ public class Pet {
 	}
 	@Override
 	public String toString() {
-		return "Pet [id=" + id + ", uID=" + uID + ", sID=" + sID + ", pName=" + pName + ", pSet=" + pSet + ", fun="
+		return "Pet [id=" + id + ", uID=" + uID + ", pName=" + pName + ", pSet=" + pSet + ", fun="
 				+ fun + ", food=" + food + ", level=" + level + ", type=" + type + "]";
 	}
 }

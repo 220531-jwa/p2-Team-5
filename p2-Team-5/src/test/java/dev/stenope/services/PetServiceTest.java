@@ -28,28 +28,28 @@ public class PetServiceTest {
 	
 	@Test
 	public void createPetTest() {
-		Pet testPet = new Pet(1, 1, 1, "Test", 0, 0, 0, 0, null);
+		Pet testPet = new Pet(1, 1, "Test", 0, 0, 0, 0, null);
 		when(mockPetDao.createPet(testPet)).thenReturn(testPet);
 		assertEquals(petService.createPet(testPet), testPet);
 	}
 	
 	@Test
 	public void modifyPetTest() {
-		Pet testPet = new Pet(1, 1, 1, "Test", 0, 0, 0, 0, null);
+		Pet testPet = new Pet(1, 1, "Test", 0, 0, 0, 0, null);
 		when(mockPetDao.modifyPet(testPet)).thenReturn(true);
 		assertEquals(petService.modifyPet(testPet), true);
 	}
 	
 	@Test
 	public void modifyPetInvalidTest() {
-		Pet testPet = new Pet(-1, 1, 1, "Test", 0, 0, 0, 0, null);
+		Pet testPet = new Pet(-1, 1, "Test", 0, 0, 0, 0, null);
 		when(mockPetDao.modifyPet(testPet)).thenReturn(false);
 		assertEquals(petService.modifyPet(testPet), false);
 	}
 	
 	@Test
 	public void getPetTest() {
-		Pet testPet = new Pet(1, 1, 1, "Test", 0, 0, 0, 0, null);
+		Pet testPet = new Pet(1, 1, "Test", 0, 0, 0, 0, null);
 		when(mockPetDao.getPetByID(1)).thenReturn(testPet);
 		assertEquals(petService.getPetByID(1), testPet);
 	}
@@ -63,9 +63,9 @@ public class PetServiceTest {
 	@Test
 	public void getPetListTest() {
 		ArrayList<Pet> testList = new ArrayList<Pet>();
-		testList.add(new Pet(1, 1, 1, "Test1", 0, 0, 0, 0, null));
-		testList.add(new Pet(2, 1, 1, "Test2", 0, 0, 0, 0, null));
-		testList.add(new Pet(3, 1, 1, "Test3", 0, 0, 0, 0, null));
+		testList.add(new Pet(1, 1, "Test1", 0, 0, 0, 0, null));
+		testList.add(new Pet(2, 1, "Test2", 0, 0, 0, 0, null));
+		testList.add(new Pet(3, 1, "Test3", 0, 0, 0, 0, null));
 		
 		when(mockPetDao.getPetListByUserID(1)).thenReturn(testList);
 		assertEquals(petService.getPetByID(1), testList);
