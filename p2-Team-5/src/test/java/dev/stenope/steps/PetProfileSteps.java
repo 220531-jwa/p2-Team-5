@@ -39,9 +39,9 @@ public class PetProfileSteps {
 		UserDAO uDAO = new UserDAO();
 		PetDAO pDAO = new PetDAO();
 		String ownerName = driver.findElement(By.id("userLink")).getText().substring(2);
-//		int ownerID = uDAO.getUserByUserName(ownerName).getID();
+		int ownerID = uDAO.getUserByUserName(ownerName).getId();
 		boolean success = false;
-//		if (pDAO.getPetListByUserID(ownerID).contains(pDAO.getPetByID(id))) {success=true;}
+		if (pDAO.getPetListByUserID(ownerID).contains(pDAO.getPetByID(id))) {success=true;}
 		assertEquals(success,true);
 	}
 	
