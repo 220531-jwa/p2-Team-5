@@ -1,6 +1,12 @@
 package dev.stenope.steps;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.time.Duration;
+
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import dev.stenope.pages.TopBarPage;
 import dev.stenope.runners.TopBarRunner;
@@ -35,8 +41,12 @@ public class TopBarSteps {
 
 	@Then("The User navigates to the User Profile page")
 	public void the_user_navigates_to_the_user_profile_page() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		
+		new WebDriverWait(driver,Duration.ofSeconds(10))
+		.until(ExpectedConditions.titleContains("User Page"));
+		
+		assertEquals("User Page", driver.getTitle());
+	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@When("The User clicks on the Inventory")
@@ -47,8 +57,11 @@ public class TopBarSteps {
 
 	@Then("The User navigates to the Inventory page")
 	public void the_user_navigates_to_the_inventory_page() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		new WebDriverWait(driver,Duration.ofSeconds(10))
+		.until(ExpectedConditions.titleContains("Inventory"));
+		
+		assertEquals("Inventory", driver.getTitle());
+	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@When("The User clicks on the Home Page")
@@ -59,8 +72,11 @@ public class TopBarSteps {
 
 	@Then("The User navigates to the Home Page page")
 	public void the_user_navigates_to_the_home_page_page() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		new WebDriverWait(driver,Duration.ofSeconds(10))
+		.until(ExpectedConditions.titleContains("Home Page"));
+		
+		assertEquals("Home Page", driver.getTitle());
+	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Given("The User is on the User Profile")
@@ -89,8 +105,11 @@ public class TopBarSteps {
 
 	@Then("The User navigates to the Login page")
 	public void the_user_navigates_to_the_login_page() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		new WebDriverWait(driver,Duration.ofSeconds(10))
+		.until(ExpectedConditions.titleContains("Login"));
+		
+		assertEquals("Login", driver.getTitle());
+	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Then("The User is logged out")
