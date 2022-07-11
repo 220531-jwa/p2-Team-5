@@ -5,6 +5,7 @@ import dev.stenope.respositories.PetDAO;
 import java.util.List;
 
 import dev.stenope.models.Pet;
+import dev.stenope.models.PetType;
 
 public class PetService {
 
@@ -30,6 +31,11 @@ public class PetService {
 	}
 	
 	public List<Pet> getPetListByUserID(int id) {
+		
+		return null;
+	}
+	
+	public List<PetType> getPetTypes() {
 		
 		return null;
 	}
