@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.Duration;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -35,8 +37,9 @@ public class TopBarSteps {
 
 	@When("The User clicks on the User Profile")
 	public void the_user_clicks_on_the_user_profile() {
-		// Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		WebElement userButton = driver.findElement(By.xpath("//*[@id=\"userLink\"]"));
+		userButton.click();
+	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Then("The User navigates to the User Profile page")
@@ -51,8 +54,9 @@ public class TopBarSteps {
 
 	@When("The User clicks on the Inventory")
 	public void the_user_clicks_on_the_inventory() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		WebElement inventoryButton = driver.findElement(By.xpath("//*[@id=\"inventoryLink\"]"));
+		inventoryButton.click();
+	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Then("The User navigates to the Inventory page")
@@ -66,8 +70,9 @@ public class TopBarSteps {
 
 	@When("The User clicks on the Home Page")
 	public void the_user_clicks_on_the_home_page() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		WebElement homeButton = driver.findElement(By.xpath("//*[@id=\"homeLink\"]"));
+		homeButton.click();
+	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Then("The User navigates to the Home Page page")
@@ -93,14 +98,15 @@ public class TopBarSteps {
 
 	@Given("The User is on the Inventory")
 	public void the_user_is_on_the_inventory() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		driver.get("http://localhost:8080/inventory.html");
+	    //throw new io.cucumber.java.PendingException();
 	}
 	
 	@When("The User clicks on the Login")
 	public void the_user_clicks_on_the_login() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		WebElement loginButton = driver.findElement(By.xpath("//*[@id=\"loginLink\"]"));
+		loginButton.click();
+	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Then("The User navigates to the Login page")
@@ -120,8 +126,8 @@ public class TopBarSteps {
 
 	@Given("The User is on the log in page")
 	public void the_user_is_on_the_log_in_page() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		driver.get("http://localhost:8080/loginPage.html");
+	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Given("The User is not logged in")
