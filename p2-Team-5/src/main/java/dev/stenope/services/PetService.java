@@ -8,7 +8,11 @@ import dev.stenope.models.Pet;
 
 public class PetService {
 
-	static PetDAO petDao = new PetDAO();
+	private static PetDAO petDao;
+	
+	public PetService(PetDAO petDao) {
+		this.petDao = petDao;
+	}
 	
 	PetService(PetDAO p) {
 		petDao = p;
