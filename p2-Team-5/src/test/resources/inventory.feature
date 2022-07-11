@@ -20,14 +20,14 @@
 Feature: Inventory
 		@tag1
 		Scenario: Pet inventory subheadings
-			Given the User has Pets
+			Given the User <uId> has Pets
 			When the User loads the InventoryPage
 			Then the subheadings dividing the inventory should appear
 			
 		@tag2
 		Scenario: Item click popup/dropdown
 			Given the User is on the InventoryPage 
-			When the User clicks on and Item
+			When the User clicks on an Item
 			Then a dropdown or popup should appear that allows the Item to be assigned to places
 			
 		@tag3
@@ -38,7 +38,7 @@ Feature: Inventory
 			
 		@tag4
 		Scenario: Items in Pet inventories
-			Given the Pet exists
+			Given the Pet <pId> exists
 			And the User is on the InventoryPage
 			When an Item is assigned to the Pet inventory
 			Then the Item appears in the Pet inventory
