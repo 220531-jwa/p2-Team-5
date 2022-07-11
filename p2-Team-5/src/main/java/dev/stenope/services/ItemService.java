@@ -13,6 +13,11 @@ public class ItemService {
 		itemDao = i;
 	}
 	
+	public Item createItem(Item i) {
+		
+		return null;
+	}
+	
 	public boolean modifyItem(Item i) {
 		
 		return false;
