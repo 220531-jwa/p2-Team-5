@@ -34,7 +34,7 @@ Feature: Inventory
 		Scenario: Item dropdown option submitted
 			Given an Item dropdown is loaded
 			When the User selects an option and presses the submit button
-			Then the option’s associated action should be executed
+			Then the option associated action should be executed
 			
 		@tag4
 		Scenario: Items in Pet inventories
