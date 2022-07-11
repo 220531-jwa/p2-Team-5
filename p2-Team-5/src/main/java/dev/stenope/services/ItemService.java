@@ -9,6 +9,9 @@ public class ItemService {
 
 	static ItemDAO itemDao = new ItemDAO();
 	
+	public ItemService(ItemDAO i) {
+		itemDao = i;
+	}
 	
 	public boolean modifyItem(Item i) {
 		

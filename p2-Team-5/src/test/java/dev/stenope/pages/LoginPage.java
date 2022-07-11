@@ -12,4 +12,13 @@ public class LoginPage {
 		this.realHumanBeing = realHumanBeing;
 		PageFactory.initElements(realHumanBeing, this);
 	}
+	
+	@FindBy(id = "uName")
+	public WebElement uName;
+	
+	@FindBy(id = "pKey")
+	public WebElement pKey;
+	
+	@FindBy(id = "loginButton")
+	public WebElement loginButton;
 }
