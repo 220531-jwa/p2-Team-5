@@ -14,10 +14,6 @@ public class PetService {
 		this.petDao = petDao;
 	}
 	
-	PetService(PetDAO p) {
-		petDao = p;
-	}
-	
 	public Pet createPet(Pet p) {
 		
 		return null;
