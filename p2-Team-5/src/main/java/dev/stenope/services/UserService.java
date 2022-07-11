@@ -11,10 +11,6 @@ public class UserService {
 		this.userDao = userDao;
 	}
 	
-	UserService(UserDAO u) {
-		userDao = u;
-	}
-	
 	public User login(User u) {
 		
 		return null;

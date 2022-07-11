@@ -6,7 +6,7 @@ public class Pet {
 	private int uID; //owner ID
 	private int sID; //Src Image ID
 	private String pName; //Pet name
-	private String pSet; //Pronouns
+	private int pSet; //Pronouns
 	private int fun;
 	private int food; 
 	private int level;
@@ -16,7 +16,7 @@ public class Pet {
 		super();
 	}
 	
-	public Pet(int id, int uID, int sID, String pName, String pSet, int fun, int food, int level, PetType type) {
+	public Pet(int id, int uID, int sID, String pName, int pSet, int fun, int food, int level, PetType type) {
 		super();
 		this.id = id;
 		this.uID = uID;
@@ -52,10 +52,10 @@ public class Pet {
 	public void setpName(String pName) {
 		this.pName = pName;
 	}
-	public String getpSet() {
+	public int getpSet() {
 		return pSet;
 	}
-	public void setpSet(String pSet) {
+	public void setpSet(int pSet) {
 		this.pSet = pSet;
 	}
 	public int getFun() {
