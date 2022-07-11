@@ -64,28 +64,20 @@ function loginCheck()
 //marketplace 
 
 //userPage 
-
-//petPage
-function populatePetPage()
+function populateUserPage()
 {
-    let contentment = ["feral", "dissociating", "bored", "neutral", "amused", "happy", "ecstatic"];
-    let hunger = ["dying", "malnourished", "hungry", "neutral", "satisfied", "full", "bloated"]; 
-    let owner = 0;
-    let pName = "";
+    populateTopBar();
+    let uName = "";
+    let pKey = "";
+    let dName = ""; 
+    let dBlurb = "";
     let pSet = 0;
-    let fun = 0; 
-    let food = 0; 
-    let level = 0;
-    let sName = "";
-    let sSRC = "";
-
-    if (pName != null && sName != null) {document.getElementById("pNameBanner").innerText=`${pName} the ${sName}'s page!`;}
-
-    if (pName != null && sName != null) {document.getElementById("pDataHere").innerHTML = `<h1>${sSRC}</h1><br>
-        <a id="ownerName" href="userPage/${owner}"></a>
-        <label>Pet Name: <input id="petName" type="text" value="${pName}" readonly> the ${sName}</label><br>
+    document.getElementById("uDataHere").innerHTML = 
+        `<label>Username: <input id="username" type="text" value="${uName}" readonly></label><br>
+        <label style="display:none">Password: <input id="passkey" type="text" value="${pKey}" readonly></label><br>
         <label>Pronouns: 
-            <select id="petPSet" readonly>
+            <select id="userPSet" disabled>
+                <option value="0">${pronouns[0]}</option>
                 <option value="1">${pronouns[1]}</option>
                 <option value="2">${pronouns[2]}</option>
                 <option value="3">${pronouns[3]}</option>
@@ -94,8 +86,46 @@ function populatePetPage()
                 <option value="6">${pronouns[6]}</option>
             </select>
         </label><br>
-        <label>Contentment: <input id="funBox" type="number" value="${contentment[fun]}" readonly></label><br>
-        <label>Hunger: <input id="foodBox" type="number" value="${hunger[food]}" readonly></label><br>
+        <label>Name: <input id="dName" type="text" value="${dName}" readonly></label><br>
+        <label>Description: <textarea id="dBlurb" readonly></label><br>`;
+        document.getElementById("userPSet").selectedIndex = pSet;
+    document.getElementById("dBlurb").value = dBlurb;
+    document.getElementById("commentsHere").innerHTML = "";
+}
+
+//petPage
+function populatePetPage()
+{
+    populateTopBar();
+    let contentment = ["feral", "dissociating", "bored", "neutral", "amused", "happy", "ecstatic"];
+    let hunger = ["dying", "malnourished", "hungry", "neutral", "satisfied", "full", "bloated"]; 
+    let owner = 0;
+    let pName = null;
+    let pSet = 0;
+    let fun = 0; 
+    let food = 0; 
+    let level = 0;
+    let sName = null;
+    let sSRC = null;
+
+    if (pName != null && sName != null) {document.getElementById("pNameBanner").innerText=`${pName} the ${sName}'s page!`;}
+
+    if (pName != null && sName != null) {document.getElementById("pDataHere").innerHTML = `<h1>${sSRC}</h1><br>
+        <a id="ownerName" href="userPage/${owner}"></a><br>
+        <label>Pet Name: <input id="petName" type="text" value="${pName}" readonly> the ${sName}</label><br>
+        <label>Pronouns: 
+            <select id="petPSet" disabled>
+                <option value="0">${pronouns[0]}</option>
+                <option value="1">${pronouns[1]}</option>
+                <option value="2">${pronouns[2]}</option>
+                <option value="3">${pronouns[3]}</option>
+                <option value="4">${pronouns[4]}</option>
+                <option value="5">${pronouns[5]}</option>
+                <option value="6">${pronouns[6]}</option>
+            </select>
+        </label><br>
+        <label>Contentment: <input id="funBox" type="text" value="${contentment[fun]}" readonly></label><br>
+        <label>Hunger: <input id="foodBox" type="text" value="${hunger[food]}" readonly></label><br>
         <label>Level: <input id="levelBox" type="number" value="${level}" readonly></label><br>`;}
 
     document.getElementById("ownerName").innerText = `User_${owner}`; //do something to get the owner's username here 
