@@ -4,7 +4,11 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import dev.stenope.pages.UserProfilePage;
 import dev.stenope.runners.UserProfileRunner;
@@ -28,20 +32,23 @@ public class UserProfileSteps {
 
 	@Then("The User display name is displayed")
 	public void the_user_display_name_is_displayed() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		WebElement displayName = driver.findElement(By.xpath("//*[@id=\"username\"]"));
+		assertEquals(displayName.getAttribute("value"), "User");
+		throw new io.cucumber.java.PendingException();
 	}
 
 	@Then("The User pronouns are displayed")
 	public void the_user_pronouns_are_displayed() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		WebElement pronouns = driver.findElement(By.xpath("//*[@id=\"userPSet\"]"));
+		assertEquals(pronouns.getAttribute("value"), 0);
+		throw new io.cucumber.java.PendingException();
 	}
 
 	@Then("The User description is displayed")
 	public void the_user_description_is_displayed() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		WebElement blurb = driver.findElement(By.xpath("//*[@id=\"dBlurb\"]"));
+		assertEquals(blurb.getText(), "Blurb");
+		throw new io.cucumber.java.PendingException();
 	}
 
 	@Given("The User is on their own profile")
