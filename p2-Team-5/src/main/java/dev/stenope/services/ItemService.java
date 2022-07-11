@@ -4,13 +4,16 @@ import java.util.List;
 
 import dev.stenope.models.Item;
 import dev.stenope.respositories.ItemDAO;
+import dev.stenope.respositories.PetDAO;
 
 public class ItemService {
 
 	static ItemDAO itemDao = new ItemDAO();
+	static PetService petService = new PetService(new PetDAO());
 	
-	public ItemService(ItemDAO i) {
+	public ItemService(ItemDAO i, PetService p) {
 		itemDao = i;
+		petService = p;
 	}
 	
 	public Item createItem(Item i) {
@@ -23,7 +26,7 @@ public class ItemService {
 		return false;
 	}
 	
-	public boolean changeItemOwner(Item i) {
+	public boolean changeItemOwner(Item i, int newOwner) {
 		
 		return false;
 	}
@@ -34,6 +37,11 @@ public class ItemService {
 	}
 	
 	public List<Item> getItemList(int id) {
+		
+		return null;
+	}
+	
+	public List<Item> getPetItemList(int id) {
 		
 		return null;
 	}

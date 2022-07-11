@@ -24,4 +24,8 @@ public class ItemController {
 		
 	}
 	
+	public static void getPetItemList(Context ctx) {
+		
+	}
+	
 }

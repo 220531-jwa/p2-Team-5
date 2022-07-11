@@ -28,4 +28,9 @@ public class ItemDAO {
 		
 		return null;
 	}
+	
+public List<Item> getPetItemList(int id) {
+		
+		return null;
+	}
 }
