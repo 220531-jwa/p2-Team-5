@@ -81,4 +81,40 @@ public class TopBarSteps {
 	    throw new io.cucumber.java.PendingException();
 	}
 	
+	@When("The User clicks on the Login")
+	public void the_user_clicks_on_the_login() {
+	    // Write code here that turns the phrase above into concrete actions
+	    throw new io.cucumber.java.PendingException();
+	}
+
+	@Then("The User navigates to the Login page")
+	public void the_user_navigates_to_the_login_page() {
+	    // Write code here that turns the phrase above into concrete actions
+	    throw new io.cucumber.java.PendingException();
+	}
+
+	@Then("The User is logged out")
+	public void the_user_is_logged_out() {
+	    // Write code here that turns the phrase above into concrete actions
+	    throw new io.cucumber.java.PendingException();
+	}
+
+	@Given("The User is on the log in page")
+	public void the_user_is_on_the_log_in_page() {
+	    // Write code here that turns the phrase above into concrete actions
+	    throw new io.cucumber.java.PendingException();
+	}
+
+	@Given("The User is not logged in")
+	public void the_user_is_not_logged_in() {
+	    // Write code here that turns the phrase above into concrete actions
+	    throw new io.cucumber.java.PendingException();
+	}
+
+	@Then("The User is given a logged out error")
+	public void the_user_is_given_a_logged_out_error() {
+	    // Write code here that turns the phrase above into concrete actions
+	    throw new io.cucumber.java.PendingException();
+	}
+	
 }
