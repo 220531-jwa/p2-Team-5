@@ -80,4 +80,24 @@ function populatePetPage()
     let sSRC = "";
 
     if (pName != null && sName != null) {document.getElementById("pNameBanner").innerText=`${pName} the ${sName}'s page!`;}
+
+    if (pName != null && sName != null) {document.getElementById("pDataHere").innerHTML = `<h1>${sSRC}</h1><br>
+        <a id="ownerName" href="userPage/${owner}"></a>
+        <label>Pet Name: <input id="petName" type="text" value="${pName}" readonly> the ${sName}</label><br>
+        <label>Pronouns: 
+            <select id="petPSet" readonly>
+                <option value="1">${pronouns[1]}</option>
+                <option value="2">${pronouns[2]}</option>
+                <option value="3">${pronouns[3]}</option>
+                <option value="4">${pronouns[4]}</option>
+                <option value="5">${pronouns[5]}</option>
+                <option value="6">${pronouns[6]}</option>
+            </select>
+        </label><br>
+        <label>Contentment: <input id="funBox" type="number" value="${contentment[fun]}" readonly></label><br>
+        <label>Hunger: <input id="foodBox" type="number" value="${hunger[food]}" readonly></label><br>
+        <label>Level: <input id="levelBox" type="number" value="${level}" readonly></label><br>`;}
+
+    document.getElementById("ownerName").innerText = `User_${owner}`; //do something to get the owner's username here 
+    document.getElementById("petPSet").selectedIndex = pSet;
 }
