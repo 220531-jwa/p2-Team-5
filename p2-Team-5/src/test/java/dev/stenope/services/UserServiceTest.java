@@ -63,15 +63,15 @@ public class UserServiceTest {
 	@Test
 	public void editUserTest() {
 		User testUser = new User(1, "User", "Pass", "Test", "Test", 0);
-		when(mockUserDao.editUser(testUser)).thenReturn(true);
-		assertEquals(userService.editUser(testUser), true);
+		when(mockUserDao.editUser(testUser)).thenReturn(testUser);
+		assertEquals(userService.editUser(testUser), testUser);
 	}
 	
 	@Test
 	public void editUserInvalidTest() {
 		User testUser = new User(100, "User", "Pass", "Test", "Test", 0);
-		when(mockUserDao.editUser(testUser)).thenReturn(false);
-		assertEquals(userService.editUser(testUser), false);
+		when(mockUserDao.editUser(testUser)).thenReturn(null);
+		assertEquals(userService.editUser(testUser), null);
 	}
 	
 	
