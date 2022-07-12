@@ -39,8 +39,30 @@ public class ItemDAO {
 	}
 	
 	public boolean modifyItem(Item i) {
-		
-		return false;
+		String sql = "update p2t5.items set "
+				+ "(tid, uid, pid) "
+				+ "= (?, ?, ?) "
+				+ "where id = ?";
+		try(Connection conn = cu.getConnection()) {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, i.getType().getId());
+			ps.setInt(2, i.getuID());
+			ps.setInt(3, i.getpID());
+			ps.setInt(4, i.getId());
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				i = new Item(
+					rs.getInt("id"),
+					new ItemType(rs.getInt("itemtypes.id"), rs.getInt("leftovers"), rs.getString("tname"), rs.getString("tcat"), rs.getString("tsrc")),
+					rs.getInt("uid"),
+					rs.getInt("pid")
+				);
+			} 
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 	
 	public Item getItemByID(int id) {
@@ -75,14 +97,17 @@ public class ItemDAO {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				list.add( new Item(
-					rs.getInt("id"),
-					new ItemType(rs.getInt("itemtypes.id"), rs.getInt("leftovers"), rs.getString("tname"), rs.getString("tcat"), rs.getString("tsrc")),
-					rs.getInt("uid"),
-					rs.getInt("pid")
-				));
-			} 
+			if (rs.next()) {
+				do {
+					list.add( new Item(
+						rs.getInt("id"),
+						new ItemType(rs.getInt("itemtypes.id"), rs.getInt("leftovers"), rs.getString("tname"), rs.getString("tcat"), rs.getString("tsrc")),
+						rs.getInt("uid"),
+						rs.getInt("pid")
+					));
+				} while (rs.next());
+			}
+			 
 		} catch (SQLException e) {
 			e.printStackTrace();
 			list = null;
@@ -99,14 +124,14 @@ public class ItemDAO {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
+			do {
 				list.add( new Item(
 					rs.getInt("id"),
 					new ItemType(rs.getInt("itemtypes.id"), rs.getInt("leftovers"), rs.getString("tname"), rs.getString("tcat"), rs.getString("tsrc")),
 					rs.getInt("uid"),
 					rs.getInt("pid")
 				));
-			} 
+			} while (rs.next()); 
 		} catch (SQLException e) {
 			e.printStackTrace();
 			list = null;
@@ -120,11 +145,14 @@ public class ItemDAO {
 		try(Connection conn = cu.getConnection()) {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				list.add( 
-					new ItemType(rs.getInt("itemtypes.id"), rs.getInt("leftovers"), rs.getString("tname"), rs.getString("tcat"), rs.getString("tsrc"))
-				);
-			} 
+			if (rs.next()) {
+				do {
+					list.add( 
+						new ItemType(rs.getInt("itemtypes.id"), rs.getInt("leftovers"), rs.getString("tname"), rs.getString("tcat"), rs.getString("tsrc"))
+					);
+				} while (rs.next());
+			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			list = null;
