@@ -6,6 +6,16 @@ public class ItemType {
 	private String tName; //type name (ex: pizza)
 	private String tCat; //type category (ex: food)
 	private String tSRC; //type image source
+	
+	public ItemType(int id, int leftovers, String tName, String tCat, String tSRC) {
+		super();
+		this.id = id;
+		this.leftovers = leftovers;
+		this.tName = tName;
+		this.tCat = tCat;
+		this.tSRC = tSRC;
+	}
+	
 	public int getId() {
 		return id;
 	}

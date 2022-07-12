@@ -32,6 +32,7 @@ public class ItemDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			i = null;
 		}
 		return i;
 	}
@@ -42,8 +43,26 @@ public class ItemDAO {
 	}
 	
 	public Item getItemByID(int id) {
-		
-		return null;
+		Item i = null;
+		String sql = "select items.*, itemtypes.* from p2t5.items items, p2t5.itemtypes itemtypes"
+				+ "where items.tid = itemtypes.id"
+				+ "and items.id = ?";
+		try(Connection conn = cu.getConnection()) {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				i = new Item(
+					rs.getInt("id"),
+					new ItemType(rs.getInt("itemtypes.id"), rs.getInt("leftovers"), rs.getString("tname"), rs.getString("tcat"), rs.getString("tsrc")),
+					rs.getInt("uid"),
+					rs.getInt("pid")
+				);
+			} 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return i;
 	}
 	
 	public List<Item> getItemList(int id) {
