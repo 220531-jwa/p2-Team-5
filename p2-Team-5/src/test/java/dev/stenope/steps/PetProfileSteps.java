@@ -31,7 +31,12 @@ public class PetProfileSteps {
 
 	@Then("pet data is displayed")
 	public void pet_data_is_displayed() {
-		assertEquals(p3.readPetData("pName"),"asdf");
+		assertNotEquals(p3.readPetData("pName"),null);
+	}
+	
+	@Then("{string} is displayed")
+	public void new_petname_is_displayed(String petname) {
+		assertEquals(p3.readPetData("pName"),petname);
 	}
 
 	@Given("the user is logged in as the pet`s owner")
@@ -50,9 +55,9 @@ public class PetProfileSteps {
 		driver.get("https://localhost:8080/petPage.html");
 	}
 
-	@When("user types into pet data")
-	public void user_types_into_pet_data() {
-		p3.dataDiv.findElement(By.id("petName")).sendKeys("asdf");
+	@When("user types {string} into pet data")
+	public void user_types_into_pet_data(String petname) {
+		p3.dataDiv.findElement(By.id("petName")).sendKeys(petname);
 		Select s = new Select(p3.dataDiv.findElement(By.id("petPSet")));
 		s.selectByIndex(4); 
 	}
