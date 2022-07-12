@@ -19,7 +19,7 @@ public class PetService {
 	//Read 
 	public Pet getPetByID(int id) {return pDAO.getPetByID(id);}
 	
-	public List<Pet> getPetListByUserID(int id) {return pDAO.getPetListByUserID(id);}
+	public List<Pet> getPetListByUserID(int id)	{return pDAO.getPetListByUserID(id);}
 	
 	public List<PetType> getPetTypes() {return pDAO.getPetTypes();}
 	
