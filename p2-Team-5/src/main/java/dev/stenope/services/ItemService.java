@@ -18,6 +18,10 @@ public class ItemService {
 		petService = p;
 	}
 	
+	public ItemService() {
+		
+	}
+	
 	public Item createItem(Item i) {
 		return itemDao.createItem(i);
 	}
