@@ -36,15 +36,15 @@ public class PetServiceTest {
 	@Test
 	public void modifyPetTest() {
 		Pet testPet = new Pet(1, 1, "Test", 0, 0, 0, 0, null);
-		when(mockPetDao.modifyPet(testPet)).thenReturn(true);
-		assertEquals(petService.modifyPet(testPet), true);
+		when(mockPetDao.modifyPet(testPet)).thenReturn(testPet);
+		assertEquals(petService.modifyPet(testPet), testPet);
 	}
 	
 	@Test
 	public void modifyPetInvalidTest() {
 		Pet testPet = new Pet(-1, 1, "Test", 0, 0, 0, 0, null);
-		when(mockPetDao.modifyPet(testPet)).thenReturn(false);
-		assertEquals(petService.modifyPet(testPet), false);
+		when(mockPetDao.modifyPet(testPet)).thenReturn(testPet);
+		assertEquals(petService.modifyPet(testPet), testPet);
 	}
 	
 	@Test

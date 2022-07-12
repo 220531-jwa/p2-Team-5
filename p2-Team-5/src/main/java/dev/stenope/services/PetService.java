@@ -9,34 +9,22 @@ import dev.stenope.models.PetType;
 
 public class PetService {
 
-	private static PetDAO petDao;
+	private static PetDAO pDAO;
 	
-	public PetService(PetDAO petDao) {
-		this.petDao = petDao;
-	}
+	public PetService(PetDAO petDao) {pDAO = petDao;}
 	
-	public Pet createPet(Pet p) {
-		
-		return null;
-	}
+	//Create 
+	public Pet createPet(Pet p) {return pDAO.createPet(p);}
 	
-	public boolean modifyPet(Pet p) {
-		
-		return false;
-	}
+	//Read 
+	public Pet getPetByID(int id) {return pDAO.getPetByID(id);}
 	
-	public Pet getPetByID(int id) {
-		
-		return null;
-	}
+	public List<Pet> getPetListByUserID(int id) {return pDAO.getPetListByUserID(id);}
 	
-	public List<Pet> getPetListByUserID(int id) {
-		
-		return null;
-	}
+	public List<PetType> getPetTypes() {return pDAO.getPetTypes();}
 	
-	public List<PetType> getPetTypes() {
-		
-		return null;
-	}
+	//Update 
+	public Pet modifyPet(Pet p) {return pDAO.modifyPet(p);} //add double-checking, pound support, etc.
+	
+	//Delete
 }
