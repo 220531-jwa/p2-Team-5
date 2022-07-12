@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import dev.stenope.models.Item;
@@ -66,17 +67,68 @@ public class ItemDAO {
 	}
 	
 	public List<Item> getItemList(int id) {
-		
-		return null;
+		ArrayList<Item> list = new ArrayList<Item>();
+		String sql = "select items.*, itemtypes.* from p2t5.items items, p2t5.itemtypes itemtypes"
+				+ "where items.tid = itemtypes.id"
+				+ "and items.uid = ?";
+		try(Connection conn = cu.getConnection()) {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				list.add( new Item(
+					rs.getInt("id"),
+					new ItemType(rs.getInt("itemtypes.id"), rs.getInt("leftovers"), rs.getString("tname"), rs.getString("tcat"), rs.getString("tsrc")),
+					rs.getInt("uid"),
+					rs.getInt("pid")
+				));
+			} 
+		} catch (SQLException e) {
+			e.printStackTrace();
+			list = null;
+		}
+		return list;
 	}
 	
 	public List<Item> getPetItemList(int id) {
-		
-		return null;
+		ArrayList<Item> list = new ArrayList<Item>();
+		String sql = "select items.*, itemtypes.* from p2t5.items items, p2t5.itemtypes itemtypes"
+				+ "where items.tid = itemtypes.id"
+				+ "and items.pid = ?";
+		try(Connection conn = cu.getConnection()) {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				list.add( new Item(
+					rs.getInt("id"),
+					new ItemType(rs.getInt("itemtypes.id"), rs.getInt("leftovers"), rs.getString("tname"), rs.getString("tcat"), rs.getString("tsrc")),
+					rs.getInt("uid"),
+					rs.getInt("pid")
+				));
+			} 
+		} catch (SQLException e) {
+			e.printStackTrace();
+			list = null;
+		}
+		return list;
 	}
 	
 	public List<ItemType> getItemTypes () {
-		
-		return null;
+		ArrayList<ItemType> list = new ArrayList<ItemType>();
+		String sql = "select * from p2t5.itemtypes";
+		try(Connection conn = cu.getConnection()) {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				list.add( 
+					new ItemType(rs.getInt("itemtypes.id"), rs.getInt("leftovers"), rs.getString("tname"), rs.getString("tcat"), rs.getString("tsrc"))
+				);
+			} 
+		} catch (SQLException e) {
+			e.printStackTrace();
+			list = null;
+		}
+		return list;
 	}
 }
