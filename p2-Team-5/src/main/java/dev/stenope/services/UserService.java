@@ -12,16 +12,17 @@ public class UserService {
 	}
 	
 	public User login(User u) {
-		
+		//after lunch
 		return null;
 	}
 	
 	public User getUserByID(int id) {
-		return null;
+		User u = userDao.getUserByID(id);
+		return u;
 	}
 
 	public User editUser(User u) {
-		
-		return null;
+		User uNew = userDao.editUser(u);
+		return uNew;
 	}
 }
