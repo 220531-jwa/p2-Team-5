@@ -26,6 +26,7 @@ public class Pet {
 		this.level = level;
 		this.type = type;
 	}
+	
 	public int getId() {
 		return id;
 	}
