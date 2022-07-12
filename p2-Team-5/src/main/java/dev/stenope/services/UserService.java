@@ -20,8 +20,8 @@ public class UserService {
 		return null;
 	}
 
-	public boolean editUser(User u) {
+	public User editUser(User u) {
 		
-		return false;
+		return null;
 	}
 }
