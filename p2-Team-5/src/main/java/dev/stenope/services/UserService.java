@@ -4,15 +4,19 @@ import dev.stenope.models.User;
 import dev.stenope.respositories.UserDAO;
 
 public class UserService {
-
 	private static UserDAO userDao;
 	
 	public UserService(UserDAO userDao) {
 		this.userDao = userDao;
 	}
 	
-	public User login(User u) {
-		//after lunch
+	public User login(String uName, String pKey) {
+		User u = userDao.getUserByUserName(uName);
+		if (u != null) {
+			if (u.getpKey().equals(pKey)) {
+				return u;
+			}
+		}
 		return null;
 	}
 	
