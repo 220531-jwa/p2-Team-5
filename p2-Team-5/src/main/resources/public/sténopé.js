@@ -15,7 +15,7 @@ let pronouns =
 function logout()
 {
     sessionStorage.clear();
-    window.location.assign("homePage.html");
+    window.location.assign("loginPage.html");
 }
 
 function populateTopBar()
