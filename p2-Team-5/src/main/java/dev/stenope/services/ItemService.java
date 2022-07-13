@@ -4,6 +4,7 @@ import java.util.List;
 
 import dev.stenope.models.Item;
 import dev.stenope.models.ItemType;
+import dev.stenope.models.Pet;
 import dev.stenope.respositories.ItemDAO;
 import dev.stenope.respositories.PetDAO;
 
@@ -17,39 +18,43 @@ public class ItemService {
 		petService = p;
 	}
 	
-	public Item createItem(Item i) {
+	public ItemService() {
 		
-		return null;
+	}
+	
+	public Item createItem(Item i) {
+		return itemDao.createItem(i);
 	}
 	
 	public boolean modifyItem(Item i) {
-		
-		return false;
+		return itemDao.modifyItem(i);
 	}
 	
 	public boolean changeItemOwner(Item i, int newOwner) {
-		
-		return false;
+		//Checks if user owns the pet they are transferring to
+		Pet reciever = petService.getPetByID(newOwner);
+		if (reciever == null || reciever.getuID() != i.getuID()) {
+			return false;
+		}
+		i.setpID(newOwner);
+		return itemDao.modifyItem(i);
 	}
 	
+	
 	public Item getItemByID(int id) {
-		
-		return null;
+		return itemDao.getItemByID(id);
 	}
 	
 	public List<Item> getItemList(int id) {
-		
-		return null;
+		return itemDao.getItemList(id);
 	}
 	
 	public List<Item> getPetItemList(int id) {
-		
-		return null;
+		return itemDao.getPetItemList(id);
 	}
 	
 	public List<ItemType> getItemTypes() {
-		
-		return null;
+		return itemDao.getItemTypes();
 	}
 	
 }

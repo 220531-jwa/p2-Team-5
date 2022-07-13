@@ -28,7 +28,7 @@ public class UserServiceTest {
 	public void logInTest() {
 		User testUser = new User(1, "User", "Pass", "Test", "Test", 0);
 		when(mockUserDao.getUserByUserName(testUser.getuName())).thenReturn(testUser);
-		assertEquals(userService.login(testUser), testUser);
+		assertEquals(userService.login(testUser.getuName(), testUser.getpKey()), testUser);
 	}
 	
 	@Test
@@ -36,14 +36,14 @@ public class UserServiceTest {
 		User testUser = new User(1, "User", "WrongPass", "Test", "Test", 0);
 		User testUserReal = new User(1, "User", "Pass", "Test", "Test", 0);
 		when(mockUserDao.getUserByUserName(testUser.getuName())).thenReturn(testUserReal);
-		assertEquals(userService.login(testUser), null);
+		assertEquals(userService.login(testUser.getuName(), "dfkjhadfvuhadf"), null);
 	}
 	
 	@Test
 	public void logInNoSuchUserTest() {
-		User testUser = new User(1, "User", "Pass", "Test", "Test", 0);
+		User testUser = new User(1, "UserNotFound", "Pass", "Test", "Test", 0);
 		when(mockUserDao.getUserByUserName(testUser.getuName())).thenReturn(null);
-		assertEquals(userService.login(testUser), null);
+		assertEquals(userService.login(testUser.getuName(), testUser.getpKey()), null);
 	}
 	
 	@Test
