@@ -1,6 +1,7 @@
 package dev.stenope.services;
 
 import dev.stenope.models.User;
+import dev.stenope.models.UserComment;
 import dev.stenope.respositories.UserDAO;
 
 public class UserService {
@@ -28,5 +29,10 @@ public class UserService {
 	public User editUser(User u) {
 		User uNew = userDao.editUser(u);
 		return uNew;
+	}
+	
+	public UserComment addComment(int wId, int hId, String body) {
+		UserComment comment = userDao.addComment(wId, hId, body);
+		return comment;
 	}
 }

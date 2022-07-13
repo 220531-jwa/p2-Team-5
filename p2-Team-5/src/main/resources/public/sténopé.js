@@ -15,7 +15,7 @@ let pronouns =
 function logout()
 {
     sessionStorage.clear();
-    window.location.assign("homePage.html");
+    window.location.assign("loginPage.html");
 }
 
 function populateTopBar()
@@ -46,23 +46,37 @@ function hidePass()
     else {document.getElementById('pKeyBox').setAttribute("type","password");}
 }
 
-function loginCheck()
+async function loginCheck()
 {
     let uname = document.getElementById("uNameBox").value; 
     let pkey = document.getElementById("pKeyBox").value;
 
     console.log(uname + " " + pkey);
 
-    if (uname === "test" && pkey === "positive") 
-        {
-            console.log("Login succeeded!"); 
-            sessionStorage.setItem("uname",uname);
-            window.location.assign("homePage.html");
-        }
-    else {
-        console.log("Login failed");
-        alert("Login failed");
-    }
+    if (uname != "" && pkey != "") {
+        let userLogin = {
+            username : uname,
+            passkey: pkey
+        };
+
+        let userLoginJson = JSON.stringify(userLogin);
+        let res = await fetch(`/login`, {
+                method: `POST`,
+                header: {"Content-Type": "application/json"},
+                body: userLoginJson
+        });
+        let resJson = await res.json()
+            .then((resp) => {
+                console.log(resp);
+                sessionStorage.setItem("uID", resp.uId);
+                sessionStorage.setItem("userInView", resp.uname);
+                window.location.assign('homePage.html');
+            })
+            .catch((error) => {
+                console.log("Login unsuccessful");
+                alert("Login unsuccessful");
+            })
+    } 
 }
 
 //marketplace 
@@ -114,10 +128,51 @@ function populateUserPage()
 }
 
 //createPet
+async function getSpeciesList()
+{
+    let res = await fetch(`/petTypes`, {method: "GET", header:{"Content-Type": "application/json"}, body: null});
+    let resJSON = await res.json()
+        .then((resp) =>
+        {
+            for (let i=0;i<resp.length;i++)
+            {
+                let species = document.createElement("option");
+                species.value = resp[i].id;
+                species.innerText = `${resp[i].ssrc}: ${resp[i].sname}`;
+                document.getElementById("petSpeciesSelector").appendChild(species);
+            }
+        })
+        .catch((error) => console.log(error));
+}
+
+async function postNewPet()
+{
+    let newPet = new Object;
+    newPet.id = 0;
+    newPet.uID = document.getElementById("newPetUID").value;
+    newPet.pName = document.getElementById("petName").value;
+    newPet.pSet = document.getElementById("petPSet").value;
+    newPet.fun = document.getElementById("funBox").value;
+    newPet.food = document.getElementById("foodBox").value;
+    newPet.level = document.getElementById("levelBox").value;
+    newPet.type = new Object;
+    newPet.type.id = document.getElementById("petSpeciesSelector").value;
+    newPet.type.ssrc = "";
+    newPet.type.sname = "";
+    let res = await fetch(`users/${newPet,uID}/pets`, {method: "POST", header: {"Content-Type": "application/json", 
+        body:JSON.stringify(newPet)}});
+    let resJSON = res.json()
+        .then((resp) => 
+        {
+            console.log(resp);
+        })
+        .catch((error) => console.log(error));
+}
+
 function populateCreatePage()
 {
     document.getElementById("creationDiv").innerHTML = 
-    `<label>Owner: You! <input value="${sessionStorage.getItem("uID")}" style="visibility:hidden" readonly><br>
+    `<label>Owner: You! <input id="newPetUID" value="${sessionStorage.getItem("uID")}" style="visibility:hidden" readonly><br>
     <label>Species: <select id="petSpeciesSelector"></select></label><br>
     <label>Pet Name: <input id="petName" type="text"></label><br>
     <label>Pronouns: 
@@ -131,9 +186,11 @@ function populateCreatePage()
             <option value="6">${pronouns[6]}</option>
         </select>
     </label><br>
-    <label>Contentment: <input id="funBox" type="text" value="0" readonly></label><br>
-    <label>Hunger: <input id="foodBox" type="text" value="0" readonly></label><br>
-    <label>Level: <input id="levelBox" type="number" value="1" readonly></label><br>`;
+    <button id="submitNewPet" onclick="postNewPet()">Submit</button>
+    <label>Contentment: <input id="funBox" type="text" value="3" style="visibility:hidden" readonly></label><br>
+    <label>Hunger: <input id="foodBox" type="text" value="3" style="visibility:hidden" readonly></label><br>
+    <label>Level: <input id="levelBox" type="number" value="1" style="visibility:hidden" readonly></label><br>`;  
+    getSpeciesList();  
 }
 
 //petPage
@@ -197,4 +254,11 @@ async function populatePetPage()
             })
 
             .catch((error) => {console.log(error)});
+}
+
+//inventoryPage
+async function populateInventory() {
+    populateTopBar();
+
+    
 }
