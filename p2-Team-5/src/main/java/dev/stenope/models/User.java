@@ -8,6 +8,10 @@ public class User {
 	private String dName; //display name
 	private String dBlurb; //description blurb
 	private int pSet; //pronouns
+	
+	public User() {
+		super();
+	}
 	public User(int id, String uName, String pKey, String dName, String dBlurb, int pSet) {
 		super();
 		this.id = id;
