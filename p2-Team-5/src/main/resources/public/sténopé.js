@@ -114,7 +114,7 @@ async function populateInventory() {
                 let element  = document.createElement("div");
                 element.id = i;
                 element.className = "grid-item";
-                element.appendChild(document.createTextNode(resp[i].type.tName));
+                element.appendChild(document.createTextNode(titleCase(resp[i].type.tName)));
                 element.appendChild(document.createTextNode(resp[i].type.tSRC));
 
                 grid.appendChild(element);
@@ -302,4 +302,16 @@ async function populatePetPage()
             })
 
             .catch((error) => {console.log(error)});
+}
+
+//Utility
+function titleCase(sentence) {
+    let splitStr = sentence.split(" ");
+    console.log(splitStr);
+    let str = "";
+    for (let x of splitStr) {
+        console.log(x);
+        str += x.charAt(0).toUpperCase() + x.slice(1);
+    }
+    return str;
 }
