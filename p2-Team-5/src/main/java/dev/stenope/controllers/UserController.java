@@ -21,6 +21,11 @@ public class UserController {
 		}
 	}
 	
+	public static void logout(Context ctx) {
+		ctx.status(200);
+		ctx.req.getSession().invalidate();
+	}
+	
 	public static void getUserByID(Context ctx) {
 		User u = ctx.bodyAsClass(User.class);
 		User uGetById = us.getUserByID(u.getId());

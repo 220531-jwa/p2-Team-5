@@ -15,7 +15,7 @@ let pronouns =
 function logout()
 {
     sessionStorage.clear();
-    window.location.assign("homePage.html");
+    window.location.assign("loginPage.html");
 }
 
 function populateTopBar()
@@ -52,6 +52,31 @@ function loginCheck()
     let pkey = document.getElementById("pKeyBox").value;
 
     console.log(uname + " " + pkey);
+
+    if (uname != "" && pkey != "") {
+        let userLogin = {
+            username : uname,
+            passkey: pkey
+        };
+
+        let userLoginJson = JSON.stringify(userLogin);
+        let res = await fetch(`${baseURL}/login`, {
+                method: `POST`,
+                header: {"Content-Type": "application/json"},
+                body: userLoginJson
+        });
+        let resJson = await res.json()
+            .then((resp) => {
+                console.log(resp);
+                sessionStorage.setItem("uID", resp.uId);
+                sessionStorage.setItem("userInView", resp.uname);
+                window.location.assign('homePage.html');
+            })
+            .catch((error) => {
+                console.log("Login unsuccessful");
+                alert("Login unsuccessful");
+            })
+    } 
 
     if (uname === "test" && pkey === "positive") 
         {

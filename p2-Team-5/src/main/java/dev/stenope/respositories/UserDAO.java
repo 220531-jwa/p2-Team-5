@@ -14,7 +14,7 @@ public class UserDAO {
 	private static ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
 
 	public User getUserByUserName(String uName) {
-		String sql = "select * from users where uname = ?";
+		String sql = "select * from p2t5.users where uname = ?";
 		try (Connection conn = cu.getConnection()) {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, uName);
@@ -36,7 +36,7 @@ public class UserDAO {
 	}
 	
 	public User getUserByID(int id) {
-		String sql = "select * from users where id = ?";
+		String sql = "select * from p2t5.users where id = ?";
 		try (Connection conn = cu.getConnection()) {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
@@ -58,7 +58,7 @@ public class UserDAO {
 	}
 
 	public User editUser(User u) {
-		String sql = "update users set (uname = ?, dname = ?, dblurb = ?, pset = ?) where id = ? returning *";
+		String sql = "update p2t5.users set (uname = ?, dname = ?, dblurb = ?, pset = ?) where id = ? returning *";
 		try (Connection conn = cu.getConnection()) {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, u.getuName());
@@ -83,4 +83,11 @@ public class UserDAO {
 		return null;
 	}
 	
+	public UserComment addComment(String commentText) {
+		User sender;
+		User recipient;
+		String sql = "insert into p2t5.comments(wid, hid, body) values (?, ?, ?);";
+		//will finish after lunch
+		return null;
+	}
 }
