@@ -15,6 +15,10 @@ public class Item {
 		this.uID = uID;
 		this.pID = pID;
 	}
+	
+	public Item() {
+		super();
+	}
 
 
 	public int getId() {
