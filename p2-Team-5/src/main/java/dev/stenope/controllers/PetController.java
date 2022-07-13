@@ -80,7 +80,7 @@ public class PetController {
 	//Update
 	public static void modifyPet(Context ctx) {
 		Pet stray = ctx.bodyAsClass(Pet.class);
-		Item doodad = new Item(0,new ItemType(),0,0);
+		Item doodad = new Item(0,new ItemType(0,0,"","",""),0,0);
 		Pet adopted = pServ.modifyPet(stray, doodad, "");
 		if (adopted != null)
 		{
