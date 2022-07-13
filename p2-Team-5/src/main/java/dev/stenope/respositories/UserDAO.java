@@ -35,7 +35,7 @@ public class UserDAO {
 		return null;
 	}
 	
-	public User getUserByID(int id) {
+	public static User getUserByID(int id) {
 		String sql = "select * from p2t5.users where id = ?";
 		try (Connection conn = cu.getConnection()) {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -83,11 +83,27 @@ public class UserDAO {
 		return null;
 	}
 	
-	public UserComment addComment(String commentText) {
-		User sender;
-		User recipient;
+	public UserComment addComment(int wId, int hId, String commentText) {
+		//User sender = UserDAO.getUserByID(wId);
+		//User recipient = UserDAO.getUserByID(hId);
 		String sql = "insert into p2t5.comments(wid, hid, body) values (?, ?, ?);";
-		//will finish after lunch
+		try (Connection conn = cu.getConnection()) {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, wId);
+			ps.setInt(2, hId);
+			ps.setString(3, commentText);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return new UserComment(
+						rs.getInt("id"),
+						rs.getInt("wid"),
+						rs.getInt("hid"),
+						rs.getString("body")
+						);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 }

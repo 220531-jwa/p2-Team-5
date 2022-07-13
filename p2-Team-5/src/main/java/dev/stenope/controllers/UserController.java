@@ -1,6 +1,7 @@
 package dev.stenope.controllers;
 
 import dev.stenope.models.User;
+import dev.stenope.models.UserComment;
 import dev.stenope.respositories.UserDAO;
 import dev.stenope.services.UserService;
 import io.javalin.http.Context;
@@ -49,6 +50,19 @@ public class UserController {
 		} else {
 			ctx.status(404);
 			ctx.sessionAttribute("No such user exists, cannot edit");
+		}
+	}
+	
+	public static void addComment(Context ctx) {
+		UserComment c = ctx.bodyAsClass(UserComment.class);
+		UserComment cAdd = us.addComment(c.getwID(), c.gethID(), c.getBody());
+		if (cAdd != null) {
+			ctx.status(201);
+			ctx.json(cAdd);
+			ctx.sessionAttribute("New comment: ", cAdd);
+		} else {
+			ctx.status(404);
+			ctx.sessionAttribute("Unable to add comment");
 		}
 	}
 }
