@@ -32,9 +32,10 @@ public class ItemController {
 	}
 	
 	public static void changeItemOwner(Context ctx) {
-		Item item = ctx.bodyAsClass(Item.class);
+		int itemId = Integer.parseInt(ctx.pathParam("itemId"));
+		int userId = Integer.parseInt(ctx.pathParam("id0"));
 		int newOwner = Integer.parseInt(ctx.pathParam("petId"));
-		if (itemService.changeItemOwner(item, newOwner)) {
+		if (itemService.changeItemOwner(itemId, userId, newOwner)) {
 			ctx.status(200);
 		} else {
 			ctx.status(400);

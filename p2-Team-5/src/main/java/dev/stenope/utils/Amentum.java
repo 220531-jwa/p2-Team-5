@@ -41,8 +41,10 @@ public class Amentum {
 						path("/{itemId}", () -> {
 							get(ItemController::getItem);
 							put(ItemController::modifyItem);
-							path("/{petId}", () -> {
-								put(ItemController::changeItemOwner);
+							path("/give", () -> {
+								path("/{petId}", () -> {
+									put(ItemController::changeItemOwner);
+								});
 							});
 						});
 					});
@@ -52,7 +54,8 @@ public class Amentum {
 		
 		app.exception(Exception.class, (e, ctx) -> {
 		    ctx.status(404);
-		    ctx.result("Generic 404 Message");
+		    //e.printStackTrace();
+		    ctx.result("Exception 404 Message");
 		});
 	}
 }

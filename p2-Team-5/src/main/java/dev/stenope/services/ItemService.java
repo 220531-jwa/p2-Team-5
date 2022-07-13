@@ -18,9 +18,7 @@ public class ItemService {
 		petService = p;
 	}
 	
-	public ItemService() {
-		
-	}
+	public ItemService() { }
 	
 	public Item createItem(Item i) {
 		return itemDao.createItem(i);
@@ -30,14 +28,15 @@ public class ItemService {
 		return itemDao.modifyItem(i);
 	}
 	
-	public boolean changeItemOwner(Item i, int newOwner) {
+	public boolean changeItemOwner(int itemId, int user, int newOwner) {
 		//Checks if user owns the pet they are transferring to
+		Item item = itemDao.getItemByID(itemId);
 		Pet reciever = petService.getPetByID(newOwner);
-		if (reciever == null || reciever.getuID() != i.getuID()) {
+		if (item == null || reciever == null || reciever.getuID() != user) {
 			return false;
 		}
-		i.setpID(newOwner);
-		return itemDao.modifyItem(i);
+		item.setpID(newOwner);
+		return itemDao.modifyItem(item);
 	}
 	
 	
