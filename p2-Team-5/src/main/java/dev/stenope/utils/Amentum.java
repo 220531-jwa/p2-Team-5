@@ -28,6 +28,9 @@ public class Amentum {
 				path("/{id0}", () -> {
 					get(UserController::getUserByID);
 					put(UserController::editUser);
+					path("/{idReceive}/comment", () -> {
+						post(UserController::addComment);
+					});
 					path("/pets", () -> {
 						get(PetController::getPetList);
 						post(PetController::createPet);
