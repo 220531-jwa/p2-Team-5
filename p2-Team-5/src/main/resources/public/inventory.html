@@ -62,8 +62,11 @@
             
         </div>
         <h4>Pets Inventory</h4>
-        <label for="whichPet">Select Pet</label>
-        <input type="number" id="whichPet" name="whichPet">
+        <select id = petDrop name = "petDropdown">
+            <option disabled selected value> -- Select a Pet -- </option>
+        </select>
+        <button id="petButton" onclick="loadPetBackpack()">Select Pet</button>
+        <button 
         <div class = "grid-container" id="petBackpack">
             <div class="grid-item">
                 <select name="petItemDropdown">
