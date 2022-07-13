@@ -1,4 +1,4 @@
-let baseURL = "http:localhost:8080";
+let baseURL = "http://localhost:8080";
 
 let pronouns = 
 [	//subject / object / adj. possessive / obj. possesive / reflexive
