@@ -4,6 +4,7 @@ import dev.stenope.respositories.PetDAO;
 
 import java.util.List;
 
+import dev.stenope.models.Item;
 import dev.stenope.models.Pet;
 import dev.stenope.models.PetType;
 
@@ -24,7 +25,17 @@ public class PetService {
 	public List<PetType> getPetTypes() {return pDAO.getPetTypes();}
 	
 	//Update 
-	public Pet modifyPet(Pet p) {return pDAO.modifyPet(p);} //add double-checking, pound support, etc.
+	public Pet modifyPet(Pet p, Item i, String operation) //add double-checking, pound support, etc.
+	{	
+		Pet output = p;
+		if (operation.equals("itemUse")) 
+		{
+			if (i.getType().gettCat().equals("food")) {output.setFood(output.getFood()+1);}
+			else if (i.getType().gettCat().equals("toy")) {output.setFun(output.getFun()+1);}
+		}
+		else {;}
+		return pDAO.modifyPet(output);
+	}
 	
 	//Delete
 }

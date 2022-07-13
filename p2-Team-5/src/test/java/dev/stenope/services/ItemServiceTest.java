@@ -27,8 +27,8 @@ public class ItemServiceTest {
 	@BeforeAll
 	public static void setUp() {
 		mockItemDao = mock(ItemDAO.class);
-		itemService = new ItemService(mockItemDao, mockPetService);
 		mockPetService = mock(PetService.class);
+		itemService = new ItemService(mockItemDao, mockPetService);
 	}
 	
 	@Test
@@ -56,36 +56,38 @@ public class ItemServiceTest {
 	public void changeItemOwnerTest() {
 		Item testItem = new Item(1, null, 1, 1);
 		Pet testPet = new Pet(1, 1, "Test", 0, 0, 0, 0, null);
+		when(mockItemDao.getItemByID(1)).thenReturn(testItem);
 		when(mockItemDao.modifyItem(testItem)).thenReturn(true);
 		when(mockPetService.getPetByID(1)).thenReturn(testPet);
-		assertEquals(itemService.changeItemOwner(testItem, 1), true);
+		assertEquals(itemService.changeItemOwner(1, 1, 1), true);
 	}
 	
 	@Test
 	public void changeItemOwnerInvalidItemTest() {
-		Item testItem = new Item(-1, null, 1, 1);
+		//Item testItem = new Item(-1, null, 1, 1);
 		Pet testPet = new Pet(1, 1, "Test", 0, 0, 0, 0, null);
-		when(mockItemDao.modifyItem(testItem)).thenReturn(true);
+		when(mockItemDao.getItemByID(-1)).thenReturn(null);
+		//when(mockItemDao.modifyItem(testItem)).thenReturn(false);
 		when(mockPetService.getPetByID(1)).thenReturn(testPet);
-		assertEquals(itemService.changeItemOwner(testItem, 1), false);
+		assertEquals(itemService.changeItemOwner(-1, 1, 1), false);
 	}
 	
 	@Test
 	public void changeItemOwnerInvalidRecipientTest() {
 		Item testItem = new Item(1, null, 1, -1);
-		Pet testPet = new Pet(1, 1, "Test", 0, 0, 0, 0, null);
-		when(mockItemDao.modifyItem(testItem)).thenReturn(true);
-		when(mockPetService.getPetByID(1)).thenReturn(testPet);
-		assertEquals(itemService.changeItemOwner(testItem, -1), false);
+		//Pet testPet = new Pet(1, 1, "Test", 0, 0, 0, 0, null);
+		//when(mockItemDao.modifyItem(testItem)).thenReturn(true);
+		when(mockPetService.getPetByID(-1)).thenReturn(null);
+		assertEquals(itemService.changeItemOwner(1, 1, -1), false);
 	}
 	
 	@Test
 	public void changeItemOwnerWrongOwnerTest() {
 		Item testItem = new Item(1, null, 1, 2);
 		Pet testPet = new Pet(2, 2, "Test", 0, 0, 0, 0, null);
-		when(mockItemDao.modifyItem(testItem)).thenReturn(true);
+		//when(mockItemDao.modifyItem(testItem)).thenReturn(true);
 		when(mockPetService.getPetByID(2)).thenReturn(testPet);
-		assertEquals(itemService.changeItemOwner(testItem, 2), false);
+		assertEquals(itemService.changeItemOwner(1, 1, 2), false);
 	}
 	
 	@Test

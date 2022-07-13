@@ -20,15 +20,35 @@ public class Amentum {
 		
 		app.routes(() -> {
 			get((ctx) ->ctx.result("HOMEPAGE WIP"));
+			path("/login", () -> {post(UserController::login);});
 			path("/petTypes", () -> {get(PetController::getPetTypes);});
+			path("/itemTypes", () -> {get(ItemController::getItemTypes);});
 			path("/users", ()  -> {
 				path("/{id0}", () -> {
+					get(UserController::getUserByID);
+					put(UserController::editUser);
 					path("/pets", () -> {
 						get(PetController::getPetList);
 						post(PetController::createPet);
 						path("/{id1}", () -> {
 							get(PetController::getPetByID);
 							put(PetController::modifyPet);
+							path("/items", () -> {
+								get(ItemController::getPetItemList);
+							});
+						});
+					});
+					path("/items", () -> {
+						get(ItemController::getItemList);
+						post(ItemController::createItem);
+						path("/{itemId}", () -> {
+							get(ItemController::getItem);
+							put(ItemController::modifyItem);
+							path("/give", () -> {
+								path("/{petId}", () -> {
+									put(ItemController::changeItemOwner);
+								});
+							});
 						});
 					});
 				});
@@ -37,7 +57,8 @@ public class Amentum {
 		
 		app.exception(Exception.class, (e, ctx) -> {
 		    ctx.status(404);
-		    ctx.result("Generic 404 Message");
+		    //e.printStackTrace();
+		    ctx.result("Exception 404 Message");
 		});
 	}
 }

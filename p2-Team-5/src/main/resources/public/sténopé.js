@@ -1,3 +1,5 @@
+let baseURL = "http:localhost:8080";
+
 let pronouns = 
 [	//subject / object / adj. possessive / obj. possesive / reflexive
     "e/em/eir/eirs/emself", //Spivak set
@@ -67,6 +69,20 @@ function loginCheck()
 
 //inventory
 
+async function useItemOnPet(Item) //will fail if sessionStorage doesn't hold uID and pID
+{
+    let a = sessionStorage.getItem("uID");
+    let b = sessionStorage.getItem("pID");
+    let itemJSON = JSON.stringify(Item);
+    let res = await fetch(`/users/${a}/pets/${b}/item`, {method: "PATCH", header:{"Content-Type": "application/json"}, body: itemJSON});
+    let resJSON = await res.json()
+            .then((resp) =>
+            {
+                console.log(resp);
+            })
+            .catch((error) => console.log(error));
+}
+
 //userPage 
 function populateUserPage()
 {
@@ -97,12 +113,36 @@ function populateUserPage()
     document.getElementById("commentsHere").innerHTML = "";
 }
 
+//createPet
+function populateCreatePage()
+{
+    document.getElementById("creationDiv").innerHTML = 
+    `<label>Owner: You! <input value="${sessionStorage.getItem("uID")}" style="visibility:hidden" readonly><br>
+    <label>Species: <select id="petSpeciesSelector"></select></label><br>
+    <label>Pet Name: <input id="petName" type="text"></label><br>
+    <label>Pronouns: 
+        <select id="petPSet">
+            <option value="0">${pronouns[0]}</option>
+            <option value="1">${pronouns[1]}</option>
+            <option value="2">${pronouns[2]}</option>
+            <option value="3">${pronouns[3]}</option>
+            <option value="4">${pronouns[4]}</option>
+            <option value="5">${pronouns[5]}</option>
+            <option value="6">${pronouns[6]}</option>
+        </select>
+    </label><br>
+    <label>Contentment: <input id="funBox" type="text" value="0" readonly></label><br>
+    <label>Hunger: <input id="foodBox" type="text" value="0" readonly></label><br>
+    <label>Level: <input id="levelBox" type="number" value="1" readonly></label><br>`;
+}
+
 //petPage
-function populatePetPage()
+async function populatePetPage()
 {
     populateTopBar();
     let contentment = ["feral", "dissociating", "bored", "neutral", "amused", "happy", "ecstatic"];
     let hunger = ["dying", "malnourished", "hungry", "neutral", "satisfied", "full", "bloated"]; 
+    let pID = 0;
     let owner = 0;
     let pName = null;
     let pSet = 0;
@@ -112,26 +152,49 @@ function populatePetPage()
     let sName = null;
     let sSRC = null;
 
-    if (pName != null && sName != null) {document.getElementById("pNameBanner").innerText=`${pName} the ${sName}'s page!`;}
+    if (sessionStorage.getItem("pID") != null) {pID = sessionStorage.getItem("pID");}
+    if (sessionStorage.getItem("userInView") != null) {pID = sessionStorage.getItem("userInView");}
 
-    if (pName != null && sName != null) {document.getElementById("pDataHere").innerHTML = `<h1>${sSRC}</h1><br>
-        <a id="ownerName" href="userPage/${owner}"></a><br>
-        <label>Pet Name: <input id="petName" type="text" value="${pName}" readonly> the ${sName}</label><br>
-        <label>Pronouns: 
-            <select id="petPSet" disabled>
-                <option value="0">${pronouns[0]}</option>
-                <option value="1">${pronouns[1]}</option>
-                <option value="2">${pronouns[2]}</option>
-                <option value="3">${pronouns[3]}</option>
-                <option value="4">${pronouns[4]}</option>
-                <option value="5">${pronouns[5]}</option>
-                <option value="6">${pronouns[6]}</option>
-            </select>
-        </label><br>
-        <label>Contentment: <input id="funBox" type="text" value="${contentment[fun]}" readonly></label><br>
-        <label>Hunger: <input id="foodBox" type="text" value="${hunger[food]}" readonly></label><br>
-        <label>Level: <input id="levelBox" type="number" value="${level}" readonly></label><br>`;}
+    let foundPet;
+    let res = await fetch(`/users/${owner}/pets/${pID}`, {method: "GET", header: {"Content-Type": "application/json"}, body: null});
+    let resJSON = await res.json()
+            .then((resp) => 
+            {
+                console.log(resp); 
+                foundPet = resp;
+                pID = foundPet.id;
+                owner = foundPet.uID; 
+                pName = foundPet.pName;
+                pSet = foundPet.pSet;
+                fun = foundPet.fun;
+                food = foundPet.food;
+                level = foundPet.level;
+                sName = foundPet.type.sname;
+                sSRC = foundPet.type.ssrc;
 
-    document.getElementById("ownerName").innerText = `User_${owner}`; //do something to get the owner's username here 
-    document.getElementById("petPSet").selectedIndex = pSet;
+                if (pName != null && sName != null) {document.getElementById("pNameBanner").innerText=`${pName} the ${sName}'s page!`;}
+
+                if (pName != null && sName != null) {document.getElementById("pDataHere").innerHTML = `<h1>${sSRC}</h1><br>
+                    <a id="ownerName" href="userPage/${owner}"></a><br>
+                    <label>Pet Name: <input id="petName" type="text" value="${pName}" readonly> the ${sName}</label><br>
+                    <label>Pronouns: 
+                        <select id="petPSet" disabled>
+                            <option value="0">${pronouns[0]}</option>
+                            <option value="1">${pronouns[1]}</option>
+                            <option value="2">${pronouns[2]}</option>
+                            <option value="3">${pronouns[3]}</option>
+                            <option value="4">${pronouns[4]}</option>
+                            <option value="5">${pronouns[5]}</option>
+                            <option value="6">${pronouns[6]}</option>
+                        </select>
+                    </label><br>
+                    <label>Contentment: <input id="funBox" type="text" value="${contentment[fun]}" readonly></label><br>
+                    <label>Hunger: <input id="foodBox" type="text" value="${hunger[food]}" readonly></label><br>
+                    <label>Level: <input id="levelBox" type="number" value="${level}" readonly></label><br>`;}
+
+                document.getElementById("ownerName").innerText = `User_${owner}`; //do something to get the owner's username here 
+                document.getElementById("petPSet").selectedIndex = pSet;
+            })
+
+            .catch((error) => {console.log(error)});
 }
