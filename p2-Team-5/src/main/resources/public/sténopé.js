@@ -158,3 +158,10 @@ async function populatePetPage()
 
             .catch((error) => {console.log(error)});
 }
+
+//inventoryPage
+async function populateInventory() {
+    populateTopBar();
+
+    
+}
