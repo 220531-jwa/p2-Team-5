@@ -25,6 +25,13 @@ public class Amentum {
 			path("/logout", () -> {post(UserController::logout);});
 			path("/petTypes", () -> {get(PetController::getPetTypes);});
 			path("/itemTypes", () -> {get(ItemController::getItemTypes);});
+			path("/search", () -> {
+				path("/{name}", () -> {
+					path("/pets", () -> {
+						get(PetController::getPetListByPName);
+					});
+				});
+			});
 			path("/users", ()  -> {
 				path("/{id0}", () -> {
 					get(UserController::getUserByID);
@@ -33,7 +40,7 @@ public class Amentum {
 						post(UserController::addComment);
 					});
 					path("/pets", () -> {
-						get(PetController::getPetList);
+						get(PetController::getPetListByUID);
 						post(PetController::createPet);
 						path("/{id1}", () -> {
 							get(PetController::getPetByID);
