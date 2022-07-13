@@ -101,16 +101,16 @@ public class PetDAO {
 	public List<Pet> getPetListByPName(String pname)
 	{
 		List<Pet> pList = new ArrayList<>();
-		String sql = "select * from pets where pname = ?";
+		String sql = "select * from pets where pname = ?;";
 		try(Connection conn = cu.getConnection();)
 		{
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, sql);
+			ps.setString(1, pname);
 			ResultSet rs = ps.executeQuery();
 			
 			while (rs.next())
 			{
-				pList.add(new Pet(rs.getInt("id"), rs.getInt("uid"), rs.getString("pName"), rs.getInt("pset"), rs.getInt("fun"), 
+				pList.add(new Pet(rs.getInt("id"), rs.getInt("uid"), rs.getString("pname"), rs.getInt("pset"), rs.getInt("fun"), 
 						rs.getInt("food"), rs.getInt("plevel"), getPTypeByID(rs.getInt("sid"))));
 			}
 			return pList;
@@ -143,7 +143,7 @@ public class PetDAO {
 		Pet output = null;
 		String sql = "update pets set uid = ?, sid = ?, pset = ?, pname = ?, fun = ?, food = ?, plevel = ? where id = ?";
 		sql += " returning *;";
-		try (Connection conn = cu.getConnection())
+		try (Connection conn = cu.getConnection();)
 		{
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, p.getuID());
