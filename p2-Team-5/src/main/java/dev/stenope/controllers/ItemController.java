@@ -53,7 +53,7 @@ public class ItemController {
 	}
 	
 	public static void getItemList(Context ctx) {
-		int id = Integer.parseInt(ctx.pathParam("ownerId"));
+		int id = Integer.parseInt(ctx.pathParam("id0"));
 		List<Item> items = itemService.getItemList(id);
 		if (items == null) {
 			ctx.status(400);
@@ -66,7 +66,7 @@ public class ItemController {
 	}
 	
 	public static void getPetItemList(Context ctx) {
-		int id = Integer.parseInt(ctx.pathParam("petId"));
+		int id = Integer.parseInt(ctx.pathParam("id1"));
 		List<Item> items = itemService.getPetItemList(id);
 		if (items == null) {
 			ctx.status(400);
@@ -82,6 +82,7 @@ public class ItemController {
 		List<ItemType> types = itemService.getItemTypes();
 		if (types != null && !types.isEmpty()) {
 			ctx.status(200);
+			ctx.json(types);
 		} else {
 			//Should never be reached
 			ctx.status(400);

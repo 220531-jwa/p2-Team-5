@@ -148,7 +148,7 @@ public class ItemDAO {
 			if (rs.next()) {
 				do {
 					list.add( 
-						new ItemType(rs.getInt("itemtypes.id"), rs.getInt("leftovers"), rs.getString("tname"), rs.getString("tcat"), rs.getString("tsrc"))
+						new ItemType(rs.getInt("id"), rs.getInt("leftovers"), rs.getString("tname"), rs.getString("tcat"), rs.getString("tsrc"))
 					);
 				} while (rs.next());
 			}

@@ -21,6 +21,7 @@ public class Amentum {
 		app.routes(() -> {
 			get((ctx) ->ctx.result("HOMEPAGE WIP"));
 			path("/petTypes", () -> {get(PetController::getPetTypes);});
+			path("/itemTypes", () -> {get(ItemController::getItemTypes);});
 			path("/users", ()  -> {
 				path("/{id0}", () -> {
 					path("/pets", () -> {
@@ -29,6 +30,20 @@ public class Amentum {
 						path("/{id1}", () -> {
 							get(PetController::getPetByID);
 							put(PetController::modifyPet);
+							path("/items", () -> {
+								get(ItemController::getPetItemList);
+							});
+						});
+					});
+					path("/items", () -> {
+						get(ItemController::getItemList);
+						post(ItemController::createItem);
+						path("/{itemId}", () -> {
+							get(ItemController::getItem);
+							put(ItemController::modifyItem);
+							path("/{petId}", () -> {
+								put(ItemController::changeItemOwner);
+							});
 						});
 					});
 				});
