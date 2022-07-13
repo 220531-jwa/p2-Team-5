@@ -97,7 +97,7 @@ public class PetController {
 	public static void useItemOnPet(Context ctx)
 	{
 		Item input = ctx.bodyAsClass(Item.class);
-		Pet output = pServ.modifyPet(pServ.getPetByID(Integer.parseInt(ctx.pathParam("{id1}"))),input,"itemUse");
+		Pet output = pServ.modifyPet(pServ.getPetByID(Integer.parseInt(ctx.pathParam("{petId}"))),input,"itemUse");
 		if (output != null)
 		{
 			ctx.status(200);
