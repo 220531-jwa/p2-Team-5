@@ -48,15 +48,15 @@ function hidePass()
 
 async function loginCheck()
 {
-    let uname = document.getElementById("uNameBox").value; 
-    let pkey = document.getElementById("pKeyBox").value;
+    let uName = document.getElementById("uNameBox").value; 
+    let pKey = document.getElementById("pKeyBox").value;
 
     console.log(uname + " " + pkey);
 
     if (uname != "" && pkey != "") {
         let userLogin = {
-            username : uname,
-            passkey: pkey
+            uName : uName,
+            pKey: pKey
         };
 
         let userLoginJson = JSON.stringify(userLogin);
@@ -69,7 +69,7 @@ async function loginCheck()
             .then((resp) => {
                 console.log(resp);
                 sessionStorage.setItem("uID", resp.uId);
-                sessionStorage.setItem("userInView", resp.uname);
+                sessionStorage.setItem("userInView", resp.uName);
                 window.location.assign('homePage.html');
             })
             .catch((error) => {
