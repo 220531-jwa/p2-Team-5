@@ -98,6 +98,27 @@ public class PetDAO {
 		return null;
 	}
 	
+	public List<Pet> getPetListByPName(String pname)
+	{
+		List<Pet> pList = new ArrayList<>();
+		String sql = "select * from pets where pname = ?";
+		try(Connection conn = cu.getConnection();)
+		{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, sql);
+			ResultSet rs = ps.executeQuery();
+			
+			while (rs.next())
+			{
+				pList.add(new Pet(rs.getInt("id"), rs.getInt("uid"), rs.getString("pName"), rs.getInt("pset"), rs.getInt("fun"), 
+						rs.getInt("food"), rs.getInt("plevel"), getPTypeByID(rs.getInt("sid"))));
+			}
+			return pList;
+		}
+		catch(SQLException e) {e.printStackTrace();}
+		return null;
+	}
+	
 	public List<PetType> getPetTypes() {
 		List<PetType> ptList = new ArrayList<>();
 		String sql = "select * from pettypes;";

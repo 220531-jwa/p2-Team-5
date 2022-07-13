@@ -48,9 +48,24 @@ public class PetController {
 		}
 	}
 	
-	public static void getPetList(Context ctx) {
+	public static void getPetListByUID(Context ctx) {
 		List<Pet> pList = new ArrayList<>(); 
 		pList = pServ.getPetListByUserID(Integer.parseInt(ctx.pathParam("{id0}")));
+		if (pList != null)
+		{
+			ctx.status(200);
+			ctx.json(pList);
+		}
+		else 
+		{
+			ctx.status(404);
+			ctx.json("{error:pet_list}");
+		}
+	}
+	
+	public static void getPetListByPName(Context ctx) {
+		List<Pet> pList = new ArrayList<>(); 
+		pList = pServ.getPetListByPName(ctx.body());
 		if (pList != null)
 		{
 			ctx.status(200);

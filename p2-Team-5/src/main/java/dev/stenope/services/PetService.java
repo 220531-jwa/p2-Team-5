@@ -22,6 +22,8 @@ public class PetService {
 	
 	public List<Pet> getPetListByUserID(int id)	{return pDAO.getPetListByUserID(id);}
 	
+	public List<Pet> getPetListByPName(String pname) {return pDAO.getPetListByPName(pname);}
+	
 	public List<PetType> getPetTypes() {return pDAO.getPetTypes();}
 	
 	//Update 
