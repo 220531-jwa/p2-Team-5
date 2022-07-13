@@ -38,7 +38,7 @@ public class PetServiceTest {
 	@Test
 	public void modifyPetTest() {
 		Pet testPet = new Pet(1, 1, "Test", 0, 0, 0, 0, null);
-		Item doodad = new Item(0,new ItemType(),0,0);
+		Item doodad = new Item(0,new ItemType(0,0,"","",""),0,0);
 		when(mockPetDao.modifyPet(testPet)).thenReturn(testPet);
 		assertEquals(petService.modifyPet(testPet,doodad,""), testPet);
 	}
@@ -46,7 +46,7 @@ public class PetServiceTest {
 	@Test
 	public void modifyPetInvalidTest() {
 		Pet testPet = new Pet(-1, 1, "Test", 0, 0, 0, 0, null);
-		Item doodad = new Item(0,new ItemType(),0,0);
+		Item doodad = new Item(0,new ItemType(0,0,"","",""),0,0);
 		when(mockPetDao.modifyPet(testPet)).thenReturn(testPet);
 		assertEquals(petService.modifyPet(testPet,doodad,""), testPet);
 	}
