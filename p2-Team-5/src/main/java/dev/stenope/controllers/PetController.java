@@ -3,6 +3,8 @@ package dev.stenope.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import dev.stenope.models.Item;
+import dev.stenope.models.ItemType;
 import dev.stenope.models.Pet;
 import dev.stenope.models.PetType;
 import dev.stenope.respositories.PetDAO;
@@ -78,7 +80,8 @@ public class PetController {
 	//Update
 	public static void modifyPet(Context ctx) {
 		Pet stray = ctx.bodyAsClass(Pet.class);
-		Pet adopted = pServ.createPet(stray);
+		Item doodad = new Item(0,new ItemType(0,0,"","",""),0,0);
+		Pet adopted = pServ.modifyPet(stray, doodad, "");
 		if (adopted != null)
 		{
 			ctx.status(200);
@@ -88,6 +91,22 @@ public class PetController {
 		{
 			ctx.status(404);
 			ctx.json("{error:pet_modification}");
+		}
+	}
+	
+	public static void useItemOnPet(Context ctx)
+	{
+		Item input = ctx.bodyAsClass(Item.class);
+		Pet output = pServ.modifyPet(pServ.getPetByID(Integer.parseInt(ctx.pathParam("{id1}"))),input,"itemUse");
+		if (output != null)
+		{
+			ctx.status(200);
+			ctx.json(output);
+		}
+		else 
+		{
+			ctx.status(404);
+			ctx.json("{error:pet_item_use}");
 		}
 	}
 	//Delete
