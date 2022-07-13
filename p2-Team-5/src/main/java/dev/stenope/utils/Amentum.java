@@ -4,6 +4,7 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.get;
 import static io.javalin.apibuilder.ApiBuilder.post;
 import static io.javalin.apibuilder.ApiBuilder.put;
+import static io.javalin.apibuilder.ApiBuilder.patch;
 import static io.javalin.apibuilder.ApiBuilder.delete;
 
 import dev.stenope.controllers.*;
@@ -19,7 +20,7 @@ public class Amentum {
 		app.start(8080);
 		
 		app.routes(() -> {
-			get((ctx) ->ctx.result("HOMEPAGE WIP"));
+			get((ctx) ->ctx.redirect("localhost:8080/homePage.html",301));
 			path("/login", () -> {post(UserController::login);});
 			path("/logout", () -> {post(UserController::logout);});
 			path("/petTypes", () -> {get(PetController::getPetTypes);});
@@ -51,6 +52,11 @@ public class Amentum {
 							path("/give", () -> {
 								path("/{petId}", () -> {
 									put(ItemController::changeItemOwner);
+								});
+							});
+							path("/use", () -> {
+								path("/{petId}", () ->{
+									patch(PetController::useItemOnPet);
 								});
 							});
 						});
