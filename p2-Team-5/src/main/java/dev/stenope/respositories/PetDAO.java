@@ -121,6 +121,7 @@ public class PetDAO {
 	public Pet modifyPet(Pet p) {
 		Pet output = null;
 		String sql = "update pets set uid = ?, sid = ?, pset = ?, pname = ?, fun = ?, food = ?, plevel = ? where id = ?";
+		sql += " returning *;";
 		try (Connection conn = cu.getConnection())
 		{
 			PreparedStatement ps = conn.prepareStatement(sql);
