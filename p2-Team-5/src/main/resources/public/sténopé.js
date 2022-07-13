@@ -51,9 +51,9 @@ async function loginCheck()
     let uName = document.getElementById("uNameBox").value; 
     let pKey = document.getElementById("pKeyBox").value;
 
-    console.log(uname + " " + pkey);
+    console.log(uName + " " + pKey);
 
-    if (uname != "" && pkey != "") {
+    if (uName != "" && pKey != "") {
         let userLogin = {
             uName : uName,
             pKey: pKey
@@ -68,8 +68,8 @@ async function loginCheck()
         let resJson = await res.json()
             .then((resp) => {
                 console.log(resp);
-                sessionStorage.setItem("uID", resp.uId);
-                sessionStorage.setItem("userInView", resp.uName);
+                sessionStorage.setItem("uID", user.id);
+                sessionStorage.setItem("userInView", user.uName);
                 window.location.assign('homePage.html');
             })
             .catch((error) => {
