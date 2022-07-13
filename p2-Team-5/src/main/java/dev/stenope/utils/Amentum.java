@@ -22,12 +22,16 @@ public class Amentum {
 		app.routes(() -> {
 			get((ctx) ->ctx.redirect("localhost:8080/homePage.html",301));
 			path("/login", () -> {post(UserController::login);});
+			path("/logout", () -> {post(UserController::logout);});
 			path("/petTypes", () -> {get(PetController::getPetTypes);});
 			path("/itemTypes", () -> {get(ItemController::getItemTypes);});
 			path("/users", ()  -> {
 				path("/{id0}", () -> {
 					get(UserController::getUserByID);
 					put(UserController::editUser);
+					path("/{idReceive}/comment", () -> {
+						post(UserController::addComment);
+					});
 					path("/pets", () -> {
 						get(PetController::getPetList);
 						post(PetController::createPet);
