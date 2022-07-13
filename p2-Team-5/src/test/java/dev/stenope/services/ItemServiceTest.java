@@ -27,8 +27,8 @@ public class ItemServiceTest {
 	@BeforeAll
 	public static void setUp() {
 		mockItemDao = mock(ItemDAO.class);
-		itemService = new ItemService(mockItemDao, mockPetService);
 		mockPetService = mock(PetService.class);
+		itemService = new ItemService(mockItemDao, mockPetService);
 	}
 	
 	@Test
@@ -65,7 +65,7 @@ public class ItemServiceTest {
 	public void changeItemOwnerInvalidItemTest() {
 		Item testItem = new Item(-1, null, 1, 1);
 		Pet testPet = new Pet(1, 1, "Test", 0, 0, 0, 0, null);
-		when(mockItemDao.modifyItem(testItem)).thenReturn(true);
+		when(mockItemDao.modifyItem(testItem)).thenReturn(false);
 		when(mockPetService.getPetByID(1)).thenReturn(testPet);
 		assertEquals(itemService.changeItemOwner(testItem, 1), false);
 	}
@@ -73,9 +73,9 @@ public class ItemServiceTest {
 	@Test
 	public void changeItemOwnerInvalidRecipientTest() {
 		Item testItem = new Item(1, null, 1, -1);
-		Pet testPet = new Pet(1, 1, "Test", 0, 0, 0, 0, null);
-		when(mockItemDao.modifyItem(testItem)).thenReturn(true);
-		when(mockPetService.getPetByID(1)).thenReturn(testPet);
+		//Pet testPet = new Pet(1, 1, "Test", 0, 0, 0, 0, null);
+		//when(mockItemDao.modifyItem(testItem)).thenReturn(true);
+		when(mockPetService.getPetByID(-1)).thenReturn(null);
 		assertEquals(itemService.changeItemOwner(testItem, -1), false);
 	}
 	
@@ -83,7 +83,7 @@ public class ItemServiceTest {
 	public void changeItemOwnerWrongOwnerTest() {
 		Item testItem = new Item(1, null, 1, 2);
 		Pet testPet = new Pet(2, 2, "Test", 0, 0, 0, 0, null);
-		when(mockItemDao.modifyItem(testItem)).thenReturn(true);
+		//when(mockItemDao.modifyItem(testItem)).thenReturn(true);
 		when(mockPetService.getPetByID(2)).thenReturn(testPet);
 		assertEquals(itemService.changeItemOwner(testItem, 2), false);
 	}
