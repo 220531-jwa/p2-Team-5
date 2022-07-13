@@ -26,10 +26,9 @@
         <div class = "grid-container "id="backpack">
         </div>
         <h4>Pets Inventory</h4>
-        <select id = petDrop name = "petDropdown">
+        <select id = petDrop onchange="loadPetBackpack()" name = "petDropdown">
             <option disabled selected value> -- Select a Pet -- </option>
         </select>
-        <button id="petButton" onclick="loadPetBackpack()">Select Pet</button>
         <div class = "grid-container" id="petBackpack">
         </div>
         <script src="sténopé.js"></script>

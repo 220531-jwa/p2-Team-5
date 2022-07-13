@@ -70,9 +70,10 @@ public class ItemController {
 		int id = Integer.parseInt(ctx.pathParam("id1"));
 		List<Item> items = itemService.getPetItemList(id);
 		if (items == null) {
-			ctx.status(400);
-		} else if (items.isEmpty()) {
 			ctx.status(404);
+		} else if (items.isEmpty()) {
+			ctx.status(204);
+			ctx.json(items);
 		} else {
 			ctx.json(items);
 			ctx.status(200);

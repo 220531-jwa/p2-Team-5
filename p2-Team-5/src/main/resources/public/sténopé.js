@@ -106,7 +106,7 @@ async function populateInventory() {
             for (let i = 0; i < resp.length; i ++) {
 
                 let element  = document.createElement("div");
-                element.id = i;
+                element.id = "item-" + resp[i].id;
                 element.className = "grid-item";
                 element.appendChild(document.createTextNode(titleCase(resp[i].type.tName)));
                 element.appendChild(document.createElement("br"));
@@ -119,16 +119,16 @@ async function populateInventory() {
                 opt.disabled = true;
                 selector.appendChild(opt);
                 opt = document.createElement("option");
-                opt.onclick = "useItem()";
                 opt.innerHTML = "Use";
+                opt.value = "Use";
                 selector.appendChild(opt);
                 opt = document.createElement("option");
-                opt.onclick = "giveToPet()";
                 opt.innerHTML = "Give to Pet";
+                opt.value = "Give";
                 selector.appendChild(opt);
                 opt = document.createElement("option");
-                opt.onclick = "dropItem()";
                 opt.innerHTML = "Drop";
+                opt.value = "Drop";
                 selector.appendChild(opt);
                 element.appendChild(selector);
 
@@ -180,6 +180,9 @@ async function loadPetBackpack() {
     let u = sessionStorage.getItem("uID");
     let select = document.getElementById('petDrop');
     let p = select.options[select.selectedIndex].value;
+
+    let grid = document.getElementById("petBackpack");
+    grid.innerHTML = "";
     
     let res = await fetch(
         `${baseURL}/users/${u}/pets/${p}/items`, {
@@ -190,9 +193,6 @@ async function loadPetBackpack() {
     if (res.status == 200) {
         let resJson = await res.json()
         .then((resp) => {
-
-            let grid = document.getElementById("petBackpack");
-
             for (let i = 0; i < resp.length; i ++) {
 
                 let element  = document.createElement("div");
@@ -209,16 +209,16 @@ async function loadPetBackpack() {
                 opt.disabled = true;
                 selector.appendChild(opt);
                 opt = document.createElement("option");
-                opt.onclick = "useItem()";
                 opt.innerHTML = "Use";
+                opt.value = "Use";
                 selector.appendChild(opt);
                 opt = document.createElement("option");
-                opt.onclick = "giveToPet()";
                 opt.innerHTML = "Give to Pet";
+                opt.value = "Give";
                 selector.appendChild(opt);
                 opt = document.createElement("option");
-                opt.onclick = "dropItem()";
                 opt.innerHTML = "Drop";
+                opt.value = "Drop";
                 selector.appendChild(opt);
                 element.appendChild(selector);
 
@@ -235,6 +235,18 @@ async function loadPetBackpack() {
     } else {
         console.log("Pet Does not exist");
     }
+}
+
+async function useItemSetup(ele) {
+    console.log("Use Item" + ele);
+}
+
+async function giveToPetSetup(ele) {
+    console.log("Give Pet Item" + ele);
+}
+
+async function dropItemSetup(ele) {
+    console.log("Drop Item" + ele);
 }
 
 async function useItemOnPet(Item) //will fail if sessionStorage doesn't hold uID and pID
@@ -413,10 +425,8 @@ async function populatePetPage()
 //Utility
 function titleCase(sentence) {
     let splitStr = sentence.split(" ");
-    console.log(splitStr);
     let str = "";
     for (let x of splitStr) {
-        console.log(x);
         str += x.charAt(0).toUpperCase() + x.slice(1);
     }
     return str;
