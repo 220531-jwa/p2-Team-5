@@ -21,7 +21,7 @@ public class PetDAO {
 		{
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, p.getuID());
-			ps.setInt(2, p.getType().getId());
+			ps.setInt(2, p.getType().getID());
 			ps.setInt(3, p.getpSet());
 			ps.setString(4, p.getpName());
 			ps.setInt(5, p.getFun());
@@ -125,7 +125,7 @@ public class PetDAO {
 		{
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, p.getuID());
-			ps.setInt(2, p.getType().getId());
+			ps.setInt(2, p.getType().getID());
 			ps.setInt(3, p.getpSet());
 			ps.setString(4, p.getpName());
 			ps.setInt(5, p.getFun());
