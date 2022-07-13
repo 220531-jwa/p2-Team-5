@@ -171,6 +171,7 @@ async function populateInventory() {
 
             for (let i = 0; i < resp.length; i ++) {
                 let opt = document.createElement("option");
+                opt.value = resp[i].id;
                 opt.innerHTML = resp[i].pName;
                 petOptions.appendChild(opt);
             }
@@ -183,6 +184,73 @@ async function populateInventory() {
             });
     } else {
         console.log("User Does not exist");
+    }
+}
+
+async function loadPetBackpack() {
+    
+    let u = sessionStorage.getItem("uID");
+    let select = document.getElementById('petDrop');
+    let p = select.options[select.selectedIndex].value;
+    
+    let res = await fetch(
+        `${baseURL}/users/${u}/pets/${p}/items`, {
+            method: 'GET'
+        }
+        
+    );
+    console.log("STATUS: " + res.status);
+    if (res.status == 200) {
+        let resJson = await res.json()
+        // .then will execute if the promise is successfully resolved
+        // .then() takes a function as an argument
+        .then((resp) => {
+
+            console.log(resp); // this is where we will eventually put our DOM manipulation if needed
+
+            let grid = document.getElementById("petBackpack");
+
+            for (let i = 0; i < resp.length; i ++) {
+
+                let element  = document.createElement("div");
+                element.id = i;
+                element.className = "grid-item";
+                element.appendChild(document.createTextNode(titleCase(resp[i].type.tName)));
+                element.appendChild(document.createElement("br"));
+                element.appendChild(document.createTextNode(resp[i].type.tSRC));
+                element.appendChild(document.createElement("br"));
+                let selector = document.createElement("select");
+                let opt = document.createElement("option");
+                opt.innerHTML = "---";
+                opt.selected = true;
+                opt.disabled = true;
+                selector.appendChild(opt);
+                opt = document.createElement("option");
+                opt.onclick = "useItem()";
+                opt.innerHTML = "Use";
+                selector.appendChild(opt);
+                opt = document.createElement("option");
+                opt.onclick = "giveToPet()";
+                opt.innerHTML = "Give to Pet";
+                selector.appendChild(opt);
+                opt = document.createElement("option");
+                opt.onclick = "dropItem()";
+                opt.innerHTML = "Drop";
+                selector.appendChild(opt);
+                element.appendChild(selector);
+
+
+                grid.appendChild(element);
+            }
+
+
+            })
+            // .catch will execute if there's any error
+            .catch((error) => {
+            console.log(error);
+            });
+    } else {
+        console.log("Pet Does not exist");
     }
 }
 
