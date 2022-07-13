@@ -20,9 +20,12 @@ public class Amentum {
 		
 		app.routes(() -> {
 			get((ctx) ->ctx.result("HOMEPAGE WIP"));
+			path("/login", () -> {post(UserController::login);});
 			path("/petTypes", () -> {get(PetController::getPetTypes);});
 			path("/users", ()  -> {
 				path("/{id0}", () -> {
+					get(UserController::getUserByID);
+					put(UserController::editUser);
 					path("/pets", () -> {
 						get(PetController::getPetList);
 						post(PetController::createPet);
