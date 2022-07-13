@@ -115,7 +115,24 @@ async function populateInventory() {
                 element.id = i;
                 element.className = "grid-item";
                 element.appendChild(document.createTextNode(titleCase(resp[i].type.tName)));
+                element.appendChild(document.createElement("br"));
                 element.appendChild(document.createTextNode(resp[i].type.tSRC));
+                element.appendChild(document.createElement("br"));
+                let selector = document.createElement("select");
+                let opt = document.createElement("option");
+                opt.onclick = "useItem()";
+                opt.innerHTML = "Use";
+                selector.appendChild(opt);
+                opt = document.createElement("option");
+                opt.onclick = "giveToPet()";
+                opt.innerHTML = "Give to Pet";
+                selector.appendChild(opt);
+                opt = document.createElement("option");
+                opt.onclick = "dropItem()";
+                opt.innerHTML = "Drop";
+                selector.appendChild(opt);
+                element.appendChild(selector);
+
 
                 grid.appendChild(element);
             }
