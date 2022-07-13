@@ -109,9 +109,13 @@ async function populateInventory() {
                 element.id = "item-" + resp[i].id;
                 element.className = "grid-item";
                 element.appendChild(document.createTextNode(titleCase(resp[i].type.tName)));
+
                 element.appendChild(document.createElement("br"));
+
                 element.appendChild(document.createTextNode(resp[i].type.tSRC));
+
                 element.appendChild(document.createElement("br"));
+
                 let selector = document.createElement("select");
                 let opt = document.createElement("option");
                 opt.innerHTML = "---";
@@ -121,6 +125,7 @@ async function populateInventory() {
                 opt = document.createElement("option");
                 opt.innerHTML = "Use";
                 opt.value = "Use";
+                opt.disabled = true;
                 selector.appendChild(opt);
                 opt = document.createElement("option");
                 opt.innerHTML = "Give to Pet";
@@ -129,6 +134,7 @@ async function populateInventory() {
                 opt = document.createElement("option");
                 opt.innerHTML = "Drop";
                 opt.value = "Drop";
+                opt.disabled = true;
                 selector.appendChild(opt);
                 element.appendChild(selector);
 
@@ -199,9 +205,13 @@ async function loadPetBackpack() {
                 element.id = i;
                 element.className = "grid-item";
                 element.appendChild(document.createTextNode(titleCase(resp[i].type.tName)));
+
                 element.appendChild(document.createElement("br"));
+
                 element.appendChild(document.createTextNode(resp[i].type.tSRC));
+                
                 element.appendChild(document.createElement("br"));
+
                 let selector = document.createElement("select");
                 let opt = document.createElement("option");
                 opt.innerHTML = "---";
@@ -219,6 +229,7 @@ async function loadPetBackpack() {
                 opt = document.createElement("option");
                 opt.innerHTML = "Drop";
                 opt.value = "Drop";
+                opt.disabled = true;
                 selector.appendChild(opt);
                 element.appendChild(selector);
 
