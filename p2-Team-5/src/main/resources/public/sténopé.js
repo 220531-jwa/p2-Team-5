@@ -53,6 +53,10 @@ async function loginCheck()
 
     console.log(uname + " " + pkey);
 
+    sessionStorage.setItem("uID", 1);
+    sessionStorage.setItem("userInView", "BUTT");
+    window.location.assign('homePage.html');
+    /*
     if (uname != "" && pkey != "") {
         let userLogin = {
             username : uname,
@@ -73,15 +77,59 @@ async function loginCheck()
                 window.location.assign('homePage.html');
             })
             .catch((error) => {
-                console.log("Login unsuccessful");
+                console.log(error);
                 alert("Login unsuccessful");
             })
     } 
+    */
 }
 
 //marketplace 
 
 //inventory
+async function populateInventory() {
+    populateTopBar();
+
+    let u = sessionStorage.getItem("uID");
+
+    let res = await fetch(
+        `${baseURL}/users/${u}/items`, {
+            method: 'GET'
+        }
+        
+    );
+    console.log("STATUS: " + res.status);
+    if (res.status == 200) {
+        let resJson = await res.json()
+        // .then will execute if the promise is successfully resolved
+        // .then() takes a function as an argument
+        .then((resp) => {
+
+            console.log(resp); // this is where we will eventually put our DOM manipulation if needed
+
+            let grid = document.getElementById("backpack");
+
+            for (let i = 0; i < resp.length; i ++) {
+
+                let element  = document.createElement("div");
+                element.id = i;
+                element.className = "grid-item";
+                element.appendChild(document.createTextNode(resp[i].type.tName));
+                element.appendChild(document.createTextNode(resp[i].type.tSRC));
+
+                grid.appendChild(element);
+            }
+
+
+            })
+            // .catch will execute if there's any error
+            .catch((error) => {
+            console.log(error);
+            });
+    } else {
+        console.log("User Does not exist");
+    }
+}
 
 async function useItemOnPet(Item) //will fail if sessionStorage doesn't hold uID and pID
 {
@@ -254,11 +302,4 @@ async function populatePetPage()
             })
 
             .catch((error) => {console.log(error)});
-}
-
-//inventoryPage
-async function populateInventory() {
-    populateTopBar();
-
-    
 }
