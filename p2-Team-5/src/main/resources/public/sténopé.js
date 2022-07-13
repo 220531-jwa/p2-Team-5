@@ -98,15 +98,9 @@ async function populateInventory() {
         }
         
     );
-    console.log("STATUS: " + res.status);
     if (res.status == 200) {
         let resJson = await res.json()
-        // .then will execute if the promise is successfully resolved
-        // .then() takes a function as an argument
         .then((resp) => {
-
-            console.log(resp); // this is where we will eventually put our DOM manipulation if needed
-
             let grid = document.getElementById("backpack");
 
             for (let i = 0; i < resp.length; i ++) {
@@ -144,7 +138,6 @@ async function populateInventory() {
 
 
             })
-            // .catch will execute if there's any error
             .catch((error) => {
             console.log(error);
             });
@@ -158,15 +151,10 @@ async function populateInventory() {
         }
         
     );
-    console.log("STATUS: " + res.status);
     if (res.status == 200) {
         let resJson = await res.json()
-        // .then will execute if the promise is successfully resolved
-        // .then() takes a function as an argument
+
         .then((resp) => {
-
-            console.log(resp); // this is where we will eventually put our DOM manipulation if needed
-
             let petOptions = document.getElementById("petDrop");
 
             for (let i = 0; i < resp.length; i ++) {
@@ -199,14 +187,9 @@ async function loadPetBackpack() {
         }
         
     );
-    console.log("STATUS: " + res.status);
     if (res.status == 200) {
         let resJson = await res.json()
-        // .then will execute if the promise is successfully resolved
-        // .then() takes a function as an argument
         .then((resp) => {
-
-            console.log(resp); // this is where we will eventually put our DOM manipulation if needed
 
             let grid = document.getElementById("petBackpack");
 
