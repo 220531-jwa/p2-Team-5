@@ -17,8 +17,8 @@ public class ItemDAO {
 	
 	public Item createItem(Item i) {
 		String sql = "insert into p2t5.items "
-				+ "(id, tid, uid, pid)"
-				+ "(default, ?, ?, ?)" 
+				+ "(id, tid, uid, pid) "
+				+ "(default, ?, ?, ?) " 
 				+ "returning *";
 		try(Connection conn = cu.getConnection()) {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -49,35 +49,32 @@ public class ItemDAO {
 			ps.setInt(2, i.getuID());
 			ps.setInt(3, i.getpID());
 			ps.setInt(4, i.getId());
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-				i = new Item(
-					rs.getInt("id"),
-					new ItemType(rs.getInt("itemtypes.id"), rs.getInt("leftovers"), rs.getString("tname"), rs.getString("tcat"), rs.getString("tsrc")),
-					rs.getInt("uid"),
-					rs.getInt("pid")
-				);
-			} 
+			if (ps.executeUpdate() == 0) {
+				return false;
+			} else {
+				return true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
-		return true;
 	}
 	
 	public Item getItemByID(int id) {
 		Item i = null;
-		String sql = "select items.*, itemtypes.* from p2t5.items items, p2t5.itemtypes itemtypes"
-				+ "where items.tid = itemtypes.id"
-				+ "and items.id = ?";
+		String sql = "select items.id as itemId, tid, uid, pid, itemtypes.id as typeId,"
+				+ " leftovers, tname, tcat, tsrc"
+				+ " from p2t5.items, p2t5.itemtypes"
+				+ " where items.tid = itemtypes.id"
+				+ " and items.id = ?";
 		try(Connection conn = cu.getConnection()) {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				i = new Item(
-					rs.getInt("id"),
-					new ItemType(rs.getInt("itemtypes.id"), rs.getInt("leftovers"), rs.getString("tname"), rs.getString("tcat"), rs.getString("tsrc")),
+					rs.getInt("itemId"),
+					new ItemType(rs.getInt("typeId"), rs.getInt("leftovers"), rs.getString("tname"), rs.getString("tcat"), rs.getString("tsrc")),
 					rs.getInt("uid"),
 					rs.getInt("pid")
 				);
@@ -90,9 +87,11 @@ public class ItemDAO {
 	
 	public List<Item> getItemList(int id) {
 		ArrayList<Item> list = new ArrayList<Item>();
-		String sql = "select items.*, itemtypes.* from p2t5.items items, p2t5.itemtypes itemtypes"
-				+ "where items.tid = itemtypes.id"
-				+ "and items.uid = ?";
+		String sql = "select items.id as itemId, tid, uid, pid, itemtypes.id as typeId,"
+				+ " leftovers, tname, tcat, tsrc"
+				+ " from p2t5.items, p2t5.itemtypes"
+				+ " where items.tid = itemtypes.id"
+				+ " and items.uid = ?";
 		try(Connection conn = cu.getConnection()) {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
@@ -100,8 +99,8 @@ public class ItemDAO {
 			if (rs.next()) {
 				do {
 					list.add( new Item(
-						rs.getInt("id"),
-						new ItemType(rs.getInt("itemtypes.id"), rs.getInt("leftovers"), rs.getString("tname"), rs.getString("tcat"), rs.getString("tsrc")),
+						rs.getInt("itemId"),
+						new ItemType(rs.getInt("typeId"), rs.getInt("leftovers"), rs.getString("tname"), rs.getString("tcat"), rs.getString("tsrc")),
 						rs.getInt("uid"),
 						rs.getInt("pid")
 					));
@@ -117,21 +116,25 @@ public class ItemDAO {
 	
 	public List<Item> getPetItemList(int id) {
 		ArrayList<Item> list = new ArrayList<Item>();
-		String sql = "select items.*, itemtypes.* from p2t5.items items, p2t5.itemtypes itemtypes"
-				+ "where items.tid = itemtypes.id"
-				+ "and items.pid = ?";
+		String sql = "select items.id as itemId, tid, uid, pid, itemtypes.id as typeId,"
+				+ " leftovers, tname, tcat, tsrc"
+				+ " from p2t5.items, p2t5.itemtypes"
+				+ " where items.tid = itemtypes.id"
+				+ " and items.pid = ?";
 		try(Connection conn = cu.getConnection()) {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
-			do {
-				list.add( new Item(
-					rs.getInt("id"),
-					new ItemType(rs.getInt("itemtypes.id"), rs.getInt("leftovers"), rs.getString("tname"), rs.getString("tcat"), rs.getString("tsrc")),
-					rs.getInt("uid"),
-					rs.getInt("pid")
-				));
-			} while (rs.next()); 
+			if (rs.next()) {
+				do {
+					list.add( new Item(
+						rs.getInt("itemId"),
+						new ItemType(rs.getInt("typeId"), rs.getInt("leftovers"), rs.getString("tname"), rs.getString("tcat"), rs.getString("tsrc")),
+						rs.getInt("uid"),
+						rs.getInt("pid")
+					));
+				} while (rs.next()); 
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			list = null;
