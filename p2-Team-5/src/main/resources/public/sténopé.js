@@ -112,6 +112,8 @@ function populateUserPage()
     let dName = ""; 
     let dBlurb = "";
     let pSet = 0;
+    let comments = {};
+    let pets = {};
     document.getElementById("uDataHere").innerHTML = 
         `<label>Username: <input id="username" type="text" value="${uName}" readonly></label><br>
         <label style="display:none">Password: <input id="passkey" type="text" value="${pKey}" readonly></label><br>
@@ -130,7 +132,34 @@ function populateUserPage()
         <label>Description: <textarea id="dBlurb" readonly></label><br>`;
         document.getElementById("userPSet").selectedIndex = pSet;
     document.getElementById("dBlurb").value = dBlurb;
-    document.getElementById("commentsHere").innerHTML = "";
+    document.getElementById("petsList").innerHTML = `<div class="grid-container" id="pListItems"><div class="grid-item"></div></div>`
+    document.getElementById("addComment").innerHTML = `<label>Comment: <textarea id="comment" placeholder="Write your comment here..."></textarea></label><br> 
+    <button id="submitComment" onclick="addComment()">Submit Comment</button>`;
+    document.getElementById("commentsHere") = comments;
+}
+
+function addComment() {
+    let comment = document.getElementById("comment").value;
+    return comment;
+}
+
+async function getPetsList () {
+    let res = await fetch(`pets`, 
+        {
+            method: `GET`,
+            header:{"Content-Type": "application/json"},
+            body: null
+        });
+    let resJson = await res.json()
+        .then((resp) => {
+            for (let i = 0; i < resp.length; i++) {
+                let pets = document.createElement("div");
+                pets.value = resp[i].id;
+                pets.innerText = `${resp[i].pName}, ${resp[i].pSet}`
+                document.getElementById("petsList").appendChild(pets);
+            }
+        })
+        .catch((error) => console.log(error));
 }
 
 //createPet
