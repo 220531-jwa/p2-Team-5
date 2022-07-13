@@ -16,7 +16,7 @@ public class PetDAO {
 	
 	//Create
 	public Pet createPet(Pet p) {
-		String sql = "insert into pets values default,?,?,?,?,?,?,? returning *;";
+		String sql = "insert into pets values (default,?,?,?,?,?,?,?) returning *;";
 		try (Connection conn = cu.getConnection();)
 		{
 			PreparedStatement ps = conn.prepareStatement(sql);

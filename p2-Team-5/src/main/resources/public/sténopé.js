@@ -38,6 +38,12 @@ function populateTopBar()
 }
 
 //homepage
+function showStoredVariables()
+{
+    console.log(sessionStorage.getItem("uID"));
+    console.log(sessionStorage.getItem("uname"));
+    // console.log(sessionStorage.getItem("uID"));
+}
 
 //loginPage
 function hidePass()
@@ -55,8 +61,8 @@ async function loginCheck()
 
     if (uname != "" && pkey != "") {
         let userLogin = {
-            username : uname,
-            passkey: pkey
+            uName : uname,
+            pKey: pkey
         };
 
         let userLoginJson = JSON.stringify(userLogin);
@@ -68,8 +74,8 @@ async function loginCheck()
         let resJson = await res.json()
             .then((resp) => {
                 console.log(resp);
-                sessionStorage.setItem("uID", resp.uId);
-                sessionStorage.setItem("userInView", resp.uname);
+                sessionStorage.setItem("uID", resp.id);
+                sessionStorage.setItem("uname", resp.uName);
                 window.location.assign('homePage.html');
             })
             .catch((error) => {
@@ -149,7 +155,7 @@ async function postNewPet()
 {
     let newPet = new Object;
     newPet.id = 0;
-    newPet.uID = document.getElementById("newPetUID").value;
+    newPet.uID = sessionStorage.getItem("uID");
     newPet.pName = document.getElementById("petName").value;
     newPet.pSet = document.getElementById("petPSet").value;
     newPet.fun = document.getElementById("funBox").value;
@@ -159,8 +165,8 @@ async function postNewPet()
     newPet.type.id = document.getElementById("petSpeciesSelector").value;
     newPet.type.ssrc = "";
     newPet.type.sname = "";
-    let res = await fetch(`users/${newPet,uID}/pets`, {method: "POST", header: {"Content-Type": "application/json", 
-        body:JSON.stringify(newPet)}});
+    let res = await fetch(`users/${newPet.uID}/pets`, {method: "POST", header: {"Content-Type": "application/json"}, 
+        body:JSON.stringify(newPet)});
     let resJSON = res.json()
         .then((resp) => 
         {
@@ -187,9 +193,9 @@ function populateCreatePage()
         </select>
     </label><br>
     <button id="submitNewPet" onclick="postNewPet()">Submit</button>
-    <label>Contentment: <input id="funBox" type="text" value="3" style="visibility:hidden" readonly></label><br>
-    <label>Hunger: <input id="foodBox" type="text" value="3" style="visibility:hidden" readonly></label><br>
-    <label>Level: <input id="levelBox" type="number" value="1" style="visibility:hidden" readonly></label><br>`;  
+    <label style="visibility:hidden">Contentment: <input id="funBox" type="text" value="3" style="visibility:hidden" readonly></label><br>
+    <label style="visibility:hidden">Hunger: <input id="foodBox" type="text" value="3" style="visibility:hidden" readonly></label><br>
+    <label style="visibility:hidden">Level: <input id="levelBox" type="number" value="1" style="visibility:hidden" readonly></label><br>`;  
     getSpeciesList();  
 }
 
