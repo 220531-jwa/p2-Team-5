@@ -58,7 +58,8 @@ public class Amentum {
 		
 		app.exception(Exception.class, (e, ctx) -> {
 		    ctx.status(404);
-		    ctx.result("Generic 404 Message");
+		    //e.printStackTrace();
+		    ctx.result("Exception 404 Message");
 		});
 	}
 }
