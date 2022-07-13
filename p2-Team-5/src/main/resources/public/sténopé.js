@@ -132,7 +132,7 @@ function populateUserPage()
         <label>Description: <textarea id="dBlurb" readonly></label><br>`;
         document.getElementById("userPSet").selectedIndex = pSet;
     document.getElementById("dBlurb").value = dBlurb;
-    document.getElementById("petsList").innerHTML = `<div class="grid-container" id="pListItems"><div class="grid-item"></div></div>`
+    document.getElementById("petsList").innerHTML = `<label>Pets: <div class="grid-container" id="pListItems"></div></label>`
     document.getElementById("addComment").innerHTML = `<label>Comment: <textarea id="comment" placeholder="Write your comment here..."></textarea></label><br> 
     <button id="submitComment" onclick="addComment()">Submit Comment</button>`;
     document.getElementById("commentsHere") = comments;
@@ -144,7 +144,7 @@ function addComment() {
 }
 
 async function getPetsList () {
-    let res = await fetch(`pets`, 
+    let res = await fetch(`users/${sessionStorage.uID}/pets`, 
         {
             method: `GET`,
             header:{"Content-Type": "application/json"},
@@ -154,9 +154,10 @@ async function getPetsList () {
         .then((resp) => {
             for (let i = 0; i < resp.length; i++) {
                 let pets = document.createElement("div");
-                pets.value = resp[i].id;
-                pets.innerText = `${resp[i].pName}, ${resp[i].pSet}`
-                document.getElementById("petsList").appendChild(pets);
+                pets.className = "grid-item";
+                let nameAndSpecies = document.createTextNode(`${resp[i].pName} ${resp[i].pSet}`);
+                pets.appendChild(nameAndSpecies);
+                document.getElementById("pListItems").appendChild(pets);
             }
         })
         .catch((error) => console.log(error));
