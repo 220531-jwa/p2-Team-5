@@ -21,6 +21,12 @@ function logout()
     window.location.assign("loginPage.html");
 }
 
+function viewUser(a)
+{
+    if (a != null) {sessionStorage.setItem("userInView",a);}
+    window.location.assign('userPage.html');
+}
+
 function populateTopBar()
 {
     let uname = "User Page";
@@ -37,7 +43,7 @@ function populateTopBar()
      + `<button id="inventoryLink" onclick="location.href='inventory.html'">🎒 Items</button>`
      + `<button id="loginLink" onclick=${onclick}>🔑 ${keyButton}</button>`
      + `<button id="marketLink" onclick="location.href='marketplace.html'">💹 Market</button>`
-     + `<button id="userLink" onclick="location.href='userPage.html'">🧑 ${uname}</button>`;
+     + `<button id="userLink" onclick="viewUser(${sessionStorage.getItem("uID")})">🧑 ${uname}</button>`;
 }
 
 //homepage
@@ -45,32 +51,32 @@ function showStoredVariables()
 {
     console.log(sessionStorage.getItem("uID"));
     console.log(sessionStorage.getItem("uname"));
-    // console.log(sessionStorage.getItem("uID"));
+    console.log(sessionStorage.getItem("userInView"));
 }
 
-async function viewOtherUserPage() {    //still needs some work
-    document.getElementById("otherUsers").innerHTML = `<label> Select User: <select id="selectUsername"></select></label>`;
-    let res = await fetch(`users/${sessionStorage.uID}/${sessionStorage.otherID}`, 
-        {
-            method: `GET`,
-            header:{"Content-Type": "application/json"},
-            body: null
-        });
-    let resJson = await res.json()
-        .then((resp) => {
-            for (let i = 0; i < resp.length; i++) {
-                let whichUser = document.createElement("option");
-                let getOtherUsername = document.createElement(`<a href="${baseURL}/users/${sessionStorage.uID}/${resp[i].uID}">${resp[i].uName}</a>`);
-                whichUser.appendChild(getOtherUsername);
-                document.getElementById("selectUsername").appendChild(whichUser);
-            }
-        })
-        .catch((error) => 
-        {
-            console.log(error);
-            alert("No such user");
-        });
-}
+// async function viewOtherUserPage() {    //still needs some work
+//     document.getElementById("otherUsers").innerHTML = `<label> Select User: <select id="selectUsername"></select></label>`;
+//     let res = await fetch(`users/${sessionStorage.uID}/${sessionStorage.otherID}`, 
+//         {
+//             method: `GET`,
+//             header:{"Content-Type": "application/json"},
+//             body: null
+//         });
+//     let resJson = await res.json()
+//         .then((resp) => {
+//             for (let i = 0; i < resp.length; i++) {
+//                 let whichUser = document.createElement("option");
+//                 let getOtherUsername = document.createElement(`<a href="${baseURL}/users/${sessionStorage.uID}/${resp[i].uID}">${resp[i].uName}</a>`);
+//                 whichUser.appendChild(getOtherUsername);
+//                 document.getElementById("selectUsername").appendChild(whichUser);
+//             }
+//         })
+//         .catch((error) => 
+//         {
+//             console.log(error);
+//             alert("No such user");
+//         });
+// }
 
 //loginPage
 function hidePass()
@@ -204,38 +210,60 @@ async function useItemOnPet(Item) //will fail if sessionStorage doesn't hold uID
 }
 
 //userPage 
-function populateUserPage()
+async function populateUserPage()
 {
     populateTopBar();
-    let uName = sessionStorage.uname;
-    let pKey = sessionStorage.pkey;
-    let dName = sessionStorage.dname; 
-    let dBlurb = sessionStorage.dblurb;
-    let pSet = sessionStorage.pset;
-    let comments = {};
-    let pets = {};
-    document.getElementById("uDataHere").innerHTML = 
-        `<label>Username: <input id="username" type="text" value="${uName}" readonly></label><br>
-        <label style="display:none">Password: <input id="passkey" type="text" value="${pKey}" readonly></label><br>
-        <label>Pronouns: 
-            <select id="userPSet" disabled>
-                <option value="0">${pronouns[0]}</option>
-                <option value="1">${pronouns[1]}</option>
-                <option value="2">${pronouns[2]}</option>
-                <option value="3">${pronouns[3]}</option>
-                <option value="4">${pronouns[4]}</option>
-                <option value="5">${pronouns[5]}</option>
-                <option value="6">${pronouns[6]}</option>
-            </select>
-        </label><br>
-        <label>Name: <input id="dName" type="text" value="${dName}" readonly></label><br>
-        <label>Description: <textarea id="dBlurb" readonly></label><br>`;
-        document.getElementById("userPSet").selectedIndex = pSet;
-    document.getElementById("dBlurb").value = dBlurb;
-    document.getElementById("petsList").innerHTML = `<label>Pets: <div class="grid-container" id="pListItems"></div></label>`
-    document.getElementById("addComment").innerHTML = `<label>Comment: <textarea id="comment" placeholder="Write your comment here..."></textarea></label><br> 
-    <button id="submitComment" onclick="addComment()">Submit Comment</button>`;
-    document.getElementById("commentsHere") = comments;
+    let res = await fetch(`users/${sessionStorage.userInView}`, {method: `GET`, header:{"Content-Type": "application/json"}, body: null});
+        let resJson = await res.json()
+            .then((resp) => {
+                let uName = resp.uName;
+                let pKey = resp.pKey;
+                let dName = resp.dName; 
+                let dBlurb = resp.dBlurb;
+                let pSet = resp.pSet;
+                let comments = {};
+                let pets = {};
+                document.getElementById("uNameBanner").innerText = `${uName}'s profile page!`;
+                document.getElementById("uDataHere").innerHTML = 
+                    `<label>Username: <input id="username" type="text" value="${uName}" readonly maxlength="50"></label><br>
+                    <label style="display:none" id="psL">Password: 
+                    <input id="passkey" type="text" value="${pKey}" readonly maxlength="50"></label><br>
+                    <label>Pronouns: 
+                        <select id="userPSet" disabled>
+                            <option value="0">${pronouns[0]}</option>
+                            <option value="1">${pronouns[1]}</option>
+                            <option value="2">${pronouns[2]}</option>
+                            <option value="3">${pronouns[3]}</option>
+                            <option value="4">${pronouns[4]}</option>
+                            <option value="5">${pronouns[5]}</option>
+                            <option value="6">${pronouns[6]}</option>
+                        </select>
+                    </label><br>
+                    <label>Name: <input id="dName" type="text" value="${dName}" readonly maxlength="50"></label><br>
+                    <label>Description: <textarea id="dBlurb" readonly maxlength="200"></label><br>`;
+                    document.getElementById("userPSet").selectedIndex = pSet;
+                document.getElementById("dBlurb").value = dBlurb;
+                document.getElementById("petsList").innerHTML = `<label>Pets: <div class="grid-container" id="pListItems"></div></label>`
+                document.getElementById("addComment").innerHTML = 
+                `<label>Comment: <textarea id="comment" placeholder="Write your comment here..." maxlength="200"></textarea></label><br> 
+                <button id="submitComment" onclick="addComment()">Submit Comment</button>`;
+                // document.getElementById("commentsHere") = comments;
+                getPetsList();
+                if (sessionStorage.getItem("userInView")==sessionStorage.getItem("uID"))
+                {
+                    document.getElementById("username").removeAttribute("readonly");
+                    document.getElementById("passkey").removeAttribute("readonly");
+                    document.getElementById("dName").removeAttribute("readonly");
+                    document.getElementById("dBlurb").removeAttribute("readonly");
+                    document.getElementById("psL").setAttribute("style", "display:inline");
+                    document.getElementById("userPSet").removeAttribute("disabled");
+                }
+            })
+            .catch((error) => 
+            {
+                console.log(error);
+                alert("No such user");
+            });
 }
 
 function addComment() {
@@ -243,8 +271,10 @@ function addComment() {
     return comment;
 }
 
+function savepID(a) {sessionStorage.setItem("pID", a); return true;}
+
 async function getPetsList () {
-    let res = await fetch(`users/${sessionStorage.uID}/pets`, 
+    let res = await fetch(`users/${sessionStorage.userInView}/pets`, 
         {
             method: `GET`,
             header:{"Content-Type": "application/json"},
@@ -255,8 +285,8 @@ async function getPetsList () {
             for (let i = 0; i < resp.length; i++) {
                 let pets = document.createElement("div");
                 pets.className = "grid-item";
-                let nameAndSpecies = document.createTextNode(`${resp[i].pName} ${resp[i].pSet}`);
-                pets.appendChild(nameAndSpecies);
+                pets.innerHTML= 
+                    `<h1><a href="petPage.html" onclick="savepID(${resp.pID})">${resp[i].type.ssrc}</a></h1><h6>${resp[i].pName}</h6>`;
                 document.getElementById("pListItems").appendChild(pets);
             }
         })
@@ -310,7 +340,7 @@ function populateCreatePage()
     document.getElementById("creationDiv").innerHTML = 
     `<label>Owner: You! <input id="newPetUID" value="${sessionStorage.getItem("uID")}" style="visibility:hidden" readonly><br>
     <label>Species: <select id="petSpeciesSelector"></select></label><br>
-    <label>Pet Name: <input id="petName" type="text"></label><br>
+    <label>Pet Name: <input id="petName" type="text" maxlength="50"></label><br>
     <label>Pronouns: 
         <select id="petPSet">
             <option value="0">${pronouns[0]}</option>
@@ -346,7 +376,7 @@ async function populatePetPage()
     let sSRC = null;
 
     if (sessionStorage.getItem("pID") != null) {pID = sessionStorage.getItem("pID");}
-    if (sessionStorage.getItem("userInView") != null) {pID = sessionStorage.getItem("userInView");}
+    if (sessionStorage.getItem("userInView") != null) {owner = sessionStorage.getItem("userInView");}
 
     let foundPet;
     let res = await fetch(`/users/${owner}/pets/${pID}`, {method: "GET", header: {"Content-Type": "application/json"}, body: null});
