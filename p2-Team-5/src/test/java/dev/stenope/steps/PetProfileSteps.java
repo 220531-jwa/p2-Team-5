@@ -26,6 +26,7 @@ public class PetProfileSteps {
 
 	@When("browser navigates to petpage")
 	public void browser_navigates_to_petpage() {
+		//S3 link http://p2-t5-stenope-bucket.s3-website-us-west-1.amazonaws.com
 		driver.get("https://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/petPage.html");
 	}
 

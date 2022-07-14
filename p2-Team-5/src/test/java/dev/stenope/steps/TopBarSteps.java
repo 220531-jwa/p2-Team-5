@@ -18,6 +18,12 @@ import io.cucumber.java.en.When;
 
 
 
+
+
+
+//READ THIS
+//S3 link http://p2-t5-stenope-bucket.s3-website-us-west-1.amazonaws.com
+
 public class TopBarSteps {
 	
 	public static WebDriver driver = TopBarRunner.driver;

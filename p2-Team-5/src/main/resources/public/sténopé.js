@@ -1,3 +1,6 @@
+//S3 link to be tested
+// http://p2-t5-stenope-bucket.s3-website-us-west-1.amazonaws.com
+
 let baseURL = "http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080";
 
 let pronouns = 
