@@ -34,6 +34,7 @@ public class InventorySteps {
 
 	@When("the User loads the InventoryPage")
 	public void the_user_loads_the_inventory_page() {
+		//S3 link http://p2-t5-stenope-bucket.s3-website-us-west-1.amazonaws.com
 	    realHumanBeing.get("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/inventory.html");
 	}
 
