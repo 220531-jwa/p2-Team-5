@@ -72,7 +72,7 @@ public class PetServiceTest {
 		testList.add(new Pet(3, 1, "Test3", 0, 0, 0, 0, null));
 		
 		when(mockPetDao.getPetListByUserID(1)).thenReturn(testList);
-		assertEquals(petService.getPetByID(1), testList);
+		assertEquals(petService.getPetListByUserID(1), testList);
 	}
 	
 	@Test
@@ -85,7 +85,7 @@ public class PetServiceTest {
 	public void getPetEmptyListTest() {
 		ArrayList<Pet> testList = new ArrayList<Pet>();
 		when(mockPetDao.getPetListByUserID(1)).thenReturn(testList);
-		assertEquals(petService.getPetByID(1), testList);
+		assertEquals(petService.getPetListByUserID(1), testList);
 	}
 	
 }

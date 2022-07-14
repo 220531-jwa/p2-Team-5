@@ -54,29 +54,26 @@ function showStoredVariables()
     console.log(sessionStorage.getItem("userInView"));
 }
 
-// async function viewOtherUserPage() {    //still needs some work
-//     document.getElementById("otherUsers").innerHTML = `<label> Select User: <select id="selectUsername"></select></label>`;
-//     let res = await fetch(`users/${sessionStorage.uID}/${sessionStorage.otherID}`, 
-//         {
-//             method: `GET`,
-//             header:{"Content-Type": "application/json"},
-//             body: null
-//         });
-//     let resJson = await res.json()
-//         .then((resp) => {
-//             for (let i = 0; i < resp.length; i++) {
-//                 let whichUser = document.createElement("option");
-//                 let getOtherUsername = document.createElement(`<a href="${baseURL}/users/${sessionStorage.uID}/${resp[i].uID}">${resp[i].uName}</a>`);
-//                 whichUser.appendChild(getOtherUsername);
-//                 document.getElementById("selectUsername").appendChild(whichUser);
-//             }
-//         })
-//         .catch((error) => 
-//         {
-//             console.log(error);
-//             alert("No such user");
-//         });
-// }
+async function search()
+{
+    let searchString = document.getElementById("searchBar").value;
+    document.getElementById("searchResult").innerHTML = "";
+
+    let res = await fetch(`/search/${searchString}/pets`, {method: "GET", header: {accept: "application/json", "Content-Type": "text/plain"}, 
+        body: null});
+    let resJSON = res.json()
+        .then((resp) => {
+            for (let i=0;i<resp.length;i++)
+            {
+                let pets = document.createElement("div");
+                pets.className = "grid-item";
+                pets.innerHTML= 
+                    `<h1><a onclick="viewPet(${resp[i].id})">${resp[i].type.ssrc}</a></h1><h4>${resp[i].pName}</h4>`;
+                document.getElementById("searchResult").appendChild(pets);
+            }
+        })
+        .catch((error) => console.log(error));
+}
 
 //loginPage
 function hidePass()
@@ -615,7 +612,11 @@ function addComment() {
     return comment;
 }
 
-function savepID(a) {sessionStorage.setItem("pID", a); return true;}
+function viewPet(a) 
+{
+    sessionStorage.setItem("pID", a); 
+    window.location.assign('petPage.html');
+}
 
 async function getPetsList () {
     let res = await fetch(`users/${sessionStorage.userInView}/pets`, 
@@ -630,7 +631,7 @@ async function getPetsList () {
                 let pets = document.createElement("div");
                 pets.className = "grid-item";
                 pets.innerHTML= 
-                    `<h1><a href="petPage.html" onclick="savepID(${resp.pID})">${resp[i].type.ssrc}</a></h1><h6>${resp[i].pName}</h6>`;
+                    `<h1><a onclick="viewPet(${resp[i].id})">${resp[i].type.ssrc}</a></h1><h4>${resp[i].pName}</h4>`;
                 document.getElementById("pListItems").appendChild(pets);
             }
         })
@@ -727,7 +728,6 @@ async function populatePetPage()
     let resJSON = await res.json()
             .then((resp) => 
             {
-                console.log(resp); 
                 foundPet = resp;
                 pID = foundPet.id;
                 owner = foundPet.uID; 
@@ -738,11 +738,12 @@ async function populatePetPage()
                 level = foundPet.level;
                 sName = foundPet.type.sname;
                 sSRC = foundPet.type.ssrc;
+                sessionStorage.setItem("currentPet",JSON.stringify(foundPet));
 
                 if (pName != null && sName != null) {document.getElementById("pNameBanner").innerText=`${pName} the ${sName}'s page!`;}
 
                 if (pName != null && sName != null) {document.getElementById("pDataHere").innerHTML = `<h1>${sSRC}</h1><br>
-                    <a id="ownerName" href="userPage/${owner}"></a><br>
+                    <a id="ownerName" href="userPage.html" onclick="viewUser(${owner})"></a><br>
                     <label>Pet Name: <input id="petName" type="text" value="${pName}" readonly> the ${sName}</label><br>
                     <label>Pronouns: 
                         <select id="petPSet" disabled>
@@ -759,11 +760,48 @@ async function populatePetPage()
                     <label>Hunger: <input id="foodBox" type="text" value="${hunger[food]}" readonly></label><br>
                     <label>Level: <input id="levelBox" type="number" value="${level}" readonly></label><br>`;}
 
-                document.getElementById("ownerName").innerText = `User_${owner}`; //do something to get the owner's username here 
+                getOwnerUName(owner); 
                 document.getElementById("petPSet").selectedIndex = pSet;
+                if (sessionStorage.getItem("uID")==owner)
+                {
+                    document.getElementById("petName").removeAttribute("readonly");
+                    document.getElementById("petPSet").removeAttribute("disabled");
+                    document.getElementById("pDataHere").innerHTML += `<button onclick="modifyPet()">Submit Changes</button>`;
+                }
             })
 
             .catch((error) => {console.log(error)});
+}
+
+async function getOwnerUName(uID) {    //still needs some work
+    let res = await fetch(`users/${uID}`, 
+        {
+            method: `GET`,
+            header:{"Content-Type": "application/json"},
+            body: null
+        });
+    let resJson = await res.json()
+        .then((resp) => {
+            let temp = resp.uName;
+            document.getElementById("ownerName").innerText = temp;
+        })
+        .catch((error) => 
+        {
+            console.log(error);
+        });
+}
+
+async function modifyPet()
+{
+    let changedPet = JSON.parse(sessionStorage.getItem("currentPet"));
+    changedPet.pName = document.getElementById("petName").value;
+    changedPet.pSet = document.getElementById("petPSet").selectedIndex;
+
+    let res = await fetch(`/users/${changedPet.uID}/pets/${changedPet.id}`, {method: "PUT", header: {"Content-Type": "application/json"}, 
+        body: JSON.stringify(changedPet)});
+    let resJSON = res.json()
+        .then((resp) => {window.location.assign("petPage.html");})
+        .catch((error) => console.log(error));
 }
 
 //Utility
