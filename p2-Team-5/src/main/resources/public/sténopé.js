@@ -45,6 +45,34 @@ function showStoredVariables()
     // console.log(sessionStorage.getItem("uID"));
 }
 
+async function viewOtherUserPage() {    //still needs some work
+    let otherUsername = "";
+    let otherUser = {
+        uname: uName
+    };
+    document.getElementById("otherUsers").innerHTML = `<label> Select User: <select id="selectUsername"></select></label>`;
+    let res = await fetch(`users/${sessionStorage.uID}/${sessionStorage.otherID}`, 
+        {
+            method: `GET`,
+            header:{"Content-Type": "application/json"},
+            body: null
+        });
+    let resJson = await res.json()
+        .then((resp) => {
+            for (let i = 0; i < resp.length; i++) {
+                let whichUser = document.createElement("option");
+                let getOtherUsername = document.createElement(`${resp[i].uName}`);
+                whichUser.appendChild(whichUser.innerHTML = `<a href="${baseURL}/users/${sessionStorage.uID}/${resp[i].uID}">${getOtherUsername}</a>`);
+                document.getElementById("selectUsername").appendChild(whichUser);
+            }
+        })
+        .catch((error) => 
+        {
+            console.log(error);
+            alert("No such user");
+        });
+}
+
 //loginPage
 function hidePass()
 {
