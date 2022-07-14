@@ -65,4 +65,17 @@ public class UserController {
 			ctx.sessionAttribute("Unable to add comment");
 		}
 	}
+	
+	public static void viewOtherUsersPage(Context ctx) {
+		User u = ctx.bodyAsClass(User.class);
+		User otherU = us.viewOtherUsersPage(u.getuName());
+		if (otherU != null) {
+			ctx.status(200);
+			ctx.json(otherU);
+			ctx.sessionAttribute("Other User info: ", otherU);
+		} else {
+			ctx.status(404);
+			ctx.sessionAttribute("User not found");
+		}
+	}
 }
