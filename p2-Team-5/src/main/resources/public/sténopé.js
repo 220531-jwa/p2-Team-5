@@ -139,7 +139,7 @@ async function populateMarketplace() {
                 element.id = "item-" + resp[i].id;
                 element.className = "grid-item";
                 //TODO: TITLECASE
-                element.appendChild(document.createTextNode(/*titleCase*/(resp[i].tName)));
+                element.appendChild(document.createTextNode(titleCase(resp[i].tName)));
 
                 element.appendChild(document.createElement("br"));
 
@@ -170,7 +170,6 @@ async function populateMarketplace() {
 }
 
 async function createItem(id) {
-    console.log("TODO: ADD " + id + "to inventory");
 
     let u = sessionStorage.getItem("uID");
 
@@ -569,7 +568,7 @@ function titleCase(sentence) {
     let splitStr = sentence.split(" ");
     let str = "";
     for (let x of splitStr) {
-        str += x.charAt(0).toUpperCase() + x.slice(1);
+        str += x.charAt(0).toUpperCase() + x.slice(1) +" ";
     }
-    return str;
+    return str.substring(0, str.length - 1);
 }
