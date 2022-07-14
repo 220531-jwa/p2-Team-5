@@ -178,5 +178,40 @@ public class ItemServiceTest {
 		assertEquals(itemService.getPetItemList(1), testList);
 	}
 	
+	@Test
+	public void deleteItemTest() {
+		Item testItem = new Item(1, null, 1, 1);
+		when(mockItemDao.deleteItem(1)).thenReturn(true);
+		when(mockItemDao.getItemByID(1)).thenReturn(testItem);
+		
+		assertEquals(itemService.deleteItem(1, 1), true);
+	}
+	
+	@Test
+	public void deleteItemWrongOwnerTest() {
+		Item testItem = new Item(1, null, 1, 1);
+		when(mockItemDao.deleteItem(1)).thenReturn(true);
+		when(mockItemDao.getItemByID(1)).thenReturn(testItem);
+		
+		assertEquals(itemService.deleteItem(12, 1), false);
+	}
+	
+	@Test
+	public void noSuchOwnerTest() {
+		Item testItem = new Item(1, null, 1, 1);
+		when(mockItemDao.deleteItem(1)).thenReturn(true);
+		when(mockItemDao.getItemByID(1)).thenReturn(testItem);
+		
+		assertEquals(itemService.deleteItem(-1, 1), false);
+	}
+	
+	@Test
+	public void deleteItemNoSuchItemTest() {
+		//Item testItem = new Item(1, null, 1, 1);
+		when(mockItemDao.deleteItem(-1)).thenReturn(false);
+		when(mockItemDao.getItemByID(-1)).thenReturn(null);
+		
+		assertEquals(itemService.deleteItem(1, -1), false);
+	}
 	
 }

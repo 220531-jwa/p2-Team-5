@@ -69,4 +69,9 @@ public class ItemService {
 		return itemDao.getItemTypes();
 	}
 	
+	public boolean deleteItem(int own, int item) {
+		
+		return false;
+	}
+	
 }
