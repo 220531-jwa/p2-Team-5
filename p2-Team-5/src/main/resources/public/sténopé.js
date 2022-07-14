@@ -399,11 +399,12 @@ async function populatePetPage()
                 level = foundPet.level;
                 sName = foundPet.type.sname;
                 sSRC = foundPet.type.ssrc;
+                sessionStorage.setItem("currentPet",JSON.stringify(foundPet));
 
                 if (pName != null && sName != null) {document.getElementById("pNameBanner").innerText=`${pName} the ${sName}'s page!`;}
 
                 if (pName != null && sName != null) {document.getElementById("pDataHere").innerHTML = `<h1>${sSRC}</h1><br>
-                    <a id="ownerName" href="userPage/${owner}"></a><br>
+                    <a id="ownerName" href="userPage.html" onclick="viewUser(${owner})"></a><br>
                     <label>Pet Name: <input id="petName" type="text" value="${pName}" readonly> the ${sName}</label><br>
                     <label>Pronouns: 
                         <select id="petPSet" disabled>
@@ -422,6 +423,12 @@ async function populatePetPage()
 
                 getOwnerUName(owner); 
                 document.getElementById("petPSet").selectedIndex = pSet;
+                if (sessionStorage.getItem("uID")==owner)
+                {
+                    document.getElementById("petName").removeAttribute("readonly");
+                    document.getElementById("petPSet").removeAttribute("disabled");
+                    document.getElementById("pDataHere").innerHTML += `<button onclick="modifyPet()">Submit Changes</button>`;
+                }
             })
 
             .catch((error) => {console.log(error)});
@@ -444,4 +451,17 @@ async function getOwnerUName(uID) {    //still needs some work
         {
             console.log(error);
         });
+}
+
+async function modifyPet()
+{
+    let changedPet = JSON.parse(sessionStorage.getItem("currentPet"));
+    changedPet.pName = document.getElementById("petName").value;
+    changedPet.pSet = document.getElementById("petPSet").selectedIndex;
+
+    let res = await fetch(`/users/${changedPet.uID}/pets/${changedPet.id}`, {method: "PUT", header: {"Content-Type": "application/json"}, 
+        body: JSON.stringify(changedPet)});
+    let resJSON = res.json()
+        .then((resp) => {window.location.assign("petPage.html");})
+        .catch((error) => console.log(error));
 }
