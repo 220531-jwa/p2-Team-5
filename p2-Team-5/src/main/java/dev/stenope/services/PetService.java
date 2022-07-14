@@ -24,6 +24,8 @@ public class PetService {
 	
 	public List<Pet> getPetListByPName(String pname) {return pDAO.getPetListByPName(pname);}
 	
+	public List<Pet> getAllPets() {return pDAO.getAllPets();}
+	
 	public List<PetType> getPetTypes() {return pDAO.getPetTypes();}
 	
 	//Update 
@@ -34,6 +36,10 @@ public class PetService {
 		{
 			if (i.getType().gettCat().equals("food") && output.getFood()<6) {output.setFood(output.getFood()+1);}
 			else if (i.getType().gettCat().equals("toy") && output.getFun()<6) {output.setFun(output.getFun()+1);}
+		}
+		else if (operation.equals("hunger"))
+		{
+			p.setFood(Math.max(p.getFood(), 0));
 		}
 		else {;}
 		return pDAO.modifyPet(output);
