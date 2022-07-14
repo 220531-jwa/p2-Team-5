@@ -28,8 +28,9 @@ public class UserController {
 	}
 	
 	public static void getUserByID(Context ctx) {
-		User u = ctx.bodyAsClass(User.class);
-		User uGetById = us.getUserByID(u.getId());
+		String u = ctx.pathParam("{id0}");
+		int uId = Integer.parseInt(u);
+		User uGetById = us.getUserByID(uId);
 		if (uGetById != null) {
 			ctx.status(200);
 			ctx.json(uGetById);
