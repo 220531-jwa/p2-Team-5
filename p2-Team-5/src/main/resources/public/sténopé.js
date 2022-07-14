@@ -221,7 +221,7 @@ async function populateInventory() {
 
                 let selector = document.createElement("select");
                 selector.id = "userselector"+resp[i].id;
-                selector.setAttribute("onchange", "formatItemAction('"+selector.id+"', '"+division.id+"')");
+                selector.setAttribute("onchange", "formatItemAction('"+selector.id+"', '"+division.id+"', '"+resp[i].id+"')");
                 
                 let opt = document.createElement("option");
                 opt.innerHTML = "---";
@@ -243,17 +243,6 @@ async function populateInventory() {
                 opt.disabled = true;
                 selector.appendChild(opt);
                 element.appendChild(selector);
-
-                element.appendChild(document.createElement("br"));
-
-                let button = document.createElement("button");
-                button.type = 'button';
-                button.innerHTML = "Select Action";
-
-                button.onclick = formatItemAction(selector.value, division);
-                
-
-                element.appendChild(button);
 
                 element.appendChild(document.createElement("br"));
 
@@ -337,7 +326,7 @@ async function loadPetBackpack() {
 
                 let selector = document.createElement("select");
                 selector.id = "petitemselector"+resp[i].id;
-                selector.setAttribute("onchange", "formatItemAction('"+selector.id+"', '"+division.id+"')");
+                selector.setAttribute("onchange", "formatItemAction('"+selector.id+"', '"+division.id+"', '"+resp[i].id+"')");
                 
                 let opt = document.createElement("option");
                 opt.innerHTML = "---";
@@ -354,22 +343,15 @@ async function loadPetBackpack() {
                 opt.value = "Give";
                 selector.appendChild(opt);
                 opt = document.createElement("option");
+                opt.innerHTML = "Return to Owner";
+                opt.value = "Owner";
+                selector.appendChild(opt);
+                opt = document.createElement("option");
                 opt.innerHTML = "Drop";
                 opt.value = "Drop";
                 opt.disabled = true;
                 selector.appendChild(opt);
                 element.appendChild(selector);
-
-                element.appendChild(document.createElement("br"));
-
-                let button = document.createElement("button");
-                button.type = 'button';
-                button.innerHTML = "Select Action";
-
-                button.onclick = formatItemAction(selector.value, division);
-                
-
-                element.appendChild(button);
 
                 element.appendChild(document.createElement("br"));
 
@@ -389,14 +371,14 @@ async function loadPetBackpack() {
     }
 }
 
-async function formatItemAction(valueid, eleid) {
+async function formatItemAction(valueid, eleid, itemid) {
 
     let value = document.getElementById(valueid).value;
     let ele = document.getElementById(eleid);
     ele.innerHTML = "";
-    console.log(ele);
+    //console.log(ele);
     let u = sessionStorage.getItem("uID");
-    console.log(value);
+    //console.log(value);
 
     switch(value) {
         case "Use": 
@@ -410,9 +392,18 @@ async function formatItemAction(valueid, eleid) {
 
             ele.appendChild(useButt);
             break;
-        case "Give": 
+        case "Owner": 
+            let ownButt = document.createElement("button");
+            ownButt.type = 'button';
+            ownButt.innerHTML = "Return to Owner!";
 
-            console.log("GIVE");
+            ownButt.onclick = function() {
+                giveToPet(itemid, 0);
+            }
+
+            ele.appendChild(ownButt);
+            break;
+        case "Give": 
             
             let petOptions = document.createElement("select");    
 
@@ -448,7 +439,7 @@ async function formatItemAction(valueid, eleid) {
             giveButt.innerHTML = "Give To Selected Pet";
 
             giveButt.onclick = function() {
-                giveToPet();
+                giveToPet(itemid, petOptions.value);
             }
 
             ele.appendChild(petOptions);
@@ -462,16 +453,22 @@ async function formatItemAction(valueid, eleid) {
 
 }
 
-async function useItemSetup(ele) {
-    console.log("Use Item" + ele);
-}
+async function giveToPet(itemid, petid) {
+    console.log("GIVE ITEM " + itemid + "to pet " + petid);
 
-async function giveToPetSetup(ele) {
-    console.log("Give Pet Item" + ele);
-}
+    let u = sessionStorage.getItem("uID");
 
-async function dropItemSetup(ele) {
-    console.log("Drop Item" + ele);
+    res = await fetch(
+        `${baseURL}/users/${u}/items/${itemid}/give/${petid}`, {
+            method: 'PUT'
+        }
+        
+    );
+    if (res.status == 200) {
+        console.log("Change Owner Successful");
+    } else {
+        console.log("Fetch unsuccessful");
+    }
 }
 
 async function useItemOnPet(Item) //will fail if sessionStorage doesn't hold uID and pID
