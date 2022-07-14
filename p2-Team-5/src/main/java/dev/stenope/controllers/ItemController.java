@@ -60,6 +60,7 @@ public class ItemController {
 		if (items == null) {
 			ctx.status(400);
 		} else if (items.isEmpty()) {
+			ctx.json(items);
 			ctx.status(404);
 		} else {
 			ctx.json(items);

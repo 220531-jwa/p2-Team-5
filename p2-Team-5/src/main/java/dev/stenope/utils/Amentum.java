@@ -39,12 +39,6 @@ public class Amentum {
 				path("/{id0}", () -> {
 					get(UserController::getUserByID);
 					put(UserController::editUser);
-					path("/{idOther}", () -> {
-						get(UserController::viewOtherUsersPage);
-						path("/comment", () -> {
-							post(UserController::addComment);
-						});
-					});
 					path("/pets", () -> {
 						get(PetController::getPetListByUID);
 						post(PetController::createPet);
@@ -74,13 +68,19 @@ public class Amentum {
 							});
 						});
 					});
+					path("/{idOther}", () -> {
+						get(UserController::viewOtherUsersPage);
+						path("/comment", () ->  {
+							post(UserController::addComment);
+						});
+					});
 				});
 			});
 		});
 		
 		app.exception(Exception.class, (e, ctx) -> {
 		    ctx.status(404);
-		    //e.printStackTrace();
+		    e.printStackTrace();
 		    ctx.result("Exception 404 Message");
 		});
 	}
