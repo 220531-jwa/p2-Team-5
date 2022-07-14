@@ -221,9 +221,7 @@ async function populateInventory() {
 
                 let selector = document.createElement("select");
                 selector.id = "userselector"+resp[i].id;
-                //selector.onchange = "formatItemAction(selector.value, division);";
                 selector.setAttribute("onchange", "formatItemAction('"+selector.id+"', '"+division.id+"')");
-                //selector.addEventListener("change", formatItemAction(selector.value, division));
                 
                 let opt = document.createElement("option");
                 opt.innerHTML = "---";
@@ -238,7 +236,6 @@ async function populateInventory() {
                 opt = document.createElement("option");
                 opt.innerHTML = "Give to Pet";
                 opt.value = "Give";
-                opt.onselect = giveToPetSetup();
                 selector.appendChild(opt);
                 opt = document.createElement("option");
                 opt.innerHTML = "Drop";
@@ -336,30 +333,31 @@ async function loadPetBackpack() {
                 element.appendChild(document.createElement("br"));
 
                 division = document.createElement("div");
+                division.id = "petitemaction"+resp[i].id;
 
                 let selector = document.createElement("select");
-                selector.onchange = function() {
-                    formatItemAction(selector.value, division);
-                }
-                //selector.addEventListener("change", formatItemAction(this.value, division));
+                selector.id = "petitemselector"+resp[i].id;
+                selector.setAttribute("onchange", "formatItemAction('"+selector.id+"', '"+division.id+"')");
+                
                 let opt = document.createElement("option");
                 opt.innerHTML = "---";
                 opt.selected = true;
                 opt.disabled = true;
                 selector.appendChild(opt);
-                let useOpt = document.createElement("option");
-                useOpt.innerHTML = "Use";
-                useOpt.value = "Use";
-                selector.appendChild(useOpt);
-                let giveOpt = document.createElement("option");
-                giveOpt.innerHTML = "Give to Pet";
-                giveOpt.value = "Give";
-                selector.appendChild(giveOpt);
-                let dropOpt = document.createElement("option");
-                dropOpt.innerHTML = "Drop";
-                dropOpt.value = "Drop";
-                dropOpt.disabled = true;
-                selector.appendChild(dropOpt);
+                opt = document.createElement("option");
+                opt.innerHTML = "Use";
+                opt.value = "Use";
+                opt.disabled = false;
+                selector.appendChild(opt);
+                opt = document.createElement("option");
+                opt.innerHTML = "Give to Pet";
+                opt.value = "Give";
+                selector.appendChild(opt);
+                opt = document.createElement("option");
+                opt.innerHTML = "Drop";
+                opt.value = "Drop";
+                opt.disabled = true;
+                selector.appendChild(opt);
                 element.appendChild(selector);
 
                 element.appendChild(document.createElement("br"));
@@ -368,15 +366,14 @@ async function loadPetBackpack() {
                 button.type = 'button';
                 button.innerHTML = "Select Action";
 
-                button.onclick = function() {
-                    console.log("DOES THIS LOG EVEN HAPPEN?????????????");
-                    formatItemAction(selector.options[selector.selectedIndex].value, division);
-                }
+                button.onclick = formatItemAction(selector.value, division);
+                
 
                 element.appendChild(button);
 
-                element.appendChild(division);
+                element.appendChild(document.createElement("br"));
 
+                element.appendChild(division);
 
                 grid.appendChild(element);
             }
