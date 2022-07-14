@@ -125,8 +125,7 @@ async function populateMarketplace() {
                 button.innerHTML = "Add to Inventory";
 
                 button.onclick = function() {
-                    createItem(resp[i].id);
-                    alert("Successfully added to inventory!");
+                    createItem(resp[i].id)
                 }
 
                 element.appendChild(button);
@@ -145,6 +144,20 @@ async function populateMarketplace() {
 
 async function createItem(id) {
     console.log("TODO: ADD " + id + "to inventory");
+
+    let u = sessionStorage.getItem("uID");
+
+    let res = await fetch(
+        `${baseURL}/users/${u}/items?typeId=${id}`, {
+            method: 'POST'
+        }
+        
+    );
+    if (res.status == 200) {
+        alert("Successfully added to inventory!");
+    } else {
+        alert("Something went wrong.");
+    }
 }
 
 //inventory
