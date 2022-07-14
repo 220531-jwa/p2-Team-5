@@ -76,10 +76,14 @@ async function loginCheck()
                 console.log(resp);
                 sessionStorage.setItem("uID", resp.id);
                 sessionStorage.setItem("uname", resp.uName);
+                sessionStorage.setItem("pkey", resp.pKey);
+                sessionStorage.setItem("dname", resp.dName);
+                sessionStorage.setItem("dblurb", resp.dBlurb);
+                sessionStorage.setItem("pset", resp.pSet);
                 window.location.assign('homePage.html');
             })
             .catch((error) => {
-                console.log("Login unsuccessful");
+                console.log(error);
                 alert("Login unsuccessful");
             })
     } 
@@ -107,11 +111,11 @@ async function useItemOnPet(Item) //will fail if sessionStorage doesn't hold uID
 function populateUserPage()
 {
     populateTopBar();
-    let uName = "";
-    let pKey = "";
-    let dName = ""; 
-    let dBlurb = "";
-    let pSet = 0;
+    let uName = sessionStorage.uname;
+    let pKey = sessionStorage.pkey;
+    let dName = sessionStorage.dname; 
+    let dBlurb = sessionStorage.dblurb;
+    let pSet = sessionStorage.pset;
     let comments = {};
     let pets = {};
     document.getElementById("uDataHere").innerHTML = 
