@@ -32,8 +32,8 @@ public class PetService {
 		Pet output = p;
 		if (operation.equals("itemUse")) 
 		{
-			if (i.getType().gettCat().equals("food")) {output.setFood(output.getFood()+1);}
-			else if (i.getType().gettCat().equals("toy")) {output.setFun(output.getFun()+1);}
+			if (i.getType().gettCat().equals("food") && output.getFood()<6) {output.setFood(output.getFood()+1);}
+			else if (i.getType().gettCat().equals("toy") && output.getFun()<6) {output.setFun(output.getFun()+1);}
 		}
 		else {;}
 		return pDAO.modifyPet(output);

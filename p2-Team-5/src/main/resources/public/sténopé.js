@@ -746,14 +746,14 @@ async function populatePetPage()
                     <a id="ownerName" href="userPage.html" onclick="viewUser(${owner})"></a><br>
                     <label>Pet Name: <input id="petName" type="text" value="${pName}" readonly> the ${sName}</label><br>
                     <label>Pronouns: 
-                        <select id="petPSet" disabled>
-                            <option value="0">${pronouns[0]}</option>
-                            <option value="1">${pronouns[1]}</option>
-                            <option value="2">${pronouns[2]}</option>
-                            <option value="3">${pronouns[3]}</option>
-                            <option value="4">${pronouns[4]}</option>
-                            <option value="5">${pronouns[5]}</option>
-                            <option value="6">${pronouns[6]}</option>
+                        <select id="petPSet">
+                            <option id="ps0" value="0">${pronouns[0]}</option>
+                            <option id="ps1" value="1">${pronouns[1]}</option>
+                            <option id="ps2" value="2">${pronouns[2]}</option>
+                            <option id="ps3" value="3">${pronouns[3]}</option>
+                            <option id="ps4" value="4">${pronouns[4]}</option>
+                            <option id="ps5" value="5">${pronouns[5]}</option>
+                            <option id="ps6" value="6">${pronouns[6]}</option>
                         </select>
                     </label><br>
                     <label>Contentment: <input id="funBox" type="text" value="${contentment[fun]}" readonly></label><br>
@@ -761,13 +761,16 @@ async function populatePetPage()
                     <label>Level: <input id="levelBox" type="number" value="${level}" readonly></label><br>`;}
 
                 getOwnerUName(owner); 
+                console.log(pSet);
+                console.log(foundPet);
                 document.getElementById("petPSet").selectedIndex = pSet;
+                document.getElementById(`ps${pSet}`).setAttribute("selected", "selected");
                 if (sessionStorage.getItem("uID")==owner)
                 {
                     document.getElementById("petName").removeAttribute("readonly");
-                    document.getElementById("petPSet").removeAttribute("disabled");
                     document.getElementById("pDataHere").innerHTML += `<button onclick="modifyPet()">Submit Changes</button>`;
                 }
+                else {document.getElementById("petPSet").setAttribute("disabled", true);}
             })
 
             .catch((error) => {console.log(error)});
