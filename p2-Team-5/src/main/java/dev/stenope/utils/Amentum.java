@@ -16,7 +16,9 @@ import io.javalin.http.staticfiles.Location;
 public class Amentum {
 	public void serverRequestHandler() 
 	{
-		Javalin app = Javalin.create(config -> config.addStaticFiles("/public", Location.CLASSPATH));
+		Javalin app = Javalin.create(config -> {
+			config.enableCorsForAllOrigins(); //temporary)
+			config.addStaticFiles("/public", Location.CLASSPATH);});
 		app.start(8080);
 		
 		app.routes(() -> {
