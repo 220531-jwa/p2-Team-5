@@ -24,7 +24,7 @@ public class LoginSteps {
 	
 	@Given("the User is on the LoginPage")
 	public void the_user_is_on_the_login_page() {
-	    realHumanBeing.get("http://localhost:8080/loginPage.html");
+	    realHumanBeing.get("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/loginPage.html");
 	}
 
 	/*
@@ -42,7 +42,7 @@ public class LoginSteps {
 		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10))
 		.until(ExpectedConditions.urlContains("homePage"));
 		
-		assertEquals("http://localhost:8080/homePage.html", realHumanBeing.getCurrentUrl());
+		assertEquals("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/homePage.html", realHumanBeing.getCurrentUrl());
 	}
 
 	/*

@@ -26,7 +26,7 @@ public class PetProfileSteps {
 
 	@When("browser navigates to petpage")
 	public void browser_navigates_to_petpage() {
-		driver.get("https://localhost:8080/petPage.html");
+		driver.get("https://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/petPage.html");
 	}
 
 	@Then("pet data is displayed")

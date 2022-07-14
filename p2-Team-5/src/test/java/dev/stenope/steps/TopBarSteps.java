@@ -31,7 +31,7 @@ public class TopBarSteps {
 
 	@Given("The User is on the Home Page")
 	public void the_user_is_on_the_home_page() {
-		driver.get("http://localhost:8080/homePage.html");
+		driver.get("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/homePage.html");
 	    //throw new io.cucumber.java.PendingException();
 	}
 
@@ -86,19 +86,19 @@ public class TopBarSteps {
 
 	@Given("The User is on the User Profile")
 	public void the_user_is_on_the_user_profile() {
-		driver.get("http://localhost:8080/userPage.html");
+		driver.get("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/userPage.html");
 	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Given("The User is on the Pet Profile")
 	public void the_user_is_on_the_pet_profile() {
-		driver.get("http://localhost:8080/petPage.html");
+		driver.get("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/petPage.html");
 	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Given("The User is on the Inventory")
 	public void the_user_is_on_the_inventory() {
-		driver.get("http://localhost:8080/inventory.html");
+		driver.get("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/inventory.html");
 	    //throw new io.cucumber.java.PendingException();
 	}
 	
@@ -126,7 +126,7 @@ public class TopBarSteps {
 
 	@Given("The User is on the log in page")
 	public void the_user_is_on_the_log_in_page() {
-		driver.get("http://localhost:8080/loginPage.html");
+		driver.get("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/loginPage.html");
 	    //throw new io.cucumber.java.PendingException();
 	}
 
