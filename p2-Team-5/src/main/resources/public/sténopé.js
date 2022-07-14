@@ -420,6 +420,7 @@ async function formatItemAction(valueid, eleid, itemid) {
             useButt.onclick = function() {
                 savepID(item.pid);
                 useItemOnPet(item);
+                window.location.assign("inventory.html");
             }
 
             ele.appendChild(useButt);
@@ -431,6 +432,7 @@ async function formatItemAction(valueid, eleid, itemid) {
 
             ownButt.onclick = function() {
                 giveToPet(itemid, 0);
+                window.location.assign("inventory.html");
             }
 
             ele.appendChild(ownButt);
@@ -472,6 +474,7 @@ async function formatItemAction(valueid, eleid, itemid) {
 
             giveButt.onclick = function() {
                 giveToPet(itemid, petOptions.value);
+                window.location.assign("inventory.html");
             }
 
             ele.appendChild(petOptions);
