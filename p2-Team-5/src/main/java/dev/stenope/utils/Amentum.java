@@ -39,12 +39,12 @@ public class Amentum {
 				path("/{id0}", () -> {
 					get(UserController::getUserByID);
 					put(UserController::editUser);
-					path("/{idOther}", () -> {
-						get(UserController::viewOtherUsersPage);
-						path("/comment", () -> {
-							post(UserController::addComment);
-						});
-					});
+//					path("/{idOther}", () -> {
+//						get(UserController::viewOtherUsersPage);
+//						path("/comment", () -> {
+//							post(UserController::addComment);
+//						});
+//					});
 					path("/pets", () -> {
 						get(PetController::getPetListByUID);
 						post(PetController::createPet);
