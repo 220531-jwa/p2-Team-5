@@ -39,7 +39,7 @@ public class PetService {
 		}
 		else if (operation.equals("hunger"))
 		{
-			p.setFood(Math.max(p.getFood(), 0));
+			p.setFood(Math.max(p.getFood()-1, 0));
 		}
 		else {;}
 		return pDAO.modifyPet(output);

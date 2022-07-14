@@ -589,7 +589,7 @@ async function populateUserPage()
                 `<label>Comment: <textarea id="comment" placeholder="Write your comment here..." maxlength="200"></textarea></label><br> 
                 <button id="submitComment" onclick="addComment()">Submit Comment</button>`;
                 // document.getElementById("commentsHere") = comments;
-                getPetsList();
+                getPetsList("pListItems");
                 if (sessionStorage.getItem("userInView")==sessionStorage.getItem("uID"))
                 {
                     document.getElementById("username").removeAttribute("readonly");
@@ -618,7 +618,7 @@ function viewPet(a)
     window.location.assign('petPage.html');
 }
 
-async function getPetsList () {
+async function getPetsList (targetDiv) {
     let res = await fetch(`users/${sessionStorage.userInView}/pets`, 
         {
             method: `GET`,
@@ -632,7 +632,7 @@ async function getPetsList () {
                 pets.className = "grid-item";
                 pets.innerHTML= 
                     `<h1><a onclick="viewPet(${resp[i].id})">${resp[i].type.ssrc}</a></h1><h4>${resp[i].pName}</h4>`;
-                document.getElementById("pListItems").appendChild(pets);
+                document.getElementById(targetDiv).appendChild(pets);
             }
         })
         .catch((error) => console.log(error));
@@ -702,6 +702,8 @@ function populateCreatePage()
     <label style="visibility:hidden">Hunger: <input id="foodBox" type="text" value="3" style="visibility:hidden" readonly></label><br>
     <label style="visibility:hidden">Level: <input id="levelBox" type="number" value="1" style="visibility:hidden" readonly></label><br>`;  
     getSpeciesList();  
+    sessionStorage.setItem("userInView",0);
+    getPetsList("poundDiv");
 }
 
 //petPage
@@ -760,17 +762,18 @@ async function populatePetPage()
                     <label>Hunger: <input id="foodBox" type="text" value="${hunger[food]}" readonly></label><br>
                     <label>Level: <input id="levelBox" type="number" value="${level}" readonly></label><br>`;}
 
-                getOwnerUName(owner); 
-                console.log(pSet);
-                console.log(foundPet);
+                if (owner > 0) {getOwnerUName(owner);}
+                else document.getElementById("ownerName").innerText = "Pound";
                 document.getElementById("petPSet").selectedIndex = pSet;
                 document.getElementById(`ps${pSet}`).setAttribute("selected", "selected");
                 if (sessionStorage.getItem("uID")==owner)
                 {
                     document.getElementById("petName").removeAttribute("readonly");
                     document.getElementById("pDataHere").innerHTML += `<button onclick="modifyPet()">Submit Changes</button>`;
+                    document.getElementById("pDataHere").innerHTML += `<button onclick="petToPound()">Send To Pound</button>`;
                 }
                 else {document.getElementById("petPSet").setAttribute("disabled", true);}
+                if (owner==0) {document.getElementById("pDataHere").innerHTML += `<button onclick="petFromPound()">Adopt from Pound</button>`;}
             })
 
             .catch((error) => {console.log(error)});
@@ -806,6 +809,36 @@ async function modifyPet()
         .then((resp) => {window.location.assign("petPage.html");})
         .catch((error) => console.log(error));
 }
+
+async function petFromPound()
+{
+    let changedPet = JSON.parse(sessionStorage.getItem("currentPet"));
+    if (sessionStorage.getItem("uID") == null || sessionStorage.getItem("uID")<1) {alert("Bad user ID--try logging in");}
+    else 
+    {
+        changedPet.uID = sessionStorage.getItem("uID");
+        let res = await fetch(`/users/0/pets/${changedPet.id}`, {method: "PUT", header: {"Content-Type": "application/json"}, 
+            body: JSON.stringify(changedPet)});
+        let resJSON = res.json()
+            .then((resp) => {window.location.assign("petPage.html");})
+            .catch((error) => console.log(error));
+    }
+}
+
+async function petToPound()
+{
+    let changedPet = JSON.parse(sessionStorage.getItem("currentPet"));
+    let oldOwner = changedPet.uID;
+    changedPet.uID = 0;
+    {
+        let res = await fetch(`/users/${oldOwner}/pets/${changedPet.id}`, {method: "PUT", header: {"Content-Type": "application/json"}, 
+            body: JSON.stringify(changedPet)});
+        let resJSON = res.json()
+            .then((resp) => {window.location.assign("petPage.html");})
+            .catch((error) => console.log(error));
+    }
+}
+
 
 //Utility
 function titleCase(sentence) {
