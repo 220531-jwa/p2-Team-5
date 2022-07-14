@@ -5,11 +5,27 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Marketplace</title>
+        <style>
+            .grid-container {
+              display: grid;
+              grid-template-columns: auto auto auto;
+              padding: 10px;
+            }
+            .grid-item {
+              border: 1px solid rgba(0, 0, 0, 0.8);
+              padding: 20px;
+              font-size: 30px;
+              text-align: center;
+            }
+            </style>
     </head>
 
-    <body onload="populateTopBar()">
+    <body onload="populateMarketplace()">
         <div id="topBarInsert"></div>
-        <h4>Marketplace WIP!</h4>
+        <h4>Marketplace</h4>
+        <div class = "grid-container "id="market">
+            
+        </div>
 
         <script src="sténopé.js"></script>
     </body>

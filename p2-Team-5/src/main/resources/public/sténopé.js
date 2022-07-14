@@ -90,6 +90,62 @@ async function loginCheck()
 }
 
 //marketplace 
+async function populateMarketplace() {
+    populateTopBar();
+
+    let u = sessionStorage.getItem("uID");
+
+    let res = await fetch(
+        `${baseURL}/itemTypes`, {
+            method: 'GET'
+        }
+        
+    );
+    if (res.status == 200) {
+        let resJson = await res.json()
+        .then((resp) => {
+            let grid = document.getElementById("market");
+
+            for (let i = 0; i < resp.length; i ++) {
+
+                let element  = document.createElement("div");
+                element.id = "item-" + resp[i].id;
+                element.className = "grid-item";
+                //TODO: TITLECASE
+                element.appendChild(document.createTextNode(/*titleCase*/(resp[i].tName)));
+
+                element.appendChild(document.createElement("br"));
+
+                element.appendChild(document.createTextNode(resp[i].tSRC));
+
+                element.appendChild(document.createElement("br"));
+
+                let button = document.createElement("button");
+                button.type = 'button';
+                button.innerHTML = "Add to Inventory";
+
+                button.onclick = function() {
+                    createItem(resp[i].id);
+                    alert("Successfully added to inventory!");
+                }
+
+                element.appendChild(button);
+
+
+                grid.appendChild(element);
+            }
+            })
+            .catch((error) => {
+            console.log(error);
+            });
+    } else {
+        console.log("ERROR");
+    }
+}
+
+async function createItem(id) {
+    console.log("TODO: ADD " + id + "to inventory");
+}
 
 //inventory
 
