@@ -35,4 +35,9 @@ public class UserService {
 		UserComment comment = userDao.addComment(wId, hId, body);
 		return comment;
 	}
+	
+	public User viewOtherUsersPage(String uName) {
+		User otherUser = userDao.getUserByUserName(uName);
+		return otherUser;
+	}
 }

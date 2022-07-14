@@ -34,7 +34,8 @@ public class InventorySteps {
 
 	@When("the User loads the InventoryPage")
 	public void the_user_loads_the_inventory_page() {
-	    realHumanBeing.get("http://localhost:8080/inventory.html");
+		//S3 link http://p2-t5-stenope-bucket.s3-website-us-west-1.amazonaws.com
+	    realHumanBeing.get("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/inventory.html");
 	}
 
 	@Then("the subheadings dividing the inventory should appear")
@@ -48,7 +49,7 @@ public class InventorySteps {
 	 */
 	@Given("the User is on the InventoryPage")
 	public void the_user_is_on_the_inventory_page() {
-		realHumanBeing.get("http://localhost:8080/inventory.html");
+		realHumanBeing.get("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/inventory.html");
 	}
 
 	@When("the User clicks on and Item")

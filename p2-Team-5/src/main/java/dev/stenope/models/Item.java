@@ -59,6 +59,11 @@ public class Item {
 	public void setpID(int pID) {
 		this.pID = pID;
 	}
+
+	@Override
+	public String toString() {
+		return "Item [id=" + id + ", type=" + type + ", uID=" + uID + ", pID=" + pID + "]";
+	}
 	
 	
 	

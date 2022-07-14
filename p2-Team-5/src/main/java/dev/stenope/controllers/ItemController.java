@@ -12,8 +12,9 @@ public class ItemController {
 	private static ItemService itemService = new ItemService();
 	
 	public static void createItem(Context ctx) {
-		Item item = ctx.bodyAsClass(Item.class);
-		Item rItem = itemService.createItem(item);
+		int tID = Integer.parseInt(ctx.queryParam("typeId"));
+		int userId = Integer.parseInt(ctx.pathParam("id0"));
+		Item rItem = itemService.createItem(tID, userId);
 		if (rItem != null) {
 			ctx.json(rItem);
 			ctx.status(200);

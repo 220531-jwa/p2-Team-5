@@ -16,6 +16,10 @@ public class ItemType {
 		this.tSRC = tSRC;
 	}
 	
+	public ItemType() {
+		super();
+	}
+	
 	public int getId() {
 		return id;
 	}

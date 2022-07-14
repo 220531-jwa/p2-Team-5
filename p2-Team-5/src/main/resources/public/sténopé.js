@@ -1,4 +1,7 @@
-let baseURL = "http://localhost:8080";
+//S3 link to be tested
+// http://p2-t5-stenope-bucket.s3-website-us-west-1.amazonaws.com
+
+let baseURL = "http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080";
 
 let pronouns = 
 [	//subject / object / adj. possessive / obj. possesive / reflexive
@@ -38,6 +41,36 @@ function populateTopBar()
 }
 
 //homepage
+function showStoredVariables()
+{
+    console.log(sessionStorage.getItem("uID"));
+    console.log(sessionStorage.getItem("uname"));
+    // console.log(sessionStorage.getItem("uID"));
+}
+
+async function viewOtherUserPage() {    //still needs some work
+    document.getElementById("otherUsers").innerHTML = `<label> Select User: <select id="selectUsername"></select></label>`;
+    let res = await fetch(`users/${sessionStorage.uID}/${sessionStorage.otherID}`, 
+        {
+            method: `GET`,
+            header:{"Content-Type": "application/json"},
+            body: null
+        });
+    let resJson = await res.json()
+        .then((resp) => {
+            for (let i = 0; i < resp.length; i++) {
+                let whichUser = document.createElement("option");
+                let getOtherUsername = document.createElement(`<a href="${baseURL}/users/${sessionStorage.uID}/${resp[i].uID}">${resp[i].uName}</a>`);
+                whichUser.appendChild(getOtherUsername);
+                document.getElementById("selectUsername").appendChild(whichUser);
+            }
+        })
+        .catch((error) => 
+        {
+            console.log(error);
+            alert("No such user");
+        });
+}
 
 //loginPage
 function hidePass()
@@ -59,8 +92,8 @@ async function loginCheck()
     /*
     if (uname != "" && pkey != "") {
         let userLogin = {
-            username : uname,
-            passkey: pkey
+            uName : uname,
+            pKey: pkey
         };
 
         let userLoginJson = JSON.stringify(userLogin);
@@ -72,8 +105,12 @@ async function loginCheck()
         let resJson = await res.json()
             .then((resp) => {
                 console.log(resp);
-                sessionStorage.setItem("uID", resp.uId);
-                sessionStorage.setItem("userInView", resp.uname);
+                sessionStorage.setItem("uID", resp.id);
+                sessionStorage.setItem("uname", resp.uName);
+                sessionStorage.setItem("pkey", resp.pKey);
+                sessionStorage.setItem("dname", resp.dName);
+                sessionStorage.setItem("dblurb", resp.dBlurb);
+                sessionStorage.setItem("pset", resp.pSet);
                 window.location.assign('homePage.html');
             })
             .catch((error) => {
@@ -85,6 +122,75 @@ async function loginCheck()
 }
 
 //marketplace 
+async function populateMarketplace() {
+    populateTopBar();
+
+    let u = sessionStorage.getItem("uID");
+
+    let res = await fetch(
+        `${baseURL}/itemTypes`, {
+            method: 'GET'
+        }
+        
+    );
+    if (res.status == 200) {
+        let resJson = await res.json()
+        .then((resp) => {
+            let grid = document.getElementById("market");
+
+            for (let i = 0; i < resp.length; i ++) {
+
+                let element  = document.createElement("div");
+                element.id = "item-" + resp[i].id;
+                element.className = "grid-item";
+                //TODO: TITLECASE
+                element.appendChild(document.createTextNode(/*titleCase*/(resp[i].tName)));
+
+                element.appendChild(document.createElement("br"));
+
+                element.appendChild(document.createTextNode(resp[i].tSRC));
+
+                element.appendChild(document.createElement("br"));
+
+                let button = document.createElement("button");
+                button.type = 'button';
+                button.innerHTML = "Add to Inventory";
+
+                button.onclick = function() {
+                    createItem(resp[i].id)
+                }
+
+                element.appendChild(button);
+
+
+                grid.appendChild(element);
+            }
+            })
+            .catch((error) => {
+            console.log(error);
+            });
+    } else {
+        console.log("ERROR");
+    }
+}
+
+async function createItem(id) {
+    console.log("TODO: ADD " + id + "to inventory");
+
+    let u = sessionStorage.getItem("uID");
+
+    let res = await fetch(
+        `${baseURL}/users/${u}/items?typeId=${id}`, {
+            method: 'POST'
+        }
+        
+    );
+    if (res.status == 200) {
+        alert("Successfully added to inventory!");
+    } else {
+        alert("Something went wrong.");
+    }
+}
 
 //inventory
 async function populateInventory() {
@@ -278,11 +384,13 @@ async function useItemOnPet(Item) //will fail if sessionStorage doesn't hold uID
 function populateUserPage()
 {
     populateTopBar();
-    let uName = "";
-    let pKey = "";
-    let dName = ""; 
-    let dBlurb = "";
-    let pSet = 0;
+    let uName = sessionStorage.uname;
+    let pKey = sessionStorage.pkey;
+    let dName = sessionStorage.dname; 
+    let dBlurb = sessionStorage.dblurb;
+    let pSet = sessionStorage.pset;
+    let comments = {};
+    let pets = {};
     document.getElementById("uDataHere").innerHTML = 
         `<label>Username: <input id="username" type="text" value="${uName}" readonly></label><br>
         <label style="display:none">Password: <input id="passkey" type="text" value="${pKey}" readonly></label><br>
@@ -301,7 +409,35 @@ function populateUserPage()
         <label>Description: <textarea id="dBlurb" readonly></label><br>`;
         document.getElementById("userPSet").selectedIndex = pSet;
     document.getElementById("dBlurb").value = dBlurb;
-    document.getElementById("commentsHere").innerHTML = "";
+    document.getElementById("petsList").innerHTML = `<label>Pets: <div class="grid-container" id="pListItems"></div></label>`
+    document.getElementById("addComment").innerHTML = `<label>Comment: <textarea id="comment" placeholder="Write your comment here..."></textarea></label><br> 
+    <button id="submitComment" onclick="addComment()">Submit Comment</button>`;
+    document.getElementById("commentsHere") = comments;
+}
+
+function addComment() {
+    let comment = document.getElementById("comment").value;
+    return comment;
+}
+
+async function getPetsList () {
+    let res = await fetch(`users/${sessionStorage.uID}/pets`, 
+        {
+            method: `GET`,
+            header:{"Content-Type": "application/json"},
+            body: null
+        });
+    let resJson = await res.json()
+        .then((resp) => {
+            for (let i = 0; i < resp.length; i++) {
+                let pets = document.createElement("div");
+                pets.className = "grid-item";
+                let nameAndSpecies = document.createTextNode(`${resp[i].pName} ${resp[i].pSet}`);
+                pets.appendChild(nameAndSpecies);
+                document.getElementById("pListItems").appendChild(pets);
+            }
+        })
+        .catch((error) => console.log(error));
 }
 
 //createPet
@@ -326,7 +462,7 @@ async function postNewPet()
 {
     let newPet = new Object;
     newPet.id = 0;
-    newPet.uID = document.getElementById("newPetUID").value;
+    newPet.uID = sessionStorage.getItem("uID");
     newPet.pName = document.getElementById("petName").value;
     newPet.pSet = document.getElementById("petPSet").value;
     newPet.fun = document.getElementById("funBox").value;
@@ -336,8 +472,8 @@ async function postNewPet()
     newPet.type.id = document.getElementById("petSpeciesSelector").value;
     newPet.type.ssrc = "";
     newPet.type.sname = "";
-    let res = await fetch(`users/${newPet,uID}/pets`, {method: "POST", header: {"Content-Type": "application/json", 
-        body:JSON.stringify(newPet)}});
+    let res = await fetch(`users/${newPet.uID}/pets`, {method: "POST", header: {"Content-Type": "application/json"}, 
+        body:JSON.stringify(newPet)});
     let resJSON = res.json()
         .then((resp) => 
         {
@@ -364,9 +500,9 @@ function populateCreatePage()
         </select>
     </label><br>
     <button id="submitNewPet" onclick="postNewPet()">Submit</button>
-    <label>Contentment: <input id="funBox" type="text" value="3" style="visibility:hidden" readonly></label><br>
-    <label>Hunger: <input id="foodBox" type="text" value="3" style="visibility:hidden" readonly></label><br>
-    <label>Level: <input id="levelBox" type="number" value="1" style="visibility:hidden" readonly></label><br>`;  
+    <label style="visibility:hidden">Contentment: <input id="funBox" type="text" value="3" style="visibility:hidden" readonly></label><br>
+    <label style="visibility:hidden">Hunger: <input id="foodBox" type="text" value="3" style="visibility:hidden" readonly></label><br>
+    <label style="visibility:hidden">Level: <input id="levelBox" type="number" value="1" style="visibility:hidden" readonly></label><br>`;  
     getSpeciesList();  
 }
 

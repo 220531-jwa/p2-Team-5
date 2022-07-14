@@ -16,24 +16,37 @@ import io.javalin.http.staticfiles.Location;
 public class Amentum {
 	public void serverRequestHandler() 
 	{
-		Javalin app = Javalin.create(config -> config.addStaticFiles("/public", Location.CLASSPATH));
+		Javalin app = Javalin.create(config -> {
+			config.enableCorsForAllOrigins(); //temporary)
+			config.addStaticFiles("/public", Location.CLASSPATH);});
 		app.start(8080);
 		
 		app.routes(() -> {
-			get((ctx) ->ctx.redirect("localhost:8080/homePage.html",301));
+			//S3 link http://p2-t5-stenope-bucket.s3-website-us-west-1.amazonaws.com
+			get((ctx) ->ctx.redirect("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/homePage.html",301));
 			path("/login", () -> {post(UserController::login);});
 			path("/logout", () -> {post(UserController::logout);});
 			path("/petTypes", () -> {get(PetController::getPetTypes);});
 			path("/itemTypes", () -> {get(ItemController::getItemTypes);});
+			path("/search", () -> {
+				path("/{name}", () -> {
+					path("/pets", () -> {
+						get(PetController::getPetListByPName);
+					});
+				});
+			});
 			path("/users", ()  -> {
 				path("/{id0}", () -> {
 					get(UserController::getUserByID);
 					put(UserController::editUser);
-					path("/{idReceive}/comment", () -> {
-						post(UserController::addComment);
+					path("/{idOther}", () -> {
+						get(UserController::viewOtherUsersPage);
+						path("/comment", () -> {
+							post(UserController::addComment);
+						});
 					});
 					path("/pets", () -> {
-						get(PetController::getPetList);
+						get(PetController::getPetListByUID);
 						post(PetController::createPet);
 						path("/{id1}", () -> {
 							get(PetController::getPetByID);

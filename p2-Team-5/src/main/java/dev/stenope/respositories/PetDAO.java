@@ -16,7 +16,7 @@ public class PetDAO {
 	
 	//Create
 	public Pet createPet(Pet p) {
-		String sql = "insert into pets values default,?,?,?,?,?,?,? returning *;";
+		String sql = "insert into pets values (default,?,?,?,?,?,?,?) returning *;";
 		try (Connection conn = cu.getConnection();)
 		{
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -98,6 +98,27 @@ public class PetDAO {
 		return null;
 	}
 	
+	public List<Pet> getPetListByPName(String pname)
+	{
+		List<Pet> pList = new ArrayList<>();
+		String sql = "select * from pets where pname = ?;";
+		try(Connection conn = cu.getConnection();)
+		{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, pname);
+			ResultSet rs = ps.executeQuery();
+			
+			while (rs.next())
+			{
+				pList.add(new Pet(rs.getInt("id"), rs.getInt("uid"), rs.getString("pname"), rs.getInt("pset"), rs.getInt("fun"), 
+						rs.getInt("food"), rs.getInt("plevel"), getPTypeByID(rs.getInt("sid"))));
+			}
+			return pList;
+		}
+		catch(SQLException e) {e.printStackTrace();}
+		return null;
+	}
+	
 	public List<PetType> getPetTypes() {
 		List<PetType> ptList = new ArrayList<>();
 		String sql = "select * from pettypes;";
@@ -121,7 +142,8 @@ public class PetDAO {
 	public Pet modifyPet(Pet p) {
 		Pet output = null;
 		String sql = "update pets set uid = ?, sid = ?, pset = ?, pname = ?, fun = ?, food = ?, plevel = ? where id = ?";
-		try (Connection conn = cu.getConnection())
+		sql += " returning *;";
+		try (Connection conn = cu.getConnection();)
 		{
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, p.getuID());
