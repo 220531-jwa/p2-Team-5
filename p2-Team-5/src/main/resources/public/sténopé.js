@@ -54,29 +54,26 @@ function showStoredVariables()
     console.log(sessionStorage.getItem("userInView"));
 }
 
-// async function viewOtherUserPage() {    //still needs some work
-//     document.getElementById("otherUsers").innerHTML = `<label> Select User: <select id="selectUsername"></select></label>`;
-//     let res = await fetch(`users/${sessionStorage.uID}/${sessionStorage.otherID}`, 
-//         {
-//             method: `GET`,
-//             header:{"Content-Type": "application/json"},
-//             body: null
-//         });
-//     let resJson = await res.json()
-//         .then((resp) => {
-//             for (let i = 0; i < resp.length; i++) {
-//                 let whichUser = document.createElement("option");
-//                 let getOtherUsername = document.createElement(`<a href="${baseURL}/users/${sessionStorage.uID}/${resp[i].uID}">${resp[i].uName}</a>`);
-//                 whichUser.appendChild(getOtherUsername);
-//                 document.getElementById("selectUsername").appendChild(whichUser);
-//             }
-//         })
-//         .catch((error) => 
-//         {
-//             console.log(error);
-//             alert("No such user");
-//         });
-// }
+async function search()
+{
+    let searchString = document.getElementById("searchBar").value;
+    document.getElementById("searchResult").innerHTML = "";
+
+    let res = await fetch(`/search/${searchString}/pets`, {method: "GET", header: {accept: "application/json", "Content-Type": "text/plain"}, 
+        body: null});
+    let resJSON = res.json()
+        .then((resp) => {
+            for (let i=0;i<resp.length;i++)
+            {
+                let pets = document.createElement("div");
+                pets.className = "grid-item";
+                pets.innerHTML= 
+                    `<h1><a onclick="viewPet(${resp[i].id})">${resp[i].type.ssrc}</a></h1><h4>${resp[i].pName}</h4>`;
+                document.getElementById("searchResult").appendChild(pets);
+            }
+        })
+        .catch((error) => console.log(error));
+}
 
 //loginPage
 function hidePass()
@@ -194,6 +191,11 @@ async function createItem(id) {
 }
 
 //inventory
+async function populateInventory() {
+    populateTopBar();
+
+    
+}
 
 async function useItemOnPet(Item) //will fail if sessionStorage doesn't hold uID and pID
 {
@@ -271,7 +273,11 @@ function addComment() {
     return comment;
 }
 
-function savepID(a) {sessionStorage.setItem("pID", a); return true;}
+function viewPet(a) 
+{
+    sessionStorage.setItem("pID", a); 
+    window.location.assign('petPage.html');
+}
 
 async function getPetsList () {
     let res = await fetch(`users/${sessionStorage.userInView}/pets`, 
@@ -286,7 +292,7 @@ async function getPetsList () {
                 let pets = document.createElement("div");
                 pets.className = "grid-item";
                 pets.innerHTML= 
-                    `<h1><a href="petPage.html" onclick="savepID(${resp.pID})">${resp[i].type.ssrc}</a></h1><h6>${resp[i].pName}</h6>`;
+                    `<h1><a onclick="viewPet(${resp[i].id})">${resp[i].type.ssrc}</a></h1><h4>${resp[i].pName}</h4>`;
                 document.getElementById("pListItems").appendChild(pets);
             }
         })
@@ -383,7 +389,6 @@ async function populatePetPage()
     let resJSON = await res.json()
             .then((resp) => 
             {
-                console.log(resp); 
                 foundPet = resp;
                 pID = foundPet.id;
                 owner = foundPet.uID; 
@@ -415,16 +420,28 @@ async function populatePetPage()
                     <label>Hunger: <input id="foodBox" type="text" value="${hunger[food]}" readonly></label><br>
                     <label>Level: <input id="levelBox" type="number" value="${level}" readonly></label><br>`;}
 
-                document.getElementById("ownerName").innerText = `User_${owner}`; //do something to get the owner's username here 
+                getOwnerUName(owner); 
                 document.getElementById("petPSet").selectedIndex = pSet;
             })
 
             .catch((error) => {console.log(error)});
 }
 
-//inventoryPage
-async function populateInventory() {
-    populateTopBar();
 
-    
+async function getOwnerUName(uID) {    //still needs some work
+    let res = await fetch(`users/${uID}`, 
+        {
+            method: `GET`,
+            header:{"Content-Type": "application/json"},
+            body: null
+        });
+    let resJson = await res.json()
+        .then((resp) => {
+            let temp = resp.uName;
+            document.getElementById("ownerName").innerText = temp;
+        })
+        .catch((error) => 
+        {
+            console.log(error);
+        });
 }
