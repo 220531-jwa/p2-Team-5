@@ -1,4 +1,4 @@
-let baseURL = "http://localhost:8080";
+let baseURL = "http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080";
 
 let pronouns = 
 [	//subject / object / adj. possessive / obj. possesive / reflexive
@@ -46,10 +46,6 @@ function showStoredVariables()
 }
 
 async function viewOtherUserPage() {    //still needs some work
-    let otherUsername = "";
-    let otherUser = {
-        uname: uName
-    };
     document.getElementById("otherUsers").innerHTML = `<label> Select User: <select id="selectUsername"></select></label>`;
     let res = await fetch(`users/${sessionStorage.uID}/${sessionStorage.otherID}`, 
         {
@@ -61,8 +57,8 @@ async function viewOtherUserPage() {    //still needs some work
         .then((resp) => {
             for (let i = 0; i < resp.length; i++) {
                 let whichUser = document.createElement("option");
-                let getOtherUsername = document.createElement(`${resp[i].uName}`);
-                whichUser.appendChild(whichUser.innerHTML = `<a href="${baseURL}/users/${sessionStorage.uID}/${resp[i].uID}">${getOtherUsername}</a>`);
+                let getOtherUsername = document.createElement(`<a href="${baseURL}/users/${sessionStorage.uID}/${resp[i].uID}">${resp[i].uName}</a>`);
+                whichUser.appendChild(getOtherUsername);
                 document.getElementById("selectUsername").appendChild(whichUser);
             }
         })
