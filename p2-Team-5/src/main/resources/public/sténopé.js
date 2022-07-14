@@ -152,7 +152,7 @@ async function populateMarketplace() {
                 button.innerHTML = "Add to Inventory";
 
                 button.onclick = function() {
-                    createItem(resp[i].id)
+                    createItem(resp[i].id);
                 }
 
                 element.appendChild(button);
@@ -216,7 +216,15 @@ async function populateInventory() {
 
                 element.appendChild(document.createElement("br"));
 
+                division = document.createElement("div");
+                division.id = "itemaction"+resp[i].id;
+
                 let selector = document.createElement("select");
+                selector.id = "userselector"+resp[i].id;
+                //selector.onchange = "formatItemAction(selector.value, division);";
+                selector.setAttribute("onchange", "formatItemAction('"+selector.id+"', '"+division.id+"')");
+                //selector.addEventListener("change", formatItemAction(selector.value, division));
+                
                 let opt = document.createElement("option");
                 opt.innerHTML = "---";
                 opt.selected = true;
@@ -230,6 +238,7 @@ async function populateInventory() {
                 opt = document.createElement("option");
                 opt.innerHTML = "Give to Pet";
                 opt.value = "Give";
+                opt.onselect = giveToPetSetup();
                 selector.appendChild(opt);
                 opt = document.createElement("option");
                 opt.innerHTML = "Drop";
@@ -238,6 +247,20 @@ async function populateInventory() {
                 selector.appendChild(opt);
                 element.appendChild(selector);
 
+                element.appendChild(document.createElement("br"));
+
+                let button = document.createElement("button");
+                button.type = 'button';
+                button.innerHTML = "Select Action";
+
+                button.onclick = formatItemAction(selector.value, division);
+                
+
+                element.appendChild(button);
+
+                element.appendChild(document.createElement("br"));
+
+                element.appendChild(division);
 
                 grid.appendChild(element);
             }
@@ -312,26 +335,47 @@ async function loadPetBackpack() {
                 
                 element.appendChild(document.createElement("br"));
 
+                division = document.createElement("div");
+
                 let selector = document.createElement("select");
+                selector.onchange = function() {
+                    formatItemAction(selector.value, division);
+                }
+                //selector.addEventListener("change", formatItemAction(this.value, division));
                 let opt = document.createElement("option");
                 opt.innerHTML = "---";
                 opt.selected = true;
                 opt.disabled = true;
                 selector.appendChild(opt);
-                opt = document.createElement("option");
-                opt.innerHTML = "Use";
-                opt.value = "Use";
-                selector.appendChild(opt);
-                opt = document.createElement("option");
-                opt.innerHTML = "Give to Pet";
-                opt.value = "Give";
-                selector.appendChild(opt);
-                opt = document.createElement("option");
-                opt.innerHTML = "Drop";
-                opt.value = "Drop";
-                opt.disabled = true;
-                selector.appendChild(opt);
+                let useOpt = document.createElement("option");
+                useOpt.innerHTML = "Use";
+                useOpt.value = "Use";
+                selector.appendChild(useOpt);
+                let giveOpt = document.createElement("option");
+                giveOpt.innerHTML = "Give to Pet";
+                giveOpt.value = "Give";
+                selector.appendChild(giveOpt);
+                let dropOpt = document.createElement("option");
+                dropOpt.innerHTML = "Drop";
+                dropOpt.value = "Drop";
+                dropOpt.disabled = true;
+                selector.appendChild(dropOpt);
                 element.appendChild(selector);
+
+                element.appendChild(document.createElement("br"));
+
+                let button = document.createElement("button");
+                button.type = 'button';
+                button.innerHTML = "Select Action";
+
+                button.onclick = function() {
+                    console.log("DOES THIS LOG EVEN HAPPEN?????????????");
+                    formatItemAction(selector.options[selector.selectedIndex].value, division);
+                }
+
+                element.appendChild(button);
+
+                element.appendChild(division);
 
 
                 grid.appendChild(element);
@@ -346,6 +390,79 @@ async function loadPetBackpack() {
     } else {
         console.log("Pet Does not exist");
     }
+}
+
+async function formatItemAction(valueid, eleid) {
+
+    let value = document.getElementById(valueid).value;
+    let ele = document.getElementById(eleid);
+    ele.innerHTML = "";
+    console.log(ele);
+    let u = sessionStorage.getItem("uID");
+    console.log(value);
+
+    switch(value) {
+        case "Use": 
+            let useButt = document.createElement("button");
+            useButt.type = 'button';
+            useButt.innerHTML = "Use Item!";
+
+            useButt.onclick = function() {
+                useItemOnPet();
+            }
+
+            ele.appendChild(useButt);
+            break;
+        case "Give": 
+
+            console.log("GIVE");
+            
+            let petOptions = document.createElement("select");    
+
+            res = await fetch(
+                `${baseURL}/users/${u}/pets`, {
+                    method: 'GET'
+                }
+                
+            );
+            if (res.status == 200) {
+                let resJson = await res.json()
+        
+                .then((resp) => {        
+                    for (let i = 0; i < resp.length; i ++) {
+                        let opt = document.createElement("option");
+                        opt.value = resp[i].id;
+                        opt.innerHTML = resp[i].pName;
+                        petOptions.appendChild(opt);
+                    }
+        
+        
+                    })
+                    // .catch will execute if there's any error
+                    .catch((error) => {
+                    console.log(error);
+                    });
+            } else {
+                console.log("Fetch unsuccessful");
+            }
+        
+            let giveButt = document.createElement("button");
+            giveButt.type = 'button';
+            giveButt.innerHTML = "Give To Selected Pet";
+
+            giveButt.onclick = function() {
+                giveToPet();
+            }
+
+            ele.appendChild(petOptions);
+            ele.appendChild(giveButt);
+            break;
+        case "Drop": 
+            alert("NOT IMPLEMENTED. How did you get here?")
+            break;
+    }
+
+
 }
 
 async function useItemSetup(ele) {
