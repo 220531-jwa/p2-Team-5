@@ -93,4 +93,14 @@ public class ItemController {
 		}
 	}
 	
+	public static void deleteItem(Context ctx) {
+		int itemId = Integer.parseInt(ctx.pathParam("itemId"));
+		int userId = Integer.parseInt(ctx.pathParam("id0"));
+		if (itemService.deleteItem(userId, itemId)) {
+			ctx.status(200);
+		} else {
+			ctx.status(404);
+		}
+	}
+	
 }

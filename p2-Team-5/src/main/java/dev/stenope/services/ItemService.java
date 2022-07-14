@@ -70,8 +70,12 @@ public class ItemService {
 	}
 	
 	public boolean deleteItem(int own, int item) {
+		Item deadItemWalking = itemDao.getItemByID(item);
+		if (deadItemWalking == null || deadItemWalking.getuID() != own) {
+			return false;
+		}
 		
-		return false;
+		return itemDao.deleteItem(item);
 	}
 	
 }

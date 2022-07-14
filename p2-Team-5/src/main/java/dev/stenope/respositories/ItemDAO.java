@@ -204,4 +204,21 @@ public class ItemDAO {
 			return false;
 		}
 	}
+	
+	public boolean deleteItem(int i) {
+		String sql = "delete from p2t5.items"
+				+ " where id = ?";
+		try(Connection conn = cu.getConnection()) {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, i);
+			if (ps.executeUpdate() == 0) {
+				return false;
+			} else {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

@@ -56,6 +56,7 @@ public class Amentum {
 						post(ItemController::createItem);
 						path("/{itemId}", () -> {
 							get(ItemController::getItem);
+							delete(ItemController::deleteItem);
 							put(ItemController::modifyItem);
 							path("/give", () -> {
 								path("/{petId}", () -> {
