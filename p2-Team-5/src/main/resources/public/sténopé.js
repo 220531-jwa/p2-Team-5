@@ -1,4 +1,7 @@
-let baseURL = "http://localhost:8080";
+//S3 link to be tested
+// http://p2-t5-stenope-bucket.s3-website-us-west-1.amazonaws.com
+
+let baseURL = "http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080";
 
 let pronouns = 
 [	//subject / object / adj. possessive / obj. possesive / reflexive
@@ -43,6 +46,30 @@ function showStoredVariables()
     console.log(sessionStorage.getItem("uID"));
     console.log(sessionStorage.getItem("uname"));
     // console.log(sessionStorage.getItem("uID"));
+}
+
+async function viewOtherUserPage() {    //still needs some work
+    document.getElementById("otherUsers").innerHTML = `<label> Select User: <select id="selectUsername"></select></label>`;
+    let res = await fetch(`users/${sessionStorage.uID}/${sessionStorage.otherID}`, 
+        {
+            method: `GET`,
+            header:{"Content-Type": "application/json"},
+            body: null
+        });
+    let resJson = await res.json()
+        .then((resp) => {
+            for (let i = 0; i < resp.length; i++) {
+                let whichUser = document.createElement("option");
+                let getOtherUsername = document.createElement(`<a href="${baseURL}/users/${sessionStorage.uID}/${resp[i].uID}">${resp[i].uName}</a>`);
+                whichUser.appendChild(getOtherUsername);
+                document.getElementById("selectUsername").appendChild(whichUser);
+            }
+        })
+        .catch((error) => 
+        {
+            console.log(error);
+            alert("No such user");
+        });
 }
 
 //loginPage

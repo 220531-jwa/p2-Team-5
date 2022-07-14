@@ -26,7 +26,8 @@ public class UserProfileSteps {
 
 	@When("The User Page is loaded")
 	public void the_user_page_is_loaded() {
-		driver.get("http://localhost:8080/userPage.html");
+		//S3 link http://p2-t5-stenope-bucket.s3-website-us-west-1.amazonaws.com
+		driver.get("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/userPage.html");
 	    //throw new io.cucumber.java.PendingException();
 	}
 
