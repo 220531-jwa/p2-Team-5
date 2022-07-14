@@ -1,8 +1,8 @@
 //S3 link to be tested
-// http://p2-t5-stenope-bucket.s3-website-us-west-1.amazonaws.com
+//let baseURL = "http://p2-t5-stenope-bucket.s3-website-us-west-1.amazonaws.com";
 
-let baseURL = "http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080";
-
+//let baseURL = "http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080";
+let baseURL = "http://localhost:8080";
 let pronouns = 
 [	//subject / object / adj. possessive / obj. possesive / reflexive
     "e/em/eir/eirs/emself", //Spivak set
@@ -123,6 +123,75 @@ async function loginCheck()
 }
 
 //marketplace 
+async function populateMarketplace() {
+    populateTopBar();
+
+    let u = sessionStorage.getItem("uID");
+
+    let res = await fetch(
+        `${baseURL}/itemTypes`, {
+            method: 'GET'
+        }
+        
+    );
+    if (res.status == 200) {
+        let resJson = await res.json()
+        .then((resp) => {
+            let grid = document.getElementById("market");
+
+            for (let i = 0; i < resp.length; i ++) {
+
+                let element  = document.createElement("div");
+                element.id = "item-" + resp[i].id;
+                element.className = "grid-item";
+                //TODO: TITLECASE
+                element.appendChild(document.createTextNode(/*titleCase*/(resp[i].tName)));
+
+                element.appendChild(document.createElement("br"));
+
+                element.appendChild(document.createTextNode(resp[i].tSRC));
+
+                element.appendChild(document.createElement("br"));
+
+                let button = document.createElement("button");
+                button.type = 'button';
+                button.innerHTML = "Add to Inventory";
+
+                button.onclick = function() {
+                    createItem(resp[i].id)
+                }
+
+                element.appendChild(button);
+
+
+                grid.appendChild(element);
+            }
+            })
+            .catch((error) => {
+            console.log(error);
+            });
+    } else {
+        console.log("ERROR");
+    }
+}
+
+async function createItem(id) {
+    console.log("TODO: ADD " + id + "to inventory");
+
+    let u = sessionStorage.getItem("uID");
+
+    let res = await fetch(
+        `${baseURL}/users/${u}/items?typeId=${id}`, {
+            method: 'POST'
+        }
+        
+    );
+    if (res.status == 200) {
+        alert("Successfully added to inventory!");
+    } else {
+        alert("Something went wrong.");
+    }
+}
 
 //inventory
 

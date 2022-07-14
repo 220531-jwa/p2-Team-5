@@ -20,8 +20,12 @@ public class ItemService {
 	
 	public ItemService() { }
 	
-	public Item createItem(Item i) {
-		return itemDao.createItem(i);
+	public Item createItem(int type, int owner) {
+		ItemType newType = itemDao.getSpecificItemType(type);
+		
+		Item newItem = new Item(1, newType, owner, 0);
+		newItem = itemDao.createItem(newItem);
+		return newItem;
 	}
 	
 	public boolean modifyItem(Item i) {

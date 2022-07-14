@@ -17,14 +17,14 @@ public class ItemDAO {
 	
 	public Item createItem(Item i) {
 		String sql = "insert into p2t5.items "
-				+ "(id, tid, uid, pid) "
-				+ "(default, ?, ?, ?) " 
+				+ "(id, tid, uid, pid) values"
+				+ "(default, ?, ?, null) " 
 				+ "returning *";
 		try(Connection conn = cu.getConnection()) {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, i.getType().getId());
 			ps.setInt(2, i.getuID());
-			ps.setInt(3, i.getpID());
+			//ps.setInt(3, i.getpID());
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				i.setId(rs.getInt("id"));
@@ -161,5 +161,24 @@ public class ItemDAO {
 			list = null;
 		}
 		return list;
+	}
+	
+	public ItemType getSpecificItemType (int id) {
+		ItemType type = null;
+		String sql = "select * from p2t5.itemtypes "
+				+ "where id = ?";
+		try(Connection conn = cu.getConnection()) {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				type = new ItemType(rs.getInt("id"), rs.getInt("leftovers"), rs.getString("tname"), rs.getString("tcat"), rs.getString("tsrc"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			type = null;
+		}
+		return type;
 	}
 }
