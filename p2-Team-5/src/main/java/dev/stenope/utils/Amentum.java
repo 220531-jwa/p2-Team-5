@@ -17,13 +17,14 @@ public class Amentum {
 	public void serverRequestHandler() 
 	{
 		Javalin app = Javalin.create(config -> {
-			config.enableCorsForAllOrigins(); //temporary)
+			//config.enableCorsForOrigin("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:");
+			config.enableCorsForAllOrigins();
 			config.addStaticFiles("/public", Location.CLASSPATH);});
 		app.start(8080);
 		
 		app.routes(() -> {
 			//S3 link http://p2-t5-stenope-bucket.s3-website-us-west-1.amazonaws.com
-			get((ctx) ->ctx.redirect("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/homePage.html",301));
+			//get((ctx) ->ctx.redirect("http://http://p2-t5-stenope-bucket.s3-website-us-west-1.amazonaws.com/homePage.html",301));
 			path("/login", () -> {post(UserController::login);});
 			path("/logout", () -> {post(UserController::logout);});
 			path("/petTypes", () -> {get(PetController::getPetTypes);});

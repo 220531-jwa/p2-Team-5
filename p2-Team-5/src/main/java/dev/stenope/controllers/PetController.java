@@ -65,7 +65,7 @@ public class PetController {
 	
 	public static void getPetListByPName(Context ctx) {
 		List<Pet> pList = new ArrayList<>(); 
-		pList = pServ.getPetListByPName(ctx.body());
+		pList = pServ.getPetListByPName(ctx.pathParam("{id1}"));
 		if (pList != null)
 		{
 			ctx.status(200);
