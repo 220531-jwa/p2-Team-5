@@ -246,7 +246,7 @@ async function populateInventory() {
                 opt = document.createElement("option");
                 opt.innerHTML = "Drop";
                 opt.value = "Drop";
-                opt.disabled = true;
+                opt.disabled = false;
                 selector.appendChild(opt);
                 element.appendChild(selector);
 
@@ -262,6 +262,8 @@ async function populateInventory() {
             .catch((error) => {
             console.log(error);
             });
+    } else if (res.status == 204) {
+        console.log("Empty Backpack");
     } else {
         console.log("User Does not exist");
     }
@@ -355,7 +357,7 @@ async function loadPetBackpack() {
                 opt = document.createElement("option");
                 opt.innerHTML = "Drop";
                 opt.value = "Drop";
-                opt.disabled = true;
+                opt.disabled = false;
                 selector.appendChild(opt);
                 element.appendChild(selector);
 
@@ -372,6 +374,8 @@ async function loadPetBackpack() {
             .catch((error) => {
             console.log(error);
             });
+    } else if (res.status == 204) {
+        console.log("Empty Pet Backpack");
     } else {
         console.log("Pet Does not exist");
     }
@@ -392,7 +396,7 @@ async function formatItemAction(valueid, eleid, itemid) {
             let item = null;
 
             res = await fetch(
-                `${baseURL}/users/${u}/pets`, {
+                `${baseURL}/users/${u}/items/${itemid}`, {
                     method: 'GET'
                 }
                 
@@ -418,9 +422,9 @@ async function formatItemAction(valueid, eleid, itemid) {
             useButt.innerHTML = "Use Item!";
 
             useButt.onclick = function() {
-                savepID(item.pid);
+                sessionStorage.setItem("pID", item.pID);
                 useItemOnPet(item);
-                setTimeout(function(){window.location.assign("inventory.html")},1000);
+                //setTimeout(function(){window.location.assign("inventory.html")},2000);
             }
 
             ele.appendChild(useButt);
@@ -432,7 +436,7 @@ async function formatItemAction(valueid, eleid, itemid) {
 
             ownButt.onclick = function() {
                 giveToPet(itemid, 0);
-                setTimeout(function(){window.location.assign("inventory.html")},1000);
+                setTimeout(function(){window.location.assign("inventory.html")},2000);
             }
 
             ele.appendChild(ownButt);
@@ -474,14 +478,21 @@ async function formatItemAction(valueid, eleid, itemid) {
 
             giveButt.onclick = function() {
                 giveToPet(itemid, petOptions.value);
-                setTimeout(function(){window.location.assign("inventory.html")},1000);
+                setTimeout(function(){window.location.assign("inventory.html")},2000);
             }
 
             ele.appendChild(petOptions);
             ele.appendChild(giveButt);
             break;
         case "Drop": 
-            alert("NOT IMPLEMENTED. How did you get here?")
+            let dropButt = document.createElement("button");
+            dropButt.type = 'button';
+            dropButt.innerHTML = "CONFIRM DROP";
+            dropButt.onclick = function() {
+                dropItem(itemid);
+                setTimeout(function(){window.location.assign("inventory.html")},2000);
+            }
+            ele.appendChild(dropButt);
             break;
     }
 
@@ -518,6 +529,22 @@ async function useItemOnPet(Item) //will fail if sessionStorage doesn't hold uID
                 console.log(resp);
             })
             .catch((error) => console.log(error));
+}
+
+async function dropItem(itemid) //will fail if sessionStorage doesn't hold uID and pID
+{
+    let u = sessionStorage.getItem("uID");
+    let res = await fetch(
+        `${baseURL}/users/${u}/items/${itemid}`, {
+            method: 'DELETE'
+        }
+        
+    );
+    if (res.status == 200) {
+        console.log("Deletion Successful");
+    } else {
+        console.log("Fetch unsuccessful");
+    }
 }
 
 //userPage 

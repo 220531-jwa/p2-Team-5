@@ -61,7 +61,7 @@ public class ItemController {
 			ctx.status(400);
 		} else if (items.isEmpty()) {
 			ctx.json(items);
-			ctx.status(404);
+			ctx.status(204);
 		} else {
 			ctx.json(items);
 			ctx.status(200);
