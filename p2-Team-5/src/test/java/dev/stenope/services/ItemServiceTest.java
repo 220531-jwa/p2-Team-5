@@ -9,10 +9,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.AdditionalAnswers;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import dev.stenope.respositories.ItemDAO;
 import dev.stenope.models.Item;
+import dev.stenope.models.ItemType;
 import dev.stenope.models.Pet;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,9 +35,16 @@ public class ItemServiceTest {
 	
 	@Test
 	public void createItemTest() {
-		Item testItem = new Item(1, null, 1, 1);
-		when(mockItemDao.createItem(testItem)).thenReturn(testItem);
-		assertEquals(itemService.createItem(testItem), testItem);
+		ItemType testType = new ItemType(3, 0, "pizza", "food", "🍕");
+		Item expectedItem = new Item(1, testType, 1, 0);
+		
+		when(mockItemDao.getSpecificItemType(3)).thenReturn(testType);
+		when(mockItemDao.createItem(any(Item.class))).then(AdditionalAnswers.returnsFirstArg());
+		Item testItem = itemService.createItem(3, 1);
+		
+		assertEquals(expectedItem.getType(), testItem.getType());
+		assertEquals(expectedItem.getpID(), testItem.getpID());
+		assertEquals(expectedItem.getuID(), testItem.getuID());
 	}
 	
 	@Test
