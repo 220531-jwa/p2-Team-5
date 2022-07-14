@@ -522,13 +522,19 @@ async function useItemOnPet(Item) //will fail if sessionStorage doesn't hold uID
     let a = sessionStorage.getItem("uID");
     let b = sessionStorage.getItem("pID");
     let itemJSON = JSON.stringify(Item);
-    let res = await fetch(`/users/${a}/pets/${b}/items`, {method: "PATCH", header:{"Content-Type": "application/json"}, body: itemJSON});
-    let resJSON = await res.json()
+    let res = await fetch(`/users/${a}/items/${Item.id}/use/${b}`, {method: "PATCH", header:{"Content-Type": "application/json"}, body: itemJSON});
+    if (res.status == 200) {
+        let resJSON = await res.json()
             .then((resp) =>
             {
-                console.log(resp);
+                //console.log("Yummy " + Item.type.tName);
+                alert("Successfully used " + Item.type.tName);
             })
             .catch((error) => console.log(error));
+    } else {
+        alert("Could not use Item");
+    }
+    
 }
 
 async function dropItem(itemid) //will fail if sessionStorage doesn't hold uID and pID
