@@ -388,12 +388,38 @@ async function formatItemAction(valueid, eleid, itemid) {
 
     switch(value) {
         case "Use": 
+            
+            let item = null;
+
+            res = await fetch(
+                `${baseURL}/users/${u}/pets`, {
+                    method: 'GET'
+                }
+                
+            );
+            if (res.status == 200) {
+                let resJson = await res.json()
+        
+                .then((resp) => {        
+                    
+                    item = resp;
+        
+                    })
+                    // .catch will execute if there's any error
+                    .catch((error) => {
+                    console.log(error);
+                    });
+            } else {
+                console.log("Fetch unsuccessful");
+            }
+        
             let useButt = document.createElement("button");
             useButt.type = 'button';
             useButt.innerHTML = "Use Item!";
 
             useButt.onclick = function() {
-                useItemOnPet();
+                savepID(item.pid);
+                useItemOnPet(item);
             }
 
             ele.appendChild(useButt);
