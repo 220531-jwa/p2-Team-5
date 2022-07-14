@@ -142,7 +142,7 @@ async function populateMarketplace() {
                 element.id = "item-" + resp[i].id;
                 element.className = "grid-item";
                 //TODO: TITLECASE
-                element.appendChild(document.createTextNode(/*titleCase*/(resp[i].tName)));
+                element.appendChild(document.createTextNode(titleCase(resp[i].tName)));
 
                 element.appendChild(document.createElement("br"));
 
@@ -155,7 +155,7 @@ async function populateMarketplace() {
                 button.innerHTML = "Add to Inventory";
 
                 button.onclick = function() {
-                    createItem(resp[i].id)
+                    createItem(resp[i].id);
                 }
 
                 element.appendChild(button);
@@ -173,7 +173,6 @@ async function populateMarketplace() {
 }
 
 async function createItem(id) {
-    console.log("TODO: ADD " + id + "to inventory");
 
     let u = sessionStorage.getItem("uID");
 
@@ -194,7 +193,325 @@ async function createItem(id) {
 async function populateInventory() {
     populateTopBar();
 
+    let u = sessionStorage.getItem("uID");
+
+    let res = await fetch(
+        `${baseURL}/users/${u}/items`, {
+            method: 'GET'
+        }
+        
+    );
+    if (res.status == 200) {
+        let resJson = await res.json()
+        .then((resp) => {
+            let grid = document.getElementById("backpack");
+
+            for (let i = 0; i < resp.length; i ++) {
+
+                let element  = document.createElement("div");
+                element.id = "item-" + resp[i].id;
+                element.className = "grid-item";
+                element.appendChild(document.createTextNode(titleCase(resp[i].type.tName)));
+
+                element.appendChild(document.createElement("br"));
+
+                element.appendChild(document.createTextNode(resp[i].type.tSRC));
+
+                element.appendChild(document.createElement("br"));
+
+                division = document.createElement("div");
+                division.id = "itemaction"+resp[i].id;
+
+                let selector = document.createElement("select");
+                selector.id = "userselector"+resp[i].id;
+                selector.setAttribute("onchange", "formatItemAction('"+selector.id+"', '"+division.id+"', '"+resp[i].id+"')");
+                
+                let opt = document.createElement("option");
+                opt.innerHTML = "---";
+                opt.selected = true;
+                opt.disabled = true;
+                selector.appendChild(opt);
+                opt = document.createElement("option");
+                opt.innerHTML = "Use";
+                opt.value = "Use";
+                opt.disabled = true;
+                selector.appendChild(opt);
+                opt = document.createElement("option");
+                opt.innerHTML = "Give to Pet";
+                opt.value = "Give";
+                selector.appendChild(opt);
+                opt = document.createElement("option");
+                opt.innerHTML = "Drop";
+                opt.value = "Drop";
+                opt.disabled = false;
+                selector.appendChild(opt);
+                element.appendChild(selector);
+
+                element.appendChild(document.createElement("br"));
+
+                element.appendChild(division);
+
+                grid.appendChild(element);
+            }
+
+
+            })
+            .catch((error) => {
+            console.log(error);
+            });
+    } else if (res.status == 204) {
+        console.log("Empty Backpack");
+    } else {
+        console.log("User Does not exist");
+    }
+
+    res = await fetch(
+        `${baseURL}/users/${u}/pets`, {
+            method: 'GET'
+        }
+        
+    );
+    if (res.status == 200) {
+        let resJson = await res.json()
+
+        .then((resp) => {
+            let petOptions = document.getElementById("petDrop");
+
+            for (let i = 0; i < resp.length; i ++) {
+                let opt = document.createElement("option");
+                opt.value = resp[i].id;
+                opt.innerHTML = resp[i].pName;
+                petOptions.appendChild(opt);
+            }
+
+
+            })
+            // .catch will execute if there's any error
+            .catch((error) => {
+            console.log(error);
+            });
+    } else {
+        console.log("User Does not exist");
+    }
+}
+
+async function loadPetBackpack() {
     
+    let u = sessionStorage.getItem("uID");
+    let select = document.getElementById('petDrop');
+    let p = select.options[select.selectedIndex].value;
+
+    let grid = document.getElementById("petBackpack");
+    grid.innerHTML = "";
+    
+    let res = await fetch(
+        `${baseURL}/users/${u}/pets/${p}/items`, {
+            method: 'GET'
+        }
+        
+    );
+    if (res.status == 200) {
+        let resJson = await res.json()
+        .then((resp) => {
+            for (let i = 0; i < resp.length; i ++) {
+
+                let element  = document.createElement("div");
+                element.id = i;
+                element.className = "grid-item";
+                element.appendChild(document.createTextNode(titleCase(resp[i].type.tName)));
+
+                element.appendChild(document.createElement("br"));
+
+                element.appendChild(document.createTextNode(resp[i].type.tSRC));
+                
+                element.appendChild(document.createElement("br"));
+
+                division = document.createElement("div");
+                division.id = "petitemaction"+resp[i].id;
+
+                let selector = document.createElement("select");
+                selector.id = "petitemselector"+resp[i].id;
+                selector.setAttribute("onchange", "formatItemAction('"+selector.id+"', '"+division.id+"', '"+resp[i].id+"')");
+                
+                let opt = document.createElement("option");
+                opt.innerHTML = "---";
+                opt.selected = true;
+                opt.disabled = true;
+                selector.appendChild(opt);
+                opt = document.createElement("option");
+                opt.innerHTML = "Use";
+                opt.value = "Use";
+                opt.disabled = false;
+                selector.appendChild(opt);
+                opt = document.createElement("option");
+                opt.innerHTML = "Give to Pet";
+                opt.value = "Give";
+                selector.appendChild(opt);
+                opt = document.createElement("option");
+                opt.innerHTML = "Return to Owner";
+                opt.value = "Owner";
+                selector.appendChild(opt);
+                opt = document.createElement("option");
+                opt.innerHTML = "Drop";
+                opt.value = "Drop";
+                opt.disabled = false;
+                selector.appendChild(opt);
+                element.appendChild(selector);
+
+                element.appendChild(document.createElement("br"));
+
+                element.appendChild(division);
+
+                grid.appendChild(element);
+            }
+
+
+            })
+            // .catch will execute if there's any error
+            .catch((error) => {
+            console.log(error);
+            });
+    } else if (res.status == 204) {
+        console.log("Empty Pet Backpack");
+    } else {
+        console.log("Pet Does not exist");
+    }
+}
+
+async function formatItemAction(valueid, eleid, itemid) {
+
+    let value = document.getElementById(valueid).value;
+    let ele = document.getElementById(eleid);
+    ele.innerHTML = "";
+    //console.log(ele);
+    let u = sessionStorage.getItem("uID");
+    //console.log(value);
+
+    switch(value) {
+        case "Use": 
+            
+            let item = null;
+
+            res = await fetch(
+                `${baseURL}/users/${u}/items/${itemid}`, {
+                    method: 'GET'
+                }
+                
+            );
+            if (res.status == 200) {
+                let resJson = await res.json()
+        
+                .then((resp) => {        
+                    
+                    item = resp;
+        
+                    })
+                    // .catch will execute if there's any error
+                    .catch((error) => {
+                    console.log(error);
+                    });
+            } else {
+                console.log("Fetch unsuccessful");
+            }
+        
+            let useButt = document.createElement("button");
+            useButt.type = 'button';
+            useButt.innerHTML = "Use Item!";
+
+            useButt.onclick = function() {
+                sessionStorage.setItem("pID", item.pID);
+                useItemOnPet(item);
+                //setTimeout(function(){window.location.assign("inventory.html")},2000);
+            }
+
+            ele.appendChild(useButt);
+            break;
+        case "Owner": 
+            let ownButt = document.createElement("button");
+            ownButt.type = 'button';
+            ownButt.innerHTML = "Return to Owner!";
+
+            ownButt.onclick = function() {
+                giveToPet(itemid, 0);
+                setTimeout(function(){window.location.assign("inventory.html")},2000);
+            }
+
+            ele.appendChild(ownButt);
+            break;
+        case "Give": 
+            
+            let petOptions = document.createElement("select");    
+
+            res = await fetch(
+                `${baseURL}/users/${u}/pets`, {
+                    method: 'GET'
+                }
+                
+            );
+            if (res.status == 200) {
+                let resJson = await res.json()
+        
+                .then((resp) => {        
+                    for (let i = 0; i < resp.length; i ++) {
+                        let opt = document.createElement("option");
+                        opt.value = resp[i].id;
+                        opt.innerHTML = resp[i].pName;
+                        petOptions.appendChild(opt);
+                    }
+        
+        
+                    })
+                    // .catch will execute if there's any error
+                    .catch((error) => {
+                    console.log(error);
+                    });
+            } else {
+                console.log("Fetch unsuccessful");
+            }
+        
+            let giveButt = document.createElement("button");
+            giveButt.type = 'button';
+            giveButt.innerHTML = "Give To Selected Pet";
+
+            giveButt.onclick = function() {
+                giveToPet(itemid, petOptions.value);
+                setTimeout(function(){window.location.assign("inventory.html")},2000);
+            }
+
+            ele.appendChild(petOptions);
+            ele.appendChild(giveButt);
+            break;
+        case "Drop": 
+            let dropButt = document.createElement("button");
+            dropButt.type = 'button';
+            dropButt.innerHTML = "CONFIRM DROP";
+            dropButt.onclick = function() {
+                dropItem(itemid);
+                setTimeout(function(){window.location.assign("inventory.html")},2000);
+            }
+            ele.appendChild(dropButt);
+            break;
+    }
+
+
+}
+
+async function giveToPet(itemid, petid) {
+    console.log("GIVE ITEM " + itemid + "to pet " + petid);
+
+    let u = sessionStorage.getItem("uID");
+
+    res = await fetch(
+        `${baseURL}/users/${u}/items/${itemid}/give/${petid}`, {
+            method: 'PUT'
+        }
+        
+    );
+    if (res.status == 200) {
+        console.log("Change Owner Successful");
+    } else {
+        console.log("Fetch unsuccessful");
+    }
 }
 
 async function useItemOnPet(Item) //will fail if sessionStorage doesn't hold uID and pID
@@ -202,13 +519,35 @@ async function useItemOnPet(Item) //will fail if sessionStorage doesn't hold uID
     let a = sessionStorage.getItem("uID");
     let b = sessionStorage.getItem("pID");
     let itemJSON = JSON.stringify(Item);
-    let res = await fetch(`/users/${a}/pets/${b}/item`, {method: "PATCH", header:{"Content-Type": "application/json"}, body: itemJSON});
-    let resJSON = await res.json()
+    let res = await fetch(`/users/${a}/items/${Item.id}/use/${b}`, {method: "PATCH", header:{"Content-Type": "application/json"}, body: itemJSON});
+    if (res.status == 200) {
+        let resJSON = await res.json()
             .then((resp) =>
             {
-                console.log(resp);
+                //console.log("Yummy " + Item.type.tName);
+                alert("Successfully used " + Item.type.tName);
             })
             .catch((error) => console.log(error));
+    } else {
+        alert("Could not use Item");
+    }
+    
+}
+
+async function dropItem(itemid) //will fail if sessionStorage doesn't hold uID and pID
+{
+    let u = sessionStorage.getItem("uID");
+    let res = await fetch(
+        `${baseURL}/users/${u}/items/${itemid}`, {
+            method: 'DELETE'
+        }
+        
+    );
+    if (res.status == 200) {
+        console.log("Deletion Successful");
+    } else {
+        console.log("Fetch unsuccessful");
+    }
 }
 
 //userPage 
@@ -434,7 +773,6 @@ async function populatePetPage()
             .catch((error) => {console.log(error)});
 }
 
-
 async function getOwnerUName(uID) {    //still needs some work
     let res = await fetch(`users/${uID}`, 
         {
@@ -464,4 +802,14 @@ async function modifyPet()
     let resJSON = res.json()
         .then((resp) => {window.location.assign("petPage.html");})
         .catch((error) => console.log(error));
+}
+
+//Utility
+function titleCase(sentence) {
+    let splitStr = sentence.split(" ");
+    let str = "";
+    for (let x of splitStr) {
+        str += x.charAt(0).toUpperCase() + x.slice(1) +" ";
+    }
+    return str.substring(0, str.length - 1);
 }

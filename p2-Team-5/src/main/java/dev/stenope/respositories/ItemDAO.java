@@ -91,7 +91,9 @@ public class ItemDAO {
 				+ " leftovers, tname, tcat, tsrc"
 				+ " from p2t5.items, p2t5.itemtypes"
 				+ " where items.tid = itemtypes.id"
-				+ " and items.uid = ?";
+				+ " and items.uid = ?"
+				+ " and (items.pid = 0"
+				+ " or items.pid is null)";
 		try(Connection conn = cu.getConnection()) {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
@@ -180,5 +182,43 @@ public class ItemDAO {
 			type = null;
 		}
 		return type;
+	}
+
+	public boolean returnToOwner(Item i) {
+		String sql = "update p2t5.items set "
+				+ "(tid, uid, pid) "
+				+ "= (?, ?, null) "
+				+ "where id = ?";
+		try(Connection conn = cu.getConnection()) {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, i.getType().getId());
+			ps.setInt(2, i.getuID());
+			ps.setInt(3, i.getId());
+			if (ps.executeUpdate() == 0) {
+				return false;
+			} else {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean deleteItem(int i) {
+		String sql = "delete from p2t5.items"
+				+ " where id = ?";
+		try(Connection conn = cu.getConnection()) {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, i);
+			if (ps.executeUpdate() == 0) {
+				return false;
+			} else {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 }
