@@ -88,7 +88,8 @@ public class UserDAO {
 		return null;
 	}
 
-	public User editUser(User u) {
+	public User editUser(int uId) {
+		User u = getUserByID(uId);
 		String sql = "update p2t5.users set (uname = ?, dname = ?, dblurb = ?, pset = ?) where id = ? returning *";
 		try (Connection conn = cu.getConnection()) {
 			PreparedStatement ps = conn.prepareStatement(sql);
