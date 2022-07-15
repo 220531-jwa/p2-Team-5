@@ -831,6 +831,11 @@ function populateCreatePage()
     getSpeciesList();  
     sessionStorage.setItem("userInView",0);
     getPetsList("poundDiv");
+    if (sessionStorage.getItem("uID")==null) 
+    {
+        document.getElementById("submitNewPet").setAttribute("disabled","");
+        document.getElementById("submitNewPet").setAttribute("title","Log in first!");
+    }
 }
 
 //petPage
@@ -896,7 +901,7 @@ async function populatePetPage()
                 if (sessionStorage.getItem("uID")==owner)
                 {
                     document.getElementById("petName").removeAttribute("readonly");
-                    document.getElementById("pDataHere").innerHTML += `<button onclick="modifyPet()">Submit Changes</button>`;
+                    document.getElementById("pDataHere").innerHTML += `<button id="pSubmit" onclick="modifyPet()">Submit Changes</button>`;
                     document.getElementById("pDataHere").innerHTML += `<button onclick="petToPound()">Send To Pound</button>`;
                 }
                 else {document.getElementById("petPSet").setAttribute("disabled", true);}
