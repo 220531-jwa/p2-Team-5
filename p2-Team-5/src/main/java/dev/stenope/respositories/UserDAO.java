@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import dev.stenope.models.User;
 import dev.stenope.models.UserComment;
@@ -134,5 +136,31 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public List<UserComment> getComments(int hId) {
+		ArrayList<UserComment> commentList = new ArrayList<UserComment>();
+		String sql = "select * from p2t5.comments where hid = ?";
+		
+		try(Connection conn = cu.getConnection()) {
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, hId);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				do {
+					commentList.add(
+						new UserComment(rs.getInt("id"), rs.getInt("wid"), rs.getInt("hid"), rs.getString("body"))
+							);
+					
+				} while (rs.next());
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			commentList = null;
+		}
+		
+		return commentList;
 	}
 }
