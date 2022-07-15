@@ -4,6 +4,7 @@ import java.util.List;
 
 import dev.stenope.models.User;
 import dev.stenope.models.UserComment;
+import dev.stenope.models.UserCommentReader;
 import dev.stenope.respositories.UserDAO;
 
 public class UserService {
@@ -48,7 +49,7 @@ public class UserService {
 		return otherUser;
 	}
 	
-	public List<UserComment> getComments(int hId) {
+	public List<UserCommentReader> getComments(int hId) {
 		return userDao.getComments(hId);
 	}
 }

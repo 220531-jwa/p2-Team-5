@@ -9,6 +9,7 @@ import java.util.List;
 
 import dev.stenope.models.User;
 import dev.stenope.models.UserComment;
+import dev.stenope.models.UserCommentReader;
 import dev.stenope.utils.ConnectionUtil;
 
 public class UserDAO {
@@ -138,9 +139,11 @@ public class UserDAO {
 		return null;
 	}
 	
-	public List<UserComment> getComments(int hId) {
-		ArrayList<UserComment> commentList = new ArrayList<UserComment>();
-		String sql = "select * from p2t5.comments where hid = ?";
+	public List<UserCommentReader> getComments(int hId) {
+		ArrayList<UserCommentReader> commentList = new ArrayList<UserCommentReader>();
+		String sql = "select users.id, dname, hid, body from p2t5.comments, p2t5.users "
+				+ "where comments.wid = users.id "
+				+ "and hid = ?;";
 		
 		try(Connection conn = cu.getConnection()) {
 			
@@ -150,7 +153,7 @@ public class UserDAO {
 			if (rs.next()) {
 				do {
 					commentList.add(
-						new UserComment(rs.getInt("id"), rs.getInt("wid"), rs.getInt("hid"), rs.getString("body"))
+						new UserCommentReader(rs.getInt("id"), rs.getString("dname"), rs.getInt("hid"), rs.getString("body"))
 							);
 					
 				} while (rs.next());

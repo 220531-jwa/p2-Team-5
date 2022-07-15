@@ -622,7 +622,7 @@ async function populateUserPage()
             for(let i = 0; i < resp.length; i ++) {
                 let row = commentList.insertRow();
                 let cell = row.insertCell();
-                cell.appendChild(document.createTextNode(getDispName(resp[i].wID)));
+                cell.appendChild(document.createTextNode((resp[i].wID)));
                 cell = row.insertCell();
                 cell.appendChild(document.createTextNode(resp[i].body));
             }

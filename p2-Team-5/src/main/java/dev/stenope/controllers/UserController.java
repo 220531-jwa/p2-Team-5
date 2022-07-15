@@ -4,6 +4,7 @@ import java.util.List;
 
 import dev.stenope.models.User;
 import dev.stenope.models.UserComment;
+import dev.stenope.models.UserCommentReader;
 import dev.stenope.respositories.UserDAO;
 import dev.stenope.services.UserService;
 import io.javalin.http.Context;
@@ -96,7 +97,7 @@ public class UserController {
 	
 	public static void getComments(Context ctx) {
 		int hId = Integer.parseInt(ctx.pathParam("{id0}"));
-		List<UserComment> comments = us.getComments(hId);
+		List<UserCommentReader> comments = us.getComments(hId);
 		
 		if (comments == null) {
 			ctx.status(404);
