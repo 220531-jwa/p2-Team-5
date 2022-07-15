@@ -37,7 +37,6 @@ public class TopBarSteps {
 			    // No alert found on page, proceed with test.
 		}
 		driver.get("http://" + urlBase + ":8080/loginPage.html");
-		new WebDriverWait(driver, Duration.ofSeconds(5));
 		
 		try {
 			driver.switchTo().alert().dismiss();

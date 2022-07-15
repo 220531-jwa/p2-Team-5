@@ -26,33 +26,6 @@ Feature: User Profile
     Then The User display name is displayed
     And The User pronouns are displayed
     And The User description is displayed
-
-  @DisplayNameEdit
-  Scenario: The Profile Can Be Edited
-    Given The User is logged in
-    And The User is on their own profile
-    When The User changes their display name
-    And The User presses submit
-    And The User refreshes their profile
-    Then The User display name is displayed
-    
-  @PronounEdit
-  Scenario: The Profile Can Be Edited
-    Given The User is logged in
-    And The User is on their own profile
-    When The User changes their pronouns
-    And The User presses submit
-    And The User refreshes their profile
-    Then The User pronouns are displayed
-    
-  @BlurbEdit
-  Scenario: The Profile Can Be Edited
-    Given The User is logged in
-    And The User is on their own profile
-    When The User changes their description
-    And The User presses submit
-    And The User refreshes their profile
-    Then The User description is displayed
     
   @PetList
   Scenario: The Pets Load
