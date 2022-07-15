@@ -83,7 +83,7 @@ function hidePass()
 }
 
 function createUser() {
-    document.getElementById("creationDiv").innerHTML = 
+    document.getElementById("createUserDiv").innerHTML = 
     `<label>Username: <input id="newUserUName" type="text" maxlength="50"><br>
     <label>Password: <input id="newUserPKey" type="password" maxlength="50"></label> <button onclick="hidePass()">👁</button><br>
     <label>Name: <input id="newUserDName" type="text" maxlength="50"></label><br>
