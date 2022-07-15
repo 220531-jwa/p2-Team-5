@@ -10,8 +10,10 @@
     <body onload="populateTopBar()">
         <div id="topBarInsert"></div>
         <h1>Welcome to the Home Page!</h1>
-        <!--<button onclick="showStoredVariables()">DEBUG SESSION STORAGE</button>-->
-        <div id="otherUsers">
+        <button onclick="location.href='createPet.html'">🐞 Create A Pet!</button><br>
+        <button onclick="search()">🔎 Search Sténopé!</button><input id="searchBar" maxlength="50"></input><br>
+        <button onclick="showStoredVariables()">DEBUG SESSION STORAGE</button>
+        <div id="searchResult" class="grid-container">
             
         </div>
         <script src="sténopé.js"></script>

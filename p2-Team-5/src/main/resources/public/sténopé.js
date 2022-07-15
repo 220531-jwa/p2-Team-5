@@ -21,6 +21,12 @@ function logout()
     window.location.assign("loginPage.html");
 }
 
+function viewUser(a)
+{
+    if (a != null) {sessionStorage.setItem("userInView",a);}
+    window.location.assign('userPage.html');
+}
+
 function populateTopBar()
 {
     let uname = "User Page";
@@ -37,7 +43,7 @@ function populateTopBar()
      + `<button id="inventoryLink" onclick="location.href='inventory.html'">🎒 Items</button>`
      + `<button id="loginLink" onclick=${onclick}>🔑 ${keyButton}</button>`
      + `<button id="marketLink" onclick="location.href='marketplace.html'">💹 Market</button>`
-     + `<button id="userLink" onclick="location.href='userPage.html'">🧑 ${uname}</button>`;
+     + `<button id="userLink" onclick="viewUser(${sessionStorage.getItem("uID")})">🧑 ${uname}</button>`;
 }
 
 //homepage
@@ -45,31 +51,28 @@ function showStoredVariables()
 {
     console.log(sessionStorage.getItem("uID"));
     console.log(sessionStorage.getItem("uname"));
-    // console.log(sessionStorage.getItem("uID"));
+    console.log(sessionStorage.getItem("userInView"));
 }
 
-async function viewOtherUserPage() {    //still needs some work
-    document.getElementById("otherUsers").innerHTML = `<label> Select User: <select id="selectUsername"></select></label>`;
-    let res = await fetch(`users/${sessionStorage.uID}/${sessionStorage.otherID}`, 
-        {
-            method: `GET`,
-            header:{"Content-Type": "application/json"},
-            body: null
-        });
-    let resJson = await res.json()
+async function search()
+{
+    let searchString = document.getElementById("searchBar").value;
+    document.getElementById("searchResult").innerHTML = "";
+
+    let res = await fetch(`/search/${searchString}/pets`, {method: "GET", header: {accept: "application/json", "Content-Type": "text/plain"}, 
+        body: null});
+    let resJSON = res.json()
         .then((resp) => {
-            for (let i = 0; i < resp.length; i++) {
-                let whichUser = document.createElement("option");
-                let getOtherUsername = document.createElement(`<a href="${baseURL}/users/${sessionStorage.uID}/${resp[i].uID}">${resp[i].uName}</a>`);
-                whichUser.appendChild(getOtherUsername);
-                document.getElementById("selectUsername").appendChild(whichUser);
+            for (let i=0;i<resp.length;i++)
+            {
+                let pets = document.createElement("div");
+                pets.className = "grid-item";
+                pets.innerHTML= 
+                    `<h1><a onclick="viewPet(${resp[i].id})">${resp[i].type.ssrc}</a></h1><h4>${resp[i].pName}</h4>`;
+                document.getElementById("searchResult").appendChild(pets);
             }
         })
-        .catch((error) => 
-        {
-            console.log(error);
-            alert("No such user");
-        });
+        .catch((error) => console.log(error));
 }
 
 //loginPage
@@ -139,7 +142,7 @@ async function populateMarketplace() {
                 element.id = "item-" + resp[i].id;
                 element.className = "grid-item";
                 //TODO: TITLECASE
-                element.appendChild(document.createTextNode(/*titleCase*/(resp[i].tName)));
+                element.appendChild(document.createTextNode(titleCase(resp[i].tName)));
 
                 element.appendChild(document.createElement("br"));
 
@@ -152,7 +155,7 @@ async function populateMarketplace() {
                 button.innerHTML = "Add to Inventory";
 
                 button.onclick = function() {
-                    createItem(resp[i].id)
+                    createItem(resp[i].id);
                 }
 
                 element.appendChild(button);
@@ -170,7 +173,6 @@ async function populateMarketplace() {
 }
 
 async function createItem(id) {
-    console.log("TODO: ADD " + id + "to inventory");
 
     let u = sessionStorage.getItem("uID");
 
@@ -188,54 +190,421 @@ async function createItem(id) {
 }
 
 //inventory
+async function populateInventory() {
+    populateTopBar();
+
+    let u = sessionStorage.getItem("uID");
+
+    let res = await fetch(
+        `${baseURL}/users/${u}/items`, {
+            method: 'GET'
+        }
+        
+    );
+    if (res.status == 200) {
+        let resJson = await res.json()
+        .then((resp) => {
+            let grid = document.getElementById("backpack");
+
+            for (let i = 0; i < resp.length; i ++) {
+
+                let element  = document.createElement("div");
+                element.id = "item-" + resp[i].id;
+                element.className = "grid-item";
+                element.appendChild(document.createTextNode(titleCase(resp[i].type.tName)));
+
+                element.appendChild(document.createElement("br"));
+
+                element.appendChild(document.createTextNode(resp[i].type.tSRC));
+
+                element.appendChild(document.createElement("br"));
+
+                division = document.createElement("div");
+                division.id = "itemaction"+resp[i].id;
+
+                let selector = document.createElement("select");
+                selector.id = "userselector"+resp[i].id;
+                selector.setAttribute("onchange", "formatItemAction('"+selector.id+"', '"+division.id+"', '"+resp[i].id+"')");
+                
+                let opt = document.createElement("option");
+                opt.innerHTML = "---";
+                opt.selected = true;
+                opt.disabled = true;
+                selector.appendChild(opt);
+                opt = document.createElement("option");
+                opt.innerHTML = "Use";
+                opt.value = "Use";
+                opt.disabled = true;
+                selector.appendChild(opt);
+                opt = document.createElement("option");
+                opt.innerHTML = "Give to Pet";
+                opt.value = "Give";
+                selector.appendChild(opt);
+                opt = document.createElement("option");
+                opt.innerHTML = "Drop";
+                opt.value = "Drop";
+                opt.disabled = false;
+                selector.appendChild(opt);
+                element.appendChild(selector);
+
+                element.appendChild(document.createElement("br"));
+
+                element.appendChild(division);
+
+                grid.appendChild(element);
+            }
+
+
+            })
+            .catch((error) => {
+            console.log(error);
+            });
+    } else if (res.status == 204) {
+        console.log("Empty Backpack");
+    } else {
+        console.log("User Does not exist");
+    }
+
+    res = await fetch(
+        `${baseURL}/users/${u}/pets`, {
+            method: 'GET'
+        }
+        
+    );
+    if (res.status == 200) {
+        let resJson = await res.json()
+
+        .then((resp) => {
+            let petOptions = document.getElementById("petDrop");
+
+            for (let i = 0; i < resp.length; i ++) {
+                let opt = document.createElement("option");
+                opt.value = resp[i].id;
+                opt.innerHTML = resp[i].pName;
+                petOptions.appendChild(opt);
+            }
+
+
+            })
+            // .catch will execute if there's any error
+            .catch((error) => {
+            console.log(error);
+            });
+    } else {
+        console.log("User Does not exist");
+    }
+}
+
+async function loadPetBackpack() {
+    
+    let u = sessionStorage.getItem("uID");
+    let select = document.getElementById('petDrop');
+    let p = select.options[select.selectedIndex].value;
+
+    let grid = document.getElementById("petBackpack");
+    grid.innerHTML = "";
+    
+    let res = await fetch(
+        `${baseURL}/users/${u}/pets/${p}/items`, {
+            method: 'GET'
+        }
+        
+    );
+    if (res.status == 200) {
+        let resJson = await res.json()
+        .then((resp) => {
+            for (let i = 0; i < resp.length; i ++) {
+
+                let element  = document.createElement("div");
+                element.id = i;
+                element.className = "grid-item";
+                element.appendChild(document.createTextNode(titleCase(resp[i].type.tName)));
+
+                element.appendChild(document.createElement("br"));
+
+                element.appendChild(document.createTextNode(resp[i].type.tSRC));
+                
+                element.appendChild(document.createElement("br"));
+
+                division = document.createElement("div");
+                division.id = "petitemaction"+resp[i].id;
+
+                let selector = document.createElement("select");
+                selector.id = "petitemselector"+resp[i].id;
+                selector.setAttribute("onchange", "formatItemAction('"+selector.id+"', '"+division.id+"', '"+resp[i].id+"')");
+                
+                let opt = document.createElement("option");
+                opt.innerHTML = "---";
+                opt.selected = true;
+                opt.disabled = true;
+                selector.appendChild(opt);
+                opt = document.createElement("option");
+                opt.innerHTML = "Use";
+                opt.value = "Use";
+                opt.disabled = false;
+                selector.appendChild(opt);
+                opt = document.createElement("option");
+                opt.innerHTML = "Give to Pet";
+                opt.value = "Give";
+                selector.appendChild(opt);
+                opt = document.createElement("option");
+                opt.innerHTML = "Return to Owner";
+                opt.value = "Owner";
+                selector.appendChild(opt);
+                opt = document.createElement("option");
+                opt.innerHTML = "Drop";
+                opt.value = "Drop";
+                opt.disabled = false;
+                selector.appendChild(opt);
+                element.appendChild(selector);
+
+                element.appendChild(document.createElement("br"));
+
+                element.appendChild(division);
+
+                grid.appendChild(element);
+            }
+
+
+            })
+            // .catch will execute if there's any error
+            .catch((error) => {
+            console.log(error);
+            });
+    } else if (res.status == 204) {
+        console.log("Empty Pet Backpack");
+    } else {
+        console.log("Pet Does not exist");
+    }
+}
+
+async function formatItemAction(valueid, eleid, itemid) {
+
+    let value = document.getElementById(valueid).value;
+    let ele = document.getElementById(eleid);
+    ele.innerHTML = "";
+    //console.log(ele);
+    let u = sessionStorage.getItem("uID");
+    //console.log(value);
+
+    switch(value) {
+        case "Use": 
+            
+            let item = null;
+
+            res = await fetch(
+                `${baseURL}/users/${u}/items/${itemid}`, {
+                    method: 'GET'
+                }
+                
+            );
+            if (res.status == 200) {
+                let resJson = await res.json()
+        
+                .then((resp) => {        
+                    
+                    item = resp;
+        
+                    })
+                    // .catch will execute if there's any error
+                    .catch((error) => {
+                    console.log(error);
+                    });
+            } else {
+                console.log("Fetch unsuccessful");
+            }
+        
+            let useButt = document.createElement("button");
+            useButt.type = 'button';
+            useButt.innerHTML = "Use Item!";
+
+            useButt.onclick = function() {
+                sessionStorage.setItem("pID", item.pID);
+                useItemOnPet(item);
+                //setTimeout(function(){window.location.assign("inventory.html")},2000);
+            }
+
+            ele.appendChild(useButt);
+            break;
+        case "Owner": 
+            let ownButt = document.createElement("button");
+            ownButt.type = 'button';
+            ownButt.innerHTML = "Return to Owner!";
+
+            ownButt.onclick = function() {
+                giveToPet(itemid, 0);
+                setTimeout(function(){window.location.assign("inventory.html")},2000);
+            }
+
+            ele.appendChild(ownButt);
+            break;
+        case "Give": 
+            
+            let petOptions = document.createElement("select");    
+
+            res = await fetch(
+                `${baseURL}/users/${u}/pets`, {
+                    method: 'GET'
+                }
+                
+            );
+            if (res.status == 200) {
+                let resJson = await res.json()
+        
+                .then((resp) => {        
+                    for (let i = 0; i < resp.length; i ++) {
+                        let opt = document.createElement("option");
+                        opt.value = resp[i].id;
+                        opt.innerHTML = resp[i].pName;
+                        petOptions.appendChild(opt);
+                    }
+        
+        
+                    })
+                    // .catch will execute if there's any error
+                    .catch((error) => {
+                    console.log(error);
+                    });
+            } else {
+                console.log("Fetch unsuccessful");
+            }
+        
+            let giveButt = document.createElement("button");
+            giveButt.type = 'button';
+            giveButt.innerHTML = "Give To Selected Pet";
+
+            giveButt.onclick = function() {
+                giveToPet(itemid, petOptions.value);
+                setTimeout(function(){window.location.assign("inventory.html")},2000);
+            }
+
+            ele.appendChild(petOptions);
+            ele.appendChild(giveButt);
+            break;
+        case "Drop": 
+            let dropButt = document.createElement("button");
+            dropButt.type = 'button';
+            dropButt.innerHTML = "CONFIRM DROP";
+            dropButt.onclick = function() {
+                dropItem(itemid);
+                setTimeout(function(){window.location.assign("inventory.html")},2000);
+            }
+            ele.appendChild(dropButt);
+            break;
+    }
+
+
+}
+
+async function giveToPet(itemid, petid) {
+    console.log("GIVE ITEM " + itemid + "to pet " + petid);
+
+    let u = sessionStorage.getItem("uID");
+
+    res = await fetch(
+        `${baseURL}/users/${u}/items/${itemid}/give/${petid}`, {
+            method: 'PUT'
+        }
+        
+    );
+    if (res.status == 200) {
+        console.log("Change Owner Successful");
+    } else {
+        console.log("Fetch unsuccessful");
+    }
+}
 
 async function useItemOnPet(Item) //will fail if sessionStorage doesn't hold uID and pID
 {
     let a = sessionStorage.getItem("uID");
     let b = sessionStorage.getItem("pID");
     let itemJSON = JSON.stringify(Item);
-    let res = await fetch(`/users/${a}/pets/${b}/item`, {method: "PATCH", header:{"Content-Type": "application/json"}, body: itemJSON});
-    let resJSON = await res.json()
+    let res = await fetch(`/users/${a}/items/${Item.id}/use/${b}`, {method: "PATCH", header:{"Content-Type": "application/json"}, body: itemJSON});
+    if (res.status == 200) {
+        let resJSON = await res.json()
             .then((resp) =>
             {
-                console.log(resp);
+                //console.log("Yummy " + Item.type.tName);
+                alert("Successfully used " + Item.type.tName);
             })
             .catch((error) => console.log(error));
+    } else {
+        alert("Could not use Item");
+    }
+    
+}
+
+async function dropItem(itemid) //will fail if sessionStorage doesn't hold uID and pID
+{
+    let u = sessionStorage.getItem("uID");
+    let res = await fetch(
+        `${baseURL}/users/${u}/items/${itemid}`, {
+            method: 'DELETE'
+        }
+        
+    );
+    if (res.status == 200) {
+        console.log("Deletion Successful");
+    } else {
+        console.log("Fetch unsuccessful");
+    }
 }
 
 //userPage 
-function populateUserPage()
+async function populateUserPage()
 {
     populateTopBar();
-    let uName = sessionStorage.uname;
-    let pKey = sessionStorage.pkey;
-    let dName = sessionStorage.dname; 
-    let dBlurb = sessionStorage.dblurb;
-    let pSet = sessionStorage.pset;
-    let comments = {};
-    let pets = {};
-    document.getElementById("uDataHere").innerHTML = 
-        `<label>Username: <input id="username" type="text" value="${uName}" readonly></label><br>
-        <label style="display:none">Password: <input id="passkey" type="text" value="${pKey}" readonly></label><br>
-        <label>Pronouns: 
-            <select id="userPSet" disabled>
-                <option value="0">${pronouns[0]}</option>
-                <option value="1">${pronouns[1]}</option>
-                <option value="2">${pronouns[2]}</option>
-                <option value="3">${pronouns[3]}</option>
-                <option value="4">${pronouns[4]}</option>
-                <option value="5">${pronouns[5]}</option>
-                <option value="6">${pronouns[6]}</option>
-            </select>
-        </label><br>
-        <label>Name: <input id="dName" type="text" value="${dName}" readonly></label><br>
-        <label>Description: <textarea id="dBlurb" readonly></label><br>`;
-        document.getElementById("userPSet").selectedIndex = pSet;
-    document.getElementById("dBlurb").value = dBlurb;
-    document.getElementById("petsList").innerHTML = `<label>Pets: <div class="grid-container" id="pListItems"></div></label>`
-    document.getElementById("addComment").innerHTML = `<label>Comment: <textarea id="comment" placeholder="Write your comment here..."></textarea></label><br> 
-    <button id="submitComment" onclick="addComment()">Submit Comment</button>`;
-    document.getElementById("commentsHere") = comments;
+    let res = await fetch(`users/${sessionStorage.userInView}`, {method: `GET`, header:{"Content-Type": "application/json"}, body: null});
+        let resJson = await res.json()
+            .then((resp) => {
+                let uName = resp.uName;
+                let pKey = resp.pKey;
+                let dName = resp.dName; 
+                let dBlurb = resp.dBlurb;
+                let pSet = resp.pSet;
+                let comments = {};
+                let pets = {};
+                document.getElementById("uNameBanner").innerText = `${uName}'s profile page!`;
+                document.getElementById("uDataHere").innerHTML = 
+                    `<label>Username: <input id="username" type="text" value="${uName}" readonly maxlength="50"></label><br>
+                    <label style="display:none" id="psL">Password: 
+                    <input id="passkey" type="text" value="${pKey}" readonly maxlength="50"></label><br>
+                    <label>Pronouns: 
+                        <select id="userPSet" disabled>
+                            <option value="0">${pronouns[0]}</option>
+                            <option value="1">${pronouns[1]}</option>
+                            <option value="2">${pronouns[2]}</option>
+                            <option value="3">${pronouns[3]}</option>
+                            <option value="4">${pronouns[4]}</option>
+                            <option value="5">${pronouns[5]}</option>
+                            <option value="6">${pronouns[6]}</option>
+                        </select>
+                    </label><br>
+                    <label>Name: <input id="dName" type="text" value="${dName}" readonly maxlength="50"></label><br>
+                    <label>Description: <textarea id="dBlurb" readonly maxlength="200"></label><br>`;
+                    document.getElementById("userPSet").selectedIndex = pSet;
+                document.getElementById("dBlurb").value = dBlurb;
+                document.getElementById("petsList").innerHTML = `<label>Pets: <div class="grid-container" id="pListItems"></div></label>`
+                document.getElementById("addComment").innerHTML = 
+                `<label>Comment: <textarea id="comment" placeholder="Write your comment here..." maxlength="200"></textarea></label><br> 
+                <button id="submitComment" onclick="addComment()">Submit Comment</button>`;
+                // document.getElementById("commentsHere") = comments;
+                getPetsList("pListItems");
+                if (sessionStorage.getItem("userInView")==sessionStorage.getItem("uID"))
+                {
+                    document.getElementById("username").removeAttribute("readonly");
+                    document.getElementById("passkey").removeAttribute("readonly");
+                    document.getElementById("dName").removeAttribute("readonly");
+                    document.getElementById("dBlurb").removeAttribute("readonly");
+                    document.getElementById("psL").setAttribute("style", "display:inline");
+                    document.getElementById("userPSet").removeAttribute("disabled");
+                }
+            })
+            .catch((error) => 
+            {
+                console.log(error);
+                alert("No such user");
+            });
 }
 
 function addComment() {
@@ -243,8 +612,14 @@ function addComment() {
     return comment;
 }
 
-async function getPetsList () {
-    let res = await fetch(`users/${sessionStorage.uID}/pets`, 
+function viewPet(a) 
+{
+    sessionStorage.setItem("pID", a); 
+    window.location.assign('petPage.html');
+}
+
+async function getPetsList (targetDiv) {
+    let res = await fetch(`users/${sessionStorage.userInView}/pets`, 
         {
             method: `GET`,
             header:{"Content-Type": "application/json"},
@@ -255,9 +630,9 @@ async function getPetsList () {
             for (let i = 0; i < resp.length; i++) {
                 let pets = document.createElement("div");
                 pets.className = "grid-item";
-                let nameAndSpecies = document.createTextNode(`${resp[i].pName} ${resp[i].pSet}`);
-                pets.appendChild(nameAndSpecies);
-                document.getElementById("pListItems").appendChild(pets);
+                pets.innerHTML= 
+                    `<h1><a onclick="viewPet(${resp[i].id})">${resp[i].type.ssrc}</a></h1><h4>${resp[i].pName}</h4>`;
+                document.getElementById(targetDiv).appendChild(pets);
             }
         })
         .catch((error) => console.log(error));
@@ -310,7 +685,7 @@ function populateCreatePage()
     document.getElementById("creationDiv").innerHTML = 
     `<label>Owner: You! <input id="newPetUID" value="${sessionStorage.getItem("uID")}" style="visibility:hidden" readonly><br>
     <label>Species: <select id="petSpeciesSelector"></select></label><br>
-    <label>Pet Name: <input id="petName" type="text"></label><br>
+    <label>Pet Name: <input id="petName" type="text" maxlength="50"></label><br>
     <label>Pronouns: 
         <select id="petPSet">
             <option value="0">${pronouns[0]}</option>
@@ -327,6 +702,8 @@ function populateCreatePage()
     <label style="visibility:hidden">Hunger: <input id="foodBox" type="text" value="3" style="visibility:hidden" readonly></label><br>
     <label style="visibility:hidden">Level: <input id="levelBox" type="number" value="1" style="visibility:hidden" readonly></label><br>`;  
     getSpeciesList();  
+    sessionStorage.setItem("userInView",0);
+    getPetsList("poundDiv");
 }
 
 //petPage
@@ -346,14 +723,13 @@ async function populatePetPage()
     let sSRC = null;
 
     if (sessionStorage.getItem("pID") != null) {pID = sessionStorage.getItem("pID");}
-    if (sessionStorage.getItem("userInView") != null) {pID = sessionStorage.getItem("userInView");}
+    if (sessionStorage.getItem("userInView") != null) {owner = sessionStorage.getItem("userInView");}
 
     let foundPet;
     let res = await fetch(`/users/${owner}/pets/${pID}`, {method: "GET", header: {"Content-Type": "application/json"}, body: null});
     let resJSON = await res.json()
             .then((resp) => 
             {
-                console.log(resp); 
                 foundPet = resp;
                 pID = foundPet.id;
                 owner = foundPet.uID; 
@@ -364,37 +740,112 @@ async function populatePetPage()
                 level = foundPet.level;
                 sName = foundPet.type.sname;
                 sSRC = foundPet.type.ssrc;
+                sessionStorage.setItem("currentPet",JSON.stringify(foundPet));
 
                 if (pName != null && sName != null) {document.getElementById("pNameBanner").innerText=`${pName} the ${sName}'s page!`;}
 
                 if (pName != null && sName != null) {document.getElementById("pDataHere").innerHTML = `<h1>${sSRC}</h1><br>
-                    <a id="ownerName" href="userPage/${owner}"></a><br>
+                    <a id="ownerName" href="userPage.html" onclick="viewUser(${owner})"></a><br>
                     <label>Pet Name: <input id="petName" type="text" value="${pName}" readonly> the ${sName}</label><br>
                     <label>Pronouns: 
-                        <select id="petPSet" disabled>
-                            <option value="0">${pronouns[0]}</option>
-                            <option value="1">${pronouns[1]}</option>
-                            <option value="2">${pronouns[2]}</option>
-                            <option value="3">${pronouns[3]}</option>
-                            <option value="4">${pronouns[4]}</option>
-                            <option value="5">${pronouns[5]}</option>
-                            <option value="6">${pronouns[6]}</option>
+                        <select id="petPSet">
+                            <option id="ps0" value="0">${pronouns[0]}</option>
+                            <option id="ps1" value="1">${pronouns[1]}</option>
+                            <option id="ps2" value="2">${pronouns[2]}</option>
+                            <option id="ps3" value="3">${pronouns[3]}</option>
+                            <option id="ps4" value="4">${pronouns[4]}</option>
+                            <option id="ps5" value="5">${pronouns[5]}</option>
+                            <option id="ps6" value="6">${pronouns[6]}</option>
                         </select>
                     </label><br>
                     <label>Contentment: <input id="funBox" type="text" value="${contentment[fun]}" readonly></label><br>
                     <label>Hunger: <input id="foodBox" type="text" value="${hunger[food]}" readonly></label><br>
                     <label>Level: <input id="levelBox" type="number" value="${level}" readonly></label><br>`;}
 
-                document.getElementById("ownerName").innerText = `User_${owner}`; //do something to get the owner's username here 
+                if (owner > 0) {getOwnerUName(owner);}
+                else document.getElementById("ownerName").innerText = "Pound";
                 document.getElementById("petPSet").selectedIndex = pSet;
+                document.getElementById(`ps${pSet}`).setAttribute("selected", "selected");
+                if (sessionStorage.getItem("uID")==owner)
+                {
+                    document.getElementById("petName").removeAttribute("readonly");
+                    document.getElementById("pDataHere").innerHTML += `<button onclick="modifyPet()">Submit Changes</button>`;
+                    document.getElementById("pDataHere").innerHTML += `<button onclick="petToPound()">Send To Pound</button>`;
+                }
+                else {document.getElementById("petPSet").setAttribute("disabled", true);}
+                if (owner==0) {document.getElementById("pDataHere").innerHTML += `<button onclick="petFromPound()">Adopt from Pound</button>`;}
             })
 
             .catch((error) => {console.log(error)});
 }
 
-//inventoryPage
-async function populateInventory() {
-    populateTopBar();
+async function getOwnerUName(uID) {    //still needs some work
+    let res = await fetch(`users/${uID}`, 
+        {
+            method: `GET`,
+            header:{"Content-Type": "application/json"},
+            body: null
+        });
+    let resJson = await res.json()
+        .then((resp) => {
+            let temp = resp.uName;
+            document.getElementById("ownerName").innerText = temp;
+        })
+        .catch((error) => 
+        {
+            console.log(error);
+        });
+}
 
-    
+async function modifyPet()
+{
+    let changedPet = JSON.parse(sessionStorage.getItem("currentPet"));
+    changedPet.pName = document.getElementById("petName").value;
+    changedPet.pSet = document.getElementById("petPSet").selectedIndex;
+
+    let res = await fetch(`/users/${changedPet.uID}/pets/${changedPet.id}`, {method: "PUT", header: {"Content-Type": "application/json"}, 
+        body: JSON.stringify(changedPet)});
+    let resJSON = res.json()
+        .then((resp) => {window.location.assign("petPage.html");})
+        .catch((error) => console.log(error));
+}
+
+async function petFromPound()
+{
+    let changedPet = JSON.parse(sessionStorage.getItem("currentPet"));
+    if (sessionStorage.getItem("uID") == null || sessionStorage.getItem("uID")<1) {alert("Bad user ID--try logging in");}
+    else 
+    {
+        changedPet.uID = sessionStorage.getItem("uID");
+        let res = await fetch(`/users/0/pets/${changedPet.id}`, {method: "PUT", header: {"Content-Type": "application/json"}, 
+            body: JSON.stringify(changedPet)});
+        let resJSON = res.json()
+            .then((resp) => {window.location.assign("petPage.html");})
+            .catch((error) => console.log(error));
+    }
+}
+
+async function petToPound()
+{
+    let changedPet = JSON.parse(sessionStorage.getItem("currentPet"));
+    let oldOwner = changedPet.uID;
+    changedPet.uID = 0;
+    {
+        let res = await fetch(`/users/${oldOwner}/pets/${changedPet.id}`, {method: "PUT", header: {"Content-Type": "application/json"}, 
+            body: JSON.stringify(changedPet)});
+        let resJSON = res.json()
+            .then((resp) => {window.location.assign("petPage.html");})
+            .catch((error) => console.log(error));
+    }
+}
+
+
+//Utility
+function titleCase(sentence) {
+    let splitStr = sentence.split(" ");
+    let str = "";
+    for (let x of splitStr) {
+        str += x.charAt(0).toUpperCase() + x.slice(1) +" ";
+    }
+    return str.substring(0, str.length - 1);
 }
