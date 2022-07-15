@@ -48,64 +48,6 @@ Feature: Top Bar
     Then The User navigates to the Login page
     And The User is logged out
     
-  @UserProfileUserProfile
-  Scenario: User Profile to User Profile
-    Given The User is logged in
-    And The User is on the User Profile
-    When The User clicks on the User Profile
-    Then The User navigates to the User Profile page
-
-  @UserProfileInventory
-  Scenario: User Profile to Inventory
-    Given The User is logged in
-    And The User is on the User Profile
-    When The User clicks on the Inventory
-    Then The User navigates to the Inventory page
-    
-  @UserProfileHomePage
-  Scenario: User Profile to Home Page
-    Given The User is logged in
-    And The User is on the User Profile
-    When The User clicks on the Home Page
-    Then The User navigates to the Home Page page
-    
-  @UserProfileLogOut
-  Scenario: UserProfile to Login
-    Given The User is logged in
-    And The User is on the User Profile
-    When The User clicks on the Login
-    Then The User navigates to the Login page
-    And The User is logged out
-    
-  @PetProfileUserProfile
-  Scenario: Pet Profile to User Profile
-    Given The User is logged in
-    And The User is on the Pet Profile
-    When The User clicks on the User Profile
-    Then The User navigates to the User Profile page
-
-  @PetProfileInventory
-  Scenario: Pet Profile to Inventory
-    Given The User is logged in
-    And The User is on the Pet Profile
-    When The User clicks on the Inventory
-    Then The User navigates to the Inventory page
-    
-  @PetProfileHomePage
-  Scenario: Pet Profile to Home Page
-    Given The User is logged in
-    And The User is on the Pet Profile
-    When The User clicks on the Home Page
-    Then The User navigates to the Home Page page
-    
-  @UserProfileLogOut
-  Scenario: UserProfile to Login
-    Given The User is logged in
-    And The User is on the Pet Profile
-    When The User clicks on the Login
-    Then The User navigates to the Login page
-    And The User is logged out
-    
   @InventoryUserProfile
   Scenario: Inventory to User Profile
     Given The User is logged in
@@ -125,7 +67,7 @@ Feature: Top Bar
     Given The User is logged in
     And The User is on the Inventory
     When The User clicks on the Home Page
-    Then The User navigates to the Inventory page            
+    Then The User navigates to the Home Page page        
     
   @UserProfileLogOut
   Scenario: UserProfile to Login
@@ -133,28 +75,4 @@ Feature: Top Bar
     And The User is on the Inventory
     When The User clicks on the Login
     Then The User navigates to the Login page
-    And The User is logged out
-    
-  @LoggedOutUserProfile
-  Scenario: Inventory to User Profile
-    Given The User is on the log in page
-    And The User is not logged in
-    When The User clicks on the User Profile
-    Then The User navigates to the User Profile page
-    And The User is given a logged out error    
-
-  @LoggedOutInventory
-  Scenario: Inventory to Inventory
-    Given The User is on the log in page
-    And The User is not logged in
-    When The User clicks on the Inventory
-    Then The User navigates to the Inventory page
-    And The User is given a logged out error    
-    
-  @LoggedOutHomePage
-  Scenario: Inventory to Home Page
-    Given The User is on the log in page
-    And The User is not logged in
-    When The User clicks on the Home Page
-    Then The User navigates to the Inventory page
-    And The User is given a logged out error            
+    And The User is logged out  
