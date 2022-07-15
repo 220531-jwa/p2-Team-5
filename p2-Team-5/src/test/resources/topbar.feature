@@ -48,6 +48,35 @@ Feature: Top Bar
     Then The User navigates to the Login page
     And The User is logged out
     
+  @UserProfileUserProfile
+  Scenario: User Profile to User Profile
+    Given The User is logged in
+    And The User is on the User Profile
+    When The User clicks on the User Profile
+    Then The User navigates to the User Profile page
+
+  @UserProfileInventory
+  Scenario: User Profile to Inventory
+    Given The User is logged in
+    And The User is on the User Profile
+    When The User clicks on the Inventory
+    Then The User navigates to the Inventory page
+    
+  @UserProfileHomePage
+  Scenario: User Profile to Home Page
+    Given The User is logged in
+    And The User is on the User Profile
+    When The User clicks on the Home Page
+    Then The User navigates to the Home Page page
+    
+  @UserProfileLogOut
+  Scenario: UserProfile to Login
+    Given The User is logged in
+    And The User is on the User Profile
+    When The User clicks on the Login
+    Then The User navigates to the Login page
+    And The User is logged out
+    
   @InventoryUserProfile
   Scenario: Inventory to User Profile
     Given The User is logged in

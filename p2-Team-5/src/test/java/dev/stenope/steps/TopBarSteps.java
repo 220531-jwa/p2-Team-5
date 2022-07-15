@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.time.Duration;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -31,31 +30,15 @@ public class TopBarSteps {
 	@Given("The User is logged in")
 	public void the_user_is_logged_in() {
 	    // Write code here that turns the phrase above into concrete actions
-		try {
-			driver.switchTo().alert().dismiss();
-		} catch (NoAlertPresentException noe) {
-			    // No alert found on page, proceed with test.
-		}
 		driver.get("http://" + urlBase + ":8080/loginPage.html");
-		
-		try {
-			driver.switchTo().alert().dismiss();
-		} catch (NoAlertPresentException noe) {
-			    // No alert found on page, proceed with test.
-		}
-		
+		new WebDriverWait(driver, Duration.ofSeconds(5));
 		WebElement loginButton = driver.findElement(By.xpath("//*[@id=\"loginLink\"]"));
 		loginButton.click();
 		driver.findElement(By.id("uNameBox")).sendKeys("userCreateTest");
 		driver.findElement(By.id("pKeyBox")).sendKeys("userCreateTest");
 		driver.findElement(By.id("loginButton")).click();
 		new WebDriverWait(driver, Duration.ofSeconds(5))
-		.until(ExpectedConditions.titleContains("Sténopé"));
-		try {
-			driver.switchTo().alert().dismiss();
-		} catch (NoAlertPresentException noe) {
-			    // No alert found on page, proceed with test.
-		}
+		.until(ExpectedConditions.titleIs("Sténopé"));
 	    //throw new io.cucumber.java.PendingException();
 	}
 
@@ -70,32 +53,13 @@ public class TopBarSteps {
 		WebElement userButton = driver.findElement(By.xpath("//*[@id=\"userLink\"]"));
 		userButton.click();
 		new WebDriverWait(driver,Duration.ofSeconds(2));
-		
-		try {
-			driver.switchTo().alert().dismiss();
-		} catch (NoAlertPresentException noe) {
-			    // No alert found on page, proceed with test.
-		}
 	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Then("The User navigates to the User Profile page")
 	public void the_user_navigates_to_the_user_profile_page() {
-		
-		try {
-			driver.switchTo().alert().dismiss();
-		} catch (NoAlertPresentException noe) {
-			    // No alert found on page, proceed with test.
-		}
-		
 		new WebDriverWait(driver,Duration.ofSeconds(5))
 		.until(ExpectedConditions.titleContains("User Profile"));
-		
-		try {
-			driver.switchTo().alert().dismiss();
-		} catch (NoAlertPresentException noe) {
-			    // No alert found on page, proceed with test.
-		}
 		
 		assertEquals("User Profile", driver.getTitle());
 	    //throw new io.cucumber.java.PendingException();
@@ -106,30 +70,13 @@ public class TopBarSteps {
 		WebElement inventoryButton = driver.findElement(By.xpath("//*[@id=\"inventoryLink\"]"));
 		inventoryButton.click();
 		new WebDriverWait(driver,Duration.ofSeconds(2));
-		try {
-			driver.switchTo().alert().dismiss();
-		} catch (NoAlertPresentException noe) {
-			    // No alert found on page, proceed with test.
-		}
 	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Then("The User navigates to the Inventory page")
 	public void the_user_navigates_to_the_inventory_page() {
-		try {
-			driver.switchTo().alert().dismiss();
-		} catch (NoAlertPresentException noe) {
-			    // No alert found on page, proceed with test.
-		}
-		
 		new WebDriverWait(driver,Duration.ofSeconds(5))
 		.until(ExpectedConditions.titleContains("Inventory"));
-		
-		try {
-			driver.switchTo().alert().dismiss();
-		} catch (NoAlertPresentException noe) {
-			    // No alert found on page, proceed with test.
-		}
 		
 		assertEquals("Inventory", driver.getTitle());
 	    //throw new io.cucumber.java.PendingException();
@@ -140,34 +87,24 @@ public class TopBarSteps {
 		WebElement homeButton = driver.findElement(By.xpath("//*[@id=\"homeLink\"]"));
 		homeButton.click();
 		new WebDriverWait(driver,Duration.ofSeconds(2));
-		
-		try {
-			driver.switchTo().alert().dismiss();
-		} catch (NoAlertPresentException noe) {
-			    // No alert found on page, proceed with test.
-		}
 	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Then("The User navigates to the Home Page page")
 	public void the_user_navigates_to_the_home_page_page() {
-		try {
-			driver.switchTo().alert().dismiss();
-		} catch (NoAlertPresentException noe) {
-			    // No alert found on page, proceed with test.
-		}
-		
 		new WebDriverWait(driver,Duration.ofSeconds(5))
-		.until(ExpectedConditions.titleContains("Sténopé"));
-		
-		try {
-			driver.switchTo().alert().dismiss();
-		} catch (NoAlertPresentException noe) {
-			    // No alert found on page, proceed with test.
-		}
+		.until(ExpectedConditions.titleIs("Sténopé"));
 		
 		assertEquals("Sténopé", driver.getTitle());
 	    //throw new io.cucumber.java.PendingException();
+	}
+
+	@Given("The User is on the User Profile")
+	public void the_user_is_on_the_user_profile() {
+		WebElement userButton = driver.findElement(By.xpath("//*[@id=\"userLink\"]"));
+		userButton.click();
+		new WebDriverWait(driver,Duration.ofSeconds(2))
+		.until(ExpectedConditions.titleContains("User Profile"));
 	}
 
 	@Given("The User is on the Inventory")
@@ -181,31 +118,13 @@ public class TopBarSteps {
 		WebElement loginButton = driver.findElement(By.xpath("//*[@id=\"loginLink\"]"));
 		loginButton.click();
 		new WebDriverWait(driver,Duration.ofSeconds(2));
-		
-		try {
-			driver.switchTo().alert().dismiss();
-		} catch (NoAlertPresentException noe) {
-			    // No alert found on page, proceed with test.
-		}
 	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Then("The User navigates to the Login page")
 	public void the_user_navigates_to_the_login_page() {
-		try {
-			driver.switchTo().alert().dismiss();
-		} catch (NoAlertPresentException noe) {
-			    // No alert found on page, proceed with test.
-		}
-		
 		new WebDriverWait(driver,Duration.ofSeconds(5))
 		.until(ExpectedConditions.titleContains("Sténopé Login"));
-		
-		try {
-			driver.switchTo().alert().dismiss();
-		} catch (NoAlertPresentException noe) {
-			    // No alert found on page, proceed with test.
-		}
 		
 		assertEquals("Sténopé Login", driver.getTitle());
 	    //throw new io.cucumber.java.PendingException();

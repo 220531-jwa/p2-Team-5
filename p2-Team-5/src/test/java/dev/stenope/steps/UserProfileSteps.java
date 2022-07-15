@@ -56,12 +56,14 @@ public class UserProfileSteps {
 		driver.findElement(By.id("uNameBox")).sendKeys(testUser.getuName());
 		driver.findElement(By.id("pKeyBox")).sendKeys(testUser.getpKey());
 		driver.findElement(By.id("loginButton")).click();
-		new WebDriverWait(driver, Duration.ofSeconds(5))
-		.until(ExpectedConditions.titleContains("Sténopé"));
 		
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+		new WebDriverWait(driver, Duration.ofSeconds(5))
+		.until(ExpectedConditions.titleIs("Sténopé"));
+		
+		//driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
 		
 		WebElement userButton = driver.findElement(By.xpath("//*[@id=\"userLink\"]"));
+		
 		userButton.click();
 		
 		new WebDriverWait(driver, Duration.ofSeconds(5))
@@ -72,21 +74,21 @@ public class UserProfileSteps {
 	public void the_user_display_name_is_displayed() {
 		WebElement displayName = driver.findElement(By.xpath("//*[@id=\"username\"]"));
 		assertEquals(displayName.getAttribute("value"), "userCreateTest");
-		throw new io.cucumber.java.PendingException();
+		//throw new io.cucumber.java.PendingException();
 	}
 
 	@Then("The User pronouns are displayed")
 	public void the_user_pronouns_are_displayed() {
 		WebElement pronouns = driver.findElement(By.xpath("//*[@id=\"userPSet\"]"));
-		assertEquals(pronouns.getAttribute("value"), "e/em/eir/eirs/emself");
-		throw new io.cucumber.java.PendingException();
+		assertEquals(pronouns.getAttribute("value"), 0);
+		//throw new io.cucumber.java.PendingException();
 	}
 
 	@Then("The User description is displayed")
 	public void the_user_description_is_displayed() {
 		WebElement blurb = driver.findElement(By.xpath("//*[@id=\"dBlurb\"]"));
 		assertEquals(blurb.getText(), "userCreateTest blurb");
-		throw new io.cucumber.java.PendingException();
+		//throw new io.cucumber.java.PendingException();
 	}
 
 
@@ -114,14 +116,14 @@ public class UserProfileSteps {
 		driver.findElement(By.id("pKeyBox")).sendKeys(testUser.getpKey());
 		driver.findElement(By.id("loginButton")).click();
 		new WebDriverWait(driver, Duration.ofSeconds(5))
-		.until(ExpectedConditions.titleContains("Sténopé"));
+		.until(ExpectedConditions.titleIs("Sténopé"));
 		
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
 		
 		WebElement userButton = driver.findElement(By.xpath("//*[@id=\"userLink\"]"));
 		
 		new WebDriverWait(driver, Duration.ofSeconds(5))
-		.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("🧑 " + testUser.getuName())));
+		.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"userLink\"]")));
 		
 		userButton.click();
 		
@@ -145,6 +147,8 @@ public class UserProfileSteps {
 	public void a_list_of_the_user_s_pets_is_displayed() {
 	    // Write code here that turns the phrase above into concrete actions
 	    //throw new io.cucumber.java.PendingException();
+		//TODO FIX THIS WHEN YOU ACTUALLY GET USERS TO LOAD
+		assertEquals(true, true);
 	}
 	
 }
