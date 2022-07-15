@@ -4,9 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import dev.stenope.models.User;
 import dev.stenope.models.UserComment;
+import dev.stenope.models.UserCommentReader;
 import dev.stenope.utils.ConnectionUtil;
 
 public class UserDAO {
@@ -114,7 +117,7 @@ public class UserDAO {
 	public UserComment addComment(int wId, int hId, String commentText) {
 		//User sender = UserDAO.getUserByID(wId);
 		//User recipient = UserDAO.getUserByID(hId);
-		String sql = "insert into p2t5.comments(wid, hid, body) values (?, ?, ?);";
+		String sql = "insert into p2t5.comments(wid, hid, body) values (?, ?, ?) returning *;";
 		try (Connection conn = cu.getConnection()) {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, wId);
@@ -133,5 +136,33 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public List<UserCommentReader> getComments(int hId) {
+		ArrayList<UserCommentReader> commentList = new ArrayList<UserCommentReader>();
+		String sql = "select users.id, dname, hid, body from p2t5.comments, p2t5.users "
+				+ "where comments.wid = users.id "
+				+ "and hid = ?;";
+		
+		try(Connection conn = cu.getConnection()) {
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, hId);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				do {
+					commentList.add(
+						new UserCommentReader(rs.getInt("id"), rs.getString("dname"), rs.getInt("hid"), rs.getString("body"))
+							);
+					
+				} while (rs.next());
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			commentList = null;
+		}
+		
+		return commentList;
 	}
 }

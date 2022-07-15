@@ -1,7 +1,10 @@
 package dev.stenope.controllers;
 
+import java.util.List;
+
 import dev.stenope.models.User;
 import dev.stenope.models.UserComment;
+import dev.stenope.models.UserCommentReader;
 import dev.stenope.respositories.UserDAO;
 import dev.stenope.services.UserService;
 import io.javalin.http.Context;
@@ -69,6 +72,8 @@ public class UserController {
 	
 	public static void addComment(Context ctx) {
 		UserComment c = ctx.bodyAsClass(UserComment.class);
+		c.setwID(Integer.parseInt(ctx.pathParam("{id0}")));
+		c.sethID(Integer.parseInt(ctx.pathParam("{idOther}")));
 		UserComment cAdd = us.addComment(c.getwID(), c.gethID(), c.getBody());
 		if (cAdd != null) {
 			ctx.status(201);
@@ -90,6 +95,20 @@ public class UserController {
 		} else {
 			ctx.status(404);
 			ctx.sessionAttribute("User not found");
+		}
+	}
+	
+	public static void getComments(Context ctx) {
+		int hId = Integer.parseInt(ctx.pathParam("{id0}"));
+		List<UserCommentReader> comments = us.getComments(hId);
+		
+		if (comments == null) {
+			ctx.status(404);
+		} else if (comments.isEmpty()) {
+			ctx.status(204);
+		} else {
+			ctx.json(comments);
+			ctx.status(200);
 		}
 	}
 }

@@ -1,13 +1,13 @@
 package dev.stenope.models;
 
-public class UserComment {
+public class UserCommentReader {
 
 	private int id;
-	private int wID; //writer user id
+	private String wID; //writer user id
 	private int hID; //host user id (that is, which profile it's posted to)
 	private String body;
 	
-	public UserComment(int id, int wID, int hID, String body) {
+	public UserCommentReader(int id, String wID, int hID, String body) {
 		super();
 		this.id = id;
 		this.wID = wID;
@@ -15,7 +15,7 @@ public class UserComment {
 		this.body = body;
 	}
 	
-	public UserComment() {
+	public UserCommentReader() {
 		super();
 	}
 
@@ -23,7 +23,7 @@ public class UserComment {
 		return id;
 	}
 
-	public int getwID() {
+	public String getwID() {
 		return wID;
 	}
 
@@ -35,13 +35,11 @@ public class UserComment {
 		return body;
 	}
 	
-	
-
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	public void setwID(int wID) {
+	public void setwID(String wID) {
 		this.wID = wID;
 	}
 
@@ -55,6 +53,7 @@ public class UserComment {
 
 	@Override
 	public String toString() {
-		return "UserComment [id=" + id + ", wID=" + wID + ", hID=" + hID + ", body=" + body + "]";
+		return "UserCommentReader [id=" + id + ", wID=" + wID + ", hID=" + hID + ", body=" + body + "]";
 	}
+	
 }
