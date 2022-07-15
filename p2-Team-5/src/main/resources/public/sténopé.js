@@ -605,6 +605,46 @@ async function populateUserPage()
                 console.log(error);
                 alert("No such user");
             });
+
+
+    res = await fetch(`users/${sessionStorage.userInView}/comments`, {method: `GET`, header:{"Content-Type": "application/json"}, body: null});
+    if (res.status == 200) {
+        resJson = await res.json()
+        .then((resp) => {
+
+            var commentList = document.createElement('table');
+            let headers = commentList.insertRow();
+            let headerCell = headers.insertCell();
+            headerCell.appendChild(document.createTextNode("User"));
+            headerCell = headers.insertCell();
+            headerCell.appendChild(document.createTextNode("Comment Text"));
+
+            for(let i = 0; i < resp.length; i ++) {
+                let row = commentList.insertRow();
+                let cell = row.insertCell();
+                cell.appendChild(document.createTextNode(getDispName(resp[i].wID)));
+                cell = row.insertCell();
+                cell.appendChild(document.createTextNode(resp[i].body));
+            }
+            document.getElementById("commentsHere").appendChild(commentList);
+        })
+        .catch((error) => 
+        {
+            console.log(error);
+            alert("Error Loading Comments");
+        });
+    } else if (res.status == 204) {
+        let text = document.createElement("p");
+        text.innerHTML = "No Comments, You can change that by adding one!";
+        document.getElementById("commentsHere").appendChild(text);
+    } else {
+        alert("Error Loading Comments")
+    }
+    
+}
+
+function getDispName(id) {
+    return "TEMP DISPLAY NAME";
 }
 
 function addComment() {
