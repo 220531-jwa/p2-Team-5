@@ -32,17 +32,21 @@ public class PetService {
 	public Pet modifyPet(Pet p, Item i, String operation) //add double-checking, pound support, etc.
 	{	
 		Pet output = p;
-		if (operation.equals("itemUse")) 
+		if (p.getId()<1) {return null;}
+		else
 		{
-			if (i.getType().gettCat().equals("food") && output.getFood()<6) {output.setFood(output.getFood()+1);}
-			else if (i.getType().gettCat().equals("toy") && output.getFun()<6) {output.setFun(output.getFun()+1);}
+			if (operation.equals("itemUse")) 
+			{
+				if (i.getType().gettCat().equals("food") && output.getFood()<6) {output.setFood(output.getFood()+1);}
+				else if (i.getType().gettCat().equals("toy") && output.getFun()<6) {output.setFun(output.getFun()+1);}
+			}
+			else if (operation.equals("hunger"))
+			{
+				p.setFood(Math.max(p.getFood()-1, 0));
+			}
+			else {;}
+			return pDAO.modifyPet(output);
 		}
-		else if (operation.equals("hunger"))
-		{
-			p.setFood(Math.max(p.getFood()-1, 0));
-		}
-		else {;}
-		return pDAO.modifyPet(output);
 	}
 	
 	//Delete
