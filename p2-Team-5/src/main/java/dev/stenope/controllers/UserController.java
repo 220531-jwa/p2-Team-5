@@ -1,5 +1,7 @@
 package dev.stenope.controllers;
 
+import java.util.List;
+
 import dev.stenope.models.User;
 import dev.stenope.models.UserComment;
 import dev.stenope.respositories.UserDAO;
@@ -87,6 +89,20 @@ public class UserController {
 		} else {
 			ctx.status(404);
 			ctx.sessionAttribute("User not found");
+		}
+	}
+	
+	public static void getComments(Context ctx) {
+		int hId = Integer.parseInt(ctx.pathParam("{id0}"));
+		List<UserComment> comments = us.getComments(hId);
+		
+		if (comments == null) {
+			ctx.status(404);
+		} else if (comments.isEmpty()) {
+			ctx.status(204);
+		} else {
+			ctx.json(comments);
+			ctx.status(200);
 		}
 	}
 }

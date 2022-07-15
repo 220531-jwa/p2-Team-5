@@ -1,5 +1,7 @@
 package dev.stenope.services;
 
+import java.util.List;
+
 import dev.stenope.models.User;
 import dev.stenope.models.UserComment;
 import dev.stenope.respositories.UserDAO;
@@ -44,5 +46,9 @@ public class UserService {
 	public User viewOtherUsersPage(String uName) {
 		User otherUser = userDao.getUserByUserName(uName);
 		return otherUser;
+	}
+	
+	public List<UserComment> getComments(int hId) {
+		return userDao.getComments(hId);
 	}
 }
