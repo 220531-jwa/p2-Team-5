@@ -34,8 +34,8 @@ public class UserService {
 		return u;
 	}
 
-	public User editUser(User u) {
-		User uNew = userDao.editUser(u);
+	public User editUser(int uId) {
+		User uNew = userDao.editUser(uId);
 		return uNew;
 	}
 	

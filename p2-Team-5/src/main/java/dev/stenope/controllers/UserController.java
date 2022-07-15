@@ -59,7 +59,7 @@ public class UserController {
 	
 	public static void editUser(Context ctx) {
 		User u = ctx.bodyAsClass(User.class);
-		User uEdit = us.editUser(u);
+		User uEdit = us.editUser(u.getId());
 		if (uEdit != null) {
 			ctx.status(200);
 			ctx.json(uEdit);
