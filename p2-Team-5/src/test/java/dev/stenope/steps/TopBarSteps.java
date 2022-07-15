@@ -9,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.JavascriptExecutor;
 
 import dev.stenope.pages.TopBarPage;
 import dev.stenope.runners.TopBarRunner;
@@ -22,6 +23,9 @@ public class TopBarSteps {
 	
 	public static WebDriver driver = TopBarRunner.driver;
 	public static TopBarPage topBar = TopBarRunner.topBar;
+	public static String urlBase = "localhost";
+//	public static String urlBase = "ec2-54-67-101-32.us-west-1.compute.amazonaws.com";
+	public static JavascriptExecutor js;
 
 	@Given("The User is logged in")
 	public void the_user_is_logged_in() {
@@ -31,7 +35,7 @@ public class TopBarSteps {
 
 	@Given("The User is on the Home Page")
 	public void the_user_is_on_the_home_page() {
-		driver.get("http://localhost:8080/homePage.html");
+		driver.get("http://" + urlBase + ":8080/homePage.html");
 	    //throw new io.cucumber.java.PendingException();
 	}
 
@@ -86,19 +90,19 @@ public class TopBarSteps {
 
 	@Given("The User is on the User Profile")
 	public void the_user_is_on_the_user_profile() {
-		driver.get("http://localhost:8080/userPage.html");
+		driver.get("http://" + urlBase + ":8080/userPage.html");
 	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Given("The User is on the Pet Profile")
 	public void the_user_is_on_the_pet_profile() {
-		driver.get("http://localhost:8080/petPage.html");
+		driver.get("http://" + urlBase + ":8080/petPage.html");
 	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Given("The User is on the Inventory")
 	public void the_user_is_on_the_inventory() {
-		driver.get("http://localhost:8080/inventory.html");
+		driver.get("http://" + urlBase + ":8080/inventory.html");
 	    //throw new io.cucumber.java.PendingException();
 	}
 	
@@ -121,19 +125,20 @@ public class TopBarSteps {
 	@Then("The User is logged out")
 	public void the_user_is_logged_out() {
 	    // Write code here that turns the phrase above into concrete actions
+		
 	    throw new io.cucumber.java.PendingException();
 	}
 
 	@Given("The User is on the log in page")
 	public void the_user_is_on_the_log_in_page() {
-		driver.get("http://localhost:8080/loginPage.html");
-	    //throw new io.cucumber.java.PendingException();
+		driver.get("http://" + urlBase + ":8080/loginPage.html");
+		//throw new io.cucumber.java.PendingException();
 	}
 
 	@Given("The User is not logged in")
 	public void the_user_is_not_logged_in() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		js.executeScript(String.format("window.sessionStorage.clear();"));
+	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Then("The User is given a logged out error")
