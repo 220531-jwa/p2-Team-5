@@ -19,6 +19,9 @@ public class UserController {
 			ctx.status(201);
 			ctx.json(uCreated);
 			ctx.sessionAttribute("User created: ", uCreated.getuName());
+		} else {
+			ctx.status(404);
+			ctx.json("user couldn't be created");
 		}
 	}
 	
