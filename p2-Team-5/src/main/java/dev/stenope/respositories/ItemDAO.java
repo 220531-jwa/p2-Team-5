@@ -12,7 +12,7 @@ import dev.stenope.models.ItemType;
 import dev.stenope.utils.ConnectionUtil;
 
 public class ItemDAO {
-		
+
 	private static ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
 	
 	public Item createItem(Item i) {

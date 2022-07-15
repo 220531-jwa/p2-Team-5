@@ -9,8 +9,7 @@ import dev.stenope.models.Pet;
 import dev.stenope.models.PetType;
 
 public class PetService {
-
-	private static PetDAO pDAO;
+private static PetDAO pDAO;
 	
 	public PetService(PetDAO petDao) {pDAO = petDao;}
 	

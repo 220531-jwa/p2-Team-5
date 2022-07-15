@@ -9,7 +9,7 @@ import io.javalin.http.Context;
 
 public class ItemController {
 	
-	private static ItemService itemService = new ItemService();
+private static ItemService itemService = new ItemService();
 	
 	public static void createItem(Context ctx) {
 		int tID = Integer.parseInt(ctx.queryParam("typeId"));
