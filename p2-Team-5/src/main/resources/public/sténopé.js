@@ -82,6 +82,53 @@ function hidePass()
     else {document.getElementById('pKeyBox').setAttribute("type","password");}
 }
 
+function createUser() {
+    document.getElementById("creationDiv").innerHTML = 
+    `<label>Username: <input id="newUserUName" type="text" maxlength="50"><br>
+    <label>Password: <input id="newUserPKey" type="password" maxlength="50"></label> <button onclick="hidePass()">👁</button><br>
+    <label>Name: <input id="newUserDName" type="text" maxlength="50"></label><br>
+    <label>Pronouns: 
+        <select id="newUserPSet">
+            <option value="0">${pronouns[0]}</option>
+            <option value="1">${pronouns[1]}</option>
+            <option value="2">${pronouns[2]}</option>
+            <option value="3">${pronouns[3]}</option>
+            <option value="4">${pronouns[4]}</option>
+            <option value="5">${pronouns[5]}</option>
+            <option value="6">${pronouns[6]}</option>
+        </select>
+    </label><br>
+    <label>Blurb: <textarea id="newUserDBlurb" maxlength="200"></textarea></label>
+    <button id="submitNewUser" onclick="submitNewUser()">Submit</button>`;
+}
+
+async function submitNewUser() {
+    let newUser = new Object;
+    //newUser.uID = sessionStorage.getItem("uID");
+    newUser.uName = document.getElementById("newUserUName").value;
+    newUser.pKey = document.getElementById("newUserPKey").value;
+    newUser.dName = document.getElementById("newUserDName").value;
+    newUser.pSet = document.getElementById("newUserPSet").value;
+    newUser.dBlurb = document.getElementById("newUserDBlurb").value;
+    
+    newUser.type = new Object;
+    let res = await fetch(`/create`, 
+        {
+            method: "POST",
+            header: {"Content-Type": "application/json"}, 
+            body:JSON.stringify(newUser)
+        });
+    let resJSON = res.json()
+        .then((resp) => 
+        {
+            console.log(resp);
+        })
+        .catch((error) => {
+            console.log(error);
+            alert("User could not be created");
+        });
+}
+
 async function loginCheck()
 {
     let uname = document.getElementById("uNameBox").value; 
