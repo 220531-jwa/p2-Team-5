@@ -651,11 +651,75 @@ async function populateUserPage()
                 console.log(error);
                 alert("No such user");
             });
+
+
+    res = await fetch(`users/${sessionStorage.userInView}/comments`, {method: `GET`, header:{"Content-Type": "application/json"}, body: null});
+    if (res.status == 200) {
+        resJson = await res.json()
+        .then((resp) => {
+
+            var commentList = document.createElement('table');
+            let headers = commentList.insertRow();
+            let headerCell = headers.insertCell();
+            headerCell.appendChild(document.createTextNode("User"));
+            headerCell = headers.insertCell();
+            headerCell.appendChild(document.createTextNode("Comment Text"));
+
+            for(let i = 0; i < resp.length; i ++) {
+                let row = commentList.insertRow();
+                let cell = row.insertCell();
+                cell.appendChild(document.createTextNode((resp[i].wID)));
+                cell = row.insertCell();
+                cell.appendChild(document.createTextNode(resp[i].body));
+            }
+            document.getElementById("commentsHere").appendChild(commentList);
+        })
+        .catch((error) => 
+        {
+            console.log(error);
+            alert("Error Loading Comments");
+        });
+    } else if (res.status == 204) {
+        let text = document.createElement("p");
+        text.innerHTML = "No Comments, You can change that by adding one!";
+        document.getElementById("commentsHere").appendChild(text);
+    } else {
+        alert("Error Loading Comments")
+    }
+    
 }
 
-function addComment() {
-    let comment = document.getElementById("comment").value;
-    return comment;
+function getDispName(id) {
+    return "TEMP DISPLAY NAME";
+}
+
+async function addComment() {
+    let commentBody = document.getElementById("comment").value;
+    let comment = {
+        "id": 1,
+        "wID": sessionStorage.uID,
+        "hID": sessionStorage.userInView,
+        "body": commentBody
+    }
+
+    //console.log(comment);
+
+    res = await fetch(`users/${sessionStorage.uID}/${sessionStorage.userInView}/comment`, {method: `POST`, header:{"Content-Type": "application/json"}, body: JSON.stringify(comment)});
+    if (res.status == 201) {
+        resJson = await res.json()
+        .then((resp) => {
+            setTimeout(function(){window.location.assign("userPage.html")},2000);
+        })
+        .catch((error) => 
+        {
+            console.log(error);
+            alert("Error Posting Comments");
+        });
+    } else {
+        alert("Error Posting Comments")
+    }
+
+    return commentBody;
 }
 
 async function editPage() {  //unfinished

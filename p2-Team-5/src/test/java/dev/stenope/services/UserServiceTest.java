@@ -9,6 +9,7 @@ import org.junit.jupiter.api.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import dev.stenope.models.User;
+import dev.stenope.models.UserComment;
 import dev.stenope.respositories.UserDAO;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,6 +23,19 @@ public class UserServiceTest {
 	public static void setUp() {
 		mockUserDao = mock(UserDAO.class);
 		userService = new UserService(mockUserDao);
+	}
+	
+	@Test
+	public void createUserTestPositive() {
+		User testUser = new User(1, "User", "Pass", "Test", "Test", 0);
+		when(mockUserDao.createUser(testUser)).thenReturn(testUser);
+		assertEquals(userService.createUser(testUser), testUser);
+	}
+	
+	@Test
+	public void createUserTestNoSuchUser() {
+		when(mockUserDao.createUser(null)).thenReturn(null);
+		assertEquals(userService.createUser(null), null);
 	}
 	
 	@Test
@@ -74,5 +88,23 @@ public class UserServiceTest {
 		assertEquals(userService.editUser(testUser), null);
 	}
 	
+	@Test
+	public void addCommentTestPositive() {
+		
+	}
 	
+	@Test
+	public void addCommentTestNegative() {
+		
+	}
+	
+	@Test
+	public void viewOtherUserTestPositive() {
+		
+	}
+	
+	@Test
+	public void viewOtherUserTestNegative() {
+		
+	}
 }
