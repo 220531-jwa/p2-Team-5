@@ -35,12 +35,21 @@ public class ItemService {
 	public boolean changeItemOwner(int itemId, int user, int newOwner) {
 		//Checks if user owns the pet they are transferring to
 		Item item = itemDao.getItemByID(itemId);
-		Pet reciever = petService.getPetByID(newOwner);
-		if (item == null || reciever == null || reciever.getuID() != user) {
-			return false;
+		if (newOwner == 0) {
+			if (item == null) {
+				return false;
+			}
+			return itemDao.returnToOwner(item);
+		} else {
+			Pet reciever = petService.getPetByID(newOwner);
+			if (item == null || reciever == null || reciever.getuID() != user) {
+				return false;
+			}
+			item.setpID(newOwner);
+			return itemDao.modifyItem(item);
 		}
-		item.setpID(newOwner);
-		return itemDao.modifyItem(item);
+		
+		
 	}
 	
 	
@@ -58,6 +67,15 @@ public class ItemService {
 	
 	public List<ItemType> getItemTypes() {
 		return itemDao.getItemTypes();
+	}
+	
+	public boolean deleteItem(int own, int item) {
+		Item deadItemWalking = itemDao.getItemByID(item);
+		if (deadItemWalking == null || deadItemWalking.getuID() != own) {
+			return false;
+		}
+		
+		return itemDao.deleteItem(item);
 	}
 	
 }

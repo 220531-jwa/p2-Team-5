@@ -24,59 +24,12 @@
         <div id="topBarInsert"></div>
         <h4>User Inventory</h4>
         <div class = "grid-container "id="backpack">
-            <div class="grid-item">
-                <select name="userItemDropdown">
-                    <option onclick="useItem()">Use</option>\
-                    <option onclick="giveToPet()">Give to Pet</option>
-                    <option onclick="dropItem()">Drop</option>
-                </select>
-            </div>
-            <div class="grid-item">
-                <select name="userItemDropdown">
-                    <option onclick="useItem()">Use</option>\
-                    <option onclick="giveToPet()">Give to Pet</option>
-                    <option onclick="dropItem()">Drop</option>
-                </select>
-            </div>
-            <div class="grid-item">
-                <select name="userItemDropdown">
-                    <option onclick="useItem()">Use</option>\
-                    <option onclick="giveToPet()">Give to Pet</option>
-                    <option onclick="dropItem()">Drop</option>
-                </select>
-            </div>
-            <div class="grid-item">
-                <select name="userItemDropdown">
-                    <option onclick="useItem()">Use</option>\
-                    <option onclick="giveToPet()">Give to Pet</option>
-                    <option onclick="dropItem()">Drop</option>
-                </select>
-            </div>
-            <div class="grid-item">
-                <select name="userItemDropdown">
-                    <option onclick="useItem()">Use</option>\
-                    <option onclick="giveToPet()">Give to Pet</option>
-                    <option onclick="dropItem()">Drop</option>
-                </select>
-            </div>
-            
         </div>
         <h4>Pets Inventory</h4>
-        <label for="whichPet">Select Pet</label>
-        <input type="number" id="whichPet" name="whichPet">
+        <select id = petDrop onchange="loadPetBackpack()" name = "petDropdown">
+            <option disabled selected value> -- Select a Pet -- </option>
+        </select>
         <div class = "grid-container" id="petBackpack">
-            <div class="grid-item">
-                <select name="petItemDropdown">
-                    <option onclick="petUseItem()">Use</option>
-                    <option onclick="petDropItem()">Drop</option>
-                </select>
-            </div>
-            <div class="grid-item">
-                <select name="petItemDropdown">
-                    <option onclick="petUseItem()">Use</option>
-                    <option onclick="petDropItem()">Drop</option>
-                </select>
-            </div>
         </div>
         <script src="sténopé.js"></script>
     </body>

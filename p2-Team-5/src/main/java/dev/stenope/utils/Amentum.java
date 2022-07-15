@@ -25,6 +25,7 @@ public class Amentum {
 		app.routes(() -> {
 			//S3 link http://p2-t5-stenope-bucket.s3-website-us-west-1.amazonaws.com
 			//get((ctx) ->ctx.redirect("http://http://p2-t5-stenope-bucket.s3-website-us-west-1.amazonaws.com/homePage.html",301));
+			path("/doHungerTick", () -> {get(PetController::doHungerTick);});
 			path("/login", () -> {post(UserController::login);});
 			path("/logout", () -> {post(UserController::logout);});
 			path("/petTypes", () -> {get(PetController::getPetTypes);});
@@ -40,12 +41,6 @@ public class Amentum {
 				path("/{id0}", () -> {
 					get(UserController::getUserByID);
 					put(UserController::editUser);
-//					path("/{idOther}", () -> {
-//						get(UserController::viewOtherUsersPage);
-//						path("/comment", () -> {
-//							post(UserController::addComment);
-//						});
-//					});
 					path("/pets", () -> {
 						get(PetController::getPetListByUID);
 						post(PetController::createPet);
@@ -62,6 +57,7 @@ public class Amentum {
 						post(ItemController::createItem);
 						path("/{itemId}", () -> {
 							get(ItemController::getItem);
+							delete(ItemController::deleteItem);
 							put(ItemController::modifyItem);
 							path("/give", () -> {
 								path("/{petId}", () -> {
@@ -75,13 +71,19 @@ public class Amentum {
 							});
 						});
 					});
+					path("/{idOther}", () -> {
+						get(UserController::viewOtherUsersPage);
+						path("/comment", () ->  {
+							post(UserController::addComment);
+						});
+					});
 				});
 			});
 		});
 		
 		app.exception(Exception.class, (e, ctx) -> {
 		    ctx.status(404);
-		    //e.printStackTrace();
+		    e.printStackTrace();
 		    ctx.result("Exception 404 Message");
 		});
 	}

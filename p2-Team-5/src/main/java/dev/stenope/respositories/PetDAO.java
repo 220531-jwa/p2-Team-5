@@ -80,11 +80,11 @@ public class PetDAO {
 	
 	public List<Pet> getPetListByUserID(int uid) {
 		List<Pet> pList = new ArrayList<>();
-		String sql = "select * from pets where uid = ?;";
+		String sql = (uid == 0) ? "select * from pets where uid is null;":  "select * from pets where uid = ?;";
 		try (Connection conn = cu.getConnection();)
 		{
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, uid);
+			if (uid>0) {ps.setInt(1, uid);}
 			ResultSet rs = ps.executeQuery();
 			
 			while (rs.next())
@@ -106,6 +106,26 @@ public class PetDAO {
 		{
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, pname);
+			ResultSet rs = ps.executeQuery();
+			
+			while (rs.next())
+			{
+				pList.add(new Pet(rs.getInt("id"), rs.getInt("uid"), rs.getString("pname"), rs.getInt("pset"), rs.getInt("fun"), 
+						rs.getInt("food"), rs.getInt("plevel"), getPTypeByID(rs.getInt("sid"))));
+			}
+			return pList;
+		}
+		catch(SQLException e) {e.printStackTrace();}
+		return null;
+	}
+	
+	public List<Pet> getAllPets() 
+	{
+		List<Pet> pList = new ArrayList<>();
+		String sql = "select * from pets;";
+		try(Connection conn = cu.getConnection();)
+		{
+			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
 			while (rs.next())
@@ -141,20 +161,33 @@ public class PetDAO {
 	//Update
 	public Pet modifyPet(Pet p) {
 		Pet output = null;
-		String sql = "update pets set uid = ?, sid = ?, pset = ?, pname = ?, fun = ?, food = ?, plevel = ? where id = ?";
-		sql += " returning *;";
+		String sql = "update pets set uid = ?, sid = ?, pset = ?, pname = ?, fun = ?, food = ?, plevel = ? where id = ? returning *;";
+		if (p.getuID()==0) {sql = "update pets set uid = null, sid = ?, pset = ?, pname = ?, fun = ?, food = ?, plevel = ? where id = ? returning *;";}
 		try (Connection conn = cu.getConnection();)
 		{
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, p.getuID());
-			ps.setInt(2, p.getType().getID());
-			ps.setInt(3, p.getpSet());
-			ps.setString(4, p.getpName());
-			ps.setInt(5, p.getFun());
-			ps.setInt(6, p.getFood());
-			ps.setInt(7, p.getLevel());
-			ps.setInt(8, p.getId());
-			
+			if (p.getuID()!=0)
+			{
+				
+				ps.setInt(1, p.getuID());
+				ps.setInt(2, p.getType().getID());
+				ps.setInt(3, p.getpSet());
+				ps.setString(4, p.getpName());
+				ps.setInt(5, p.getFun());
+				ps.setInt(6, p.getFood());
+				ps.setInt(7, p.getLevel());
+				ps.setInt(8, p.getId());				
+			}
+			else 
+			{
+				ps.setInt(1, p.getType().getID());
+				ps.setInt(2, p.getpSet());
+				ps.setString(3, p.getpName());
+				ps.setInt(4, p.getFun());
+				ps.setInt(5, p.getFood());
+				ps.setInt(6, p.getLevel());
+				ps.setInt(7, p.getId());	
+			}
 			ResultSet rs = ps.executeQuery();
 			
 			while (rs.next())
