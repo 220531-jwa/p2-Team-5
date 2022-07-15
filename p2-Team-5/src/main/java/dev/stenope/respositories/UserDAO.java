@@ -16,8 +16,7 @@ public class UserDAO {
 	public User createUser(User u) {
 		//User sender = UserDAO.getUserByID(wId);
 		//User recipient = UserDAO.getUserByID(hId);
-		String sql = "insert into p2t5.users(uname, pkey, dname, pset, dblurb) values (?, ?, ?, ?)"
-				+ "where not exists (select * from p2t5.users);";
+		String sql = "insert into p2t5.users values (default, ?, ?, ?, ?, ?) returning *;";
 		try (Connection conn = cu.getConnection()) {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, u.getuName());
@@ -26,7 +25,7 @@ public class UserDAO {
 			ps.setInt(4, u.getpSet());
 			ps.setString(5, u.getdBlurb());
 			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
+			while (rs.next()) {
 				return new User(
 						rs.getInt("id"),
 						rs.getString("uname"),

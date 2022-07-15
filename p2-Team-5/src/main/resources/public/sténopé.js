@@ -104,14 +104,12 @@ function createUser() {
 
 async function submitNewUser() {
     let newUser = new Object;
-    //newUser.uID = sessionStorage.getItem("uID");
+    newUser.id = 0;
     newUser.uName = document.getElementById("newUserUName").value;
     newUser.pKey = document.getElementById("newUserPKey").value;
     newUser.dName = document.getElementById("newUserDName").value;
     newUser.pSet = document.getElementById("newUserPSet").value;
     newUser.dBlurb = document.getElementById("newUserDBlurb").value;
-    
-    newUser.type = new Object;
     let res = await fetch(`/create`, 
         {
             method: "POST",
@@ -122,6 +120,7 @@ async function submitNewUser() {
         .then((resp) => 
         {
             console.log(resp);
+            window.location.assign('loginPage.html');
         })
         .catch((error) => {
             console.log(error);
