@@ -15,6 +15,10 @@ public class Item {
 		this.uID = uID;
 		this.pID = pID;
 	}
+	
+	public Item() {
+		super();
+	}
 
 
 	public int getId() {
@@ -54,6 +58,11 @@ public class Item {
 
 	public void setpID(int pID) {
 		this.pID = pID;
+	}
+
+	@Override
+	public String toString() {
+		return "Item [id=" + id + ", type=" + type + ", uID=" + uID + ", pID=" + pID + "]";
 	}
 	
 	

@@ -11,6 +11,8 @@ import org.junit.jupiter.api.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import dev.stenope.respositories.PetDAO;
+import dev.stenope.models.Item;
+import dev.stenope.models.ItemType;
 import dev.stenope.models.Pet;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,15 +38,17 @@ public class PetServiceTest {
 	@Test
 	public void modifyPetTest() {
 		Pet testPet = new Pet(1, 1, "Test", 0, 0, 0, 0, null);
+		Item doodad = new Item(0,new ItemType(0,0,"","",""),0,0);
 		when(mockPetDao.modifyPet(testPet)).thenReturn(testPet);
-		assertEquals(petService.modifyPet(testPet), testPet);
+		assertEquals(petService.modifyPet(testPet,doodad,""), testPet);
 	}
 	
 	@Test
 	public void modifyPetInvalidTest() {
 		Pet testPet = new Pet(-1, 1, "Test", 0, 0, 0, 0, null);
+		Item doodad = new Item(0,new ItemType(0,0,"","",""),0,0);
 		when(mockPetDao.modifyPet(testPet)).thenReturn(testPet);
-		assertEquals(petService.modifyPet(testPet), testPet);
+		assertEquals(petService.modifyPet(testPet,doodad,""), testPet);
 	}
 	
 	@Test
@@ -68,7 +72,7 @@ public class PetServiceTest {
 		testList.add(new Pet(3, 1, "Test3", 0, 0, 0, 0, null));
 		
 		when(mockPetDao.getPetListByUserID(1)).thenReturn(testList);
-		assertEquals(petService.getPetByID(1), testList);
+		assertEquals(petService.getPetListByUserID(1), testList);
 	}
 	
 	@Test
@@ -81,7 +85,7 @@ public class PetServiceTest {
 	public void getPetEmptyListTest() {
 		ArrayList<Pet> testList = new ArrayList<Pet>();
 		when(mockPetDao.getPetListByUserID(1)).thenReturn(testList);
-		assertEquals(petService.getPetByID(1), testList);
+		assertEquals(petService.getPetListByUserID(1), testList);
 	}
 	
 }

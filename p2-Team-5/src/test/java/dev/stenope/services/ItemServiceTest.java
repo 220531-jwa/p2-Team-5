@@ -9,10 +9,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.AdditionalAnswers;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import dev.stenope.respositories.ItemDAO;
 import dev.stenope.models.Item;
+import dev.stenope.models.ItemType;
 import dev.stenope.models.Pet;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,15 +29,22 @@ public class ItemServiceTest {
 	@BeforeAll
 	public static void setUp() {
 		mockItemDao = mock(ItemDAO.class);
-		itemService = new ItemService(mockItemDao, mockPetService);
 		mockPetService = mock(PetService.class);
+		itemService = new ItemService(mockItemDao, mockPetService);
 	}
 	
 	@Test
 	public void createItemTest() {
-		Item testItem = new Item(1, null, 1, 1);
-		when(mockItemDao.createItem(testItem)).thenReturn(testItem);
-		assertEquals(itemService.createItem(testItem), testItem);
+		ItemType testType = new ItemType(3, 0, "pizza", "food", "🍕");
+		Item expectedItem = new Item(1, testType, 1, 0);
+		
+		when(mockItemDao.getSpecificItemType(3)).thenReturn(testType);
+		when(mockItemDao.createItem(any(Item.class))).then(AdditionalAnswers.returnsFirstArg());
+		Item testItem = itemService.createItem(3, 1);
+		
+		assertEquals(expectedItem.getType(), testItem.getType());
+		assertEquals(expectedItem.getpID(), testItem.getpID());
+		assertEquals(expectedItem.getuID(), testItem.getuID());
 	}
 	
 	@Test
@@ -56,36 +65,58 @@ public class ItemServiceTest {
 	public void changeItemOwnerTest() {
 		Item testItem = new Item(1, null, 1, 1);
 		Pet testPet = new Pet(1, 1, "Test", 0, 0, 0, 0, null);
+		when(mockItemDao.getItemByID(1)).thenReturn(testItem);
 		when(mockItemDao.modifyItem(testItem)).thenReturn(true);
 		when(mockPetService.getPetByID(1)).thenReturn(testPet);
-		assertEquals(itemService.changeItemOwner(testItem, 1), true);
+		assertEquals(itemService.changeItemOwner(1, 1, 1), true);
 	}
 	
 	@Test
 	public void changeItemOwnerInvalidItemTest() {
-		Item testItem = new Item(-1, null, 1, 1);
+		//Item testItem = new Item(-1, null, 1, 1);
 		Pet testPet = new Pet(1, 1, "Test", 0, 0, 0, 0, null);
-		when(mockItemDao.modifyItem(testItem)).thenReturn(true);
+		when(mockItemDao.getItemByID(-1)).thenReturn(null);
+		//when(mockItemDao.modifyItem(testItem)).thenReturn(false);
 		when(mockPetService.getPetByID(1)).thenReturn(testPet);
-		assertEquals(itemService.changeItemOwner(testItem, 1), false);
+		assertEquals(itemService.changeItemOwner(-1, 1, 1), false);
 	}
 	
 	@Test
 	public void changeItemOwnerInvalidRecipientTest() {
-		Item testItem = new Item(1, null, 1, -1);
-		Pet testPet = new Pet(1, 1, "Test", 0, 0, 0, 0, null);
-		when(mockItemDao.modifyItem(testItem)).thenReturn(true);
-		when(mockPetService.getPetByID(1)).thenReturn(testPet);
-		assertEquals(itemService.changeItemOwner(testItem, -1), false);
+		//Item testItem = new Item(1, null, 1, -1);
+		//Pet testPet = new Pet(1, 1, "Test", 0, 0, 0, 0, null);
+		//when(mockItemDao.modifyItem(testItem)).thenReturn(true);
+		when(mockPetService.getPetByID(-1)).thenReturn(null);
+		assertEquals(itemService.changeItemOwner(1, 1, -1), false);
 	}
 	
 	@Test
 	public void changeItemOwnerWrongOwnerTest() {
-		Item testItem = new Item(1, null, 1, 2);
+		//Item testItem = new Item(1, null, 1, 2);
 		Pet testPet = new Pet(2, 2, "Test", 0, 0, 0, 0, null);
-		when(mockItemDao.modifyItem(testItem)).thenReturn(true);
+		//when(mockItemDao.modifyItem(testItem)).thenReturn(true);
 		when(mockPetService.getPetByID(2)).thenReturn(testPet);
-		assertEquals(itemService.changeItemOwner(testItem, 2), false);
+		assertEquals(itemService.changeItemOwner(1, 1, 2), false);
+	}
+	
+	@Test
+	public void returnItemOwnerTest() {
+		Item testItem = new Item(1, null, 1, 1);
+		//Pet testPet = new Pet(1, 1, "Test", 0, 0, 0, 0, null);
+		when(mockItemDao.getItemByID(1)).thenReturn(testItem);
+		when(mockItemDao.returnToOwner(testItem)).thenReturn(true);
+		//when(mockPetService.getPetByID(1)).thenReturn(testPet);
+		assertEquals(itemService.changeItemOwner(1, 1, 0), true);
+	}
+	
+	@Test
+	public void returnItemOwnerInvalidItemTest() {
+		//Item testItem = new Item(-1, null, 1, 1);
+		Pet testPet = new Pet(1, 1, "Test", 0, 0, 0, 0, null);
+		when(mockItemDao.getItemByID(-1)).thenReturn(null);
+		//when(mockItemDao.modifyItem(testItem)).thenReturn(false);
+		when(mockPetService.getPetByID(1)).thenReturn(testPet);
+		assertEquals(itemService.changeItemOwner(-1, 1, 0), false);
 	}
 	
 	@Test
@@ -147,5 +178,47 @@ public class ItemServiceTest {
 		assertEquals(itemService.getPetItemList(1), testList);
 	}
 	
+	@Test
+	public void deleteItemTest() {
+		Item testItem = new Item(1, null, 1, 1);
+		when(mockItemDao.deleteItem(1)).thenReturn(true);
+		when(mockItemDao.getItemByID(1)).thenReturn(testItem);
+		
+		assertEquals(itemService.deleteItem(1, 1), true);
+	}
+	
+	@Test
+	public void deleteItemWrongOwnerTest() {
+		Item testItem = new Item(1, null, 1, 1);
+		when(mockItemDao.deleteItem(1)).thenReturn(true);
+		when(mockItemDao.getItemByID(1)).thenReturn(testItem);
+		
+		assertEquals(itemService.deleteItem(12, 1), false);
+	}
+	
+	@Test
+	public void noSuchOwnerTest() {
+		Item testItem = new Item(1, null, 1, 1);
+		when(mockItemDao.deleteItem(1)).thenReturn(true);
+		when(mockItemDao.getItemByID(1)).thenReturn(testItem);
+		
+		assertEquals(itemService.deleteItem(-1, 1), false);
+	}
+	
+	@Test
+	public void deleteItemNoSuchItemTest() {
+		//Item testItem = new Item(1, null, 1, 1);
+		when(mockItemDao.deleteItem(-1)).thenReturn(false);
+		when(mockItemDao.getItemByID(-1)).thenReturn(null);
+		
+		assertEquals(itemService.deleteItem(1, -1), false);
+	}
+	
+	@Test
+	public void getItemTypesTest(){
+		ArrayList<ItemType> testItemTypes = new ArrayList<ItemType>();
+		when(mockItemDao.getItemTypes()).thenReturn(testItemTypes);
+		assertEquals(itemService.getItemTypes(), testItemTypes);
+	}
 	
 }
