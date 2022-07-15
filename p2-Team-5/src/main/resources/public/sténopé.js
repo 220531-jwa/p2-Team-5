@@ -67,8 +67,8 @@ async function search()
             {
                 let pets = document.createElement("div");
                 pets.className = "grid-item";
-                pets.innerHTML= 
-                    `<h1><a onclick="viewPet(${resp[i].id})">${resp[i].type.ssrc}</a></h1><h4>${resp[i].pName}</h4>`;
+                pets.innerHTML= `<h1 id="searchResult_${resp[i].id}"><a onclick="viewPet(${resp[i].id})">${resp[i].type.ssrc}</a></h1>
+                    <h4>${resp[i].pName}</h4>`;
                 document.getElementById("searchResult").appendChild(pets);
             }
         })

@@ -63,7 +63,7 @@ public class UserDAO {
 		return null;
 	}
 	
-	public static User getUserByID(int id) {
+	public User getUserByID(int id) {
 		String sql = "select * from p2t5.users where id = ?";
 		try (Connection conn = cu.getConnection()) {
 			PreparedStatement ps = conn.prepareStatement(sql);
