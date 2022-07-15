@@ -14,6 +14,10 @@ public class UserComment {
 		this.hID = hID;
 		this.body = body;
 	}
+	
+	public UserComment() {
+		super();
+	}
 
 	public int getId() {
 		return id;
@@ -29,6 +33,24 @@ public class UserComment {
 
 	public String getBody() {
 		return body;
+	}
+	
+	
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setwID(int wID) {
+		this.wID = wID;
+	}
+
+	public void sethID(int hID) {
+		this.hID = hID;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
 	}
 
 	@Override

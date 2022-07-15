@@ -68,6 +68,8 @@ public class UserController {
 	
 	public static void addComment(Context ctx) {
 		UserComment c = ctx.bodyAsClass(UserComment.class);
+		c.setwID(Integer.parseInt(ctx.pathParam("{id0}")));
+		c.sethID(Integer.parseInt(ctx.pathParam("{idOther}")));
 		UserComment cAdd = us.addComment(c.getwID(), c.gethID(), c.getBody());
 		if (cAdd != null) {
 			ctx.status(201);

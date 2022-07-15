@@ -117,7 +117,7 @@ public class UserDAO {
 	public UserComment addComment(int wId, int hId, String commentText) {
 		//User sender = UserDAO.getUserByID(wId);
 		//User recipient = UserDAO.getUserByID(hId);
-		String sql = "insert into p2t5.comments(wid, hid, body) values (?, ?, ?);";
+		String sql = "insert into p2t5.comments(wid, hid, body) values (?, ?, ?) returning *;";
 		try (Connection conn = cu.getConnection()) {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, wId);

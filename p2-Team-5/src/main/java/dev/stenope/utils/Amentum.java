@@ -40,6 +40,9 @@ public class Amentum {
 			});
 			path("/users", ()  -> {
 				path("/{id0}", () -> {
+					path("/viewComments", () -> {
+						put(UserController::getComments);
+					});
 					path("/edit", () -> {
 						put(UserController::editUser);
 					});
