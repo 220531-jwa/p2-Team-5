@@ -693,9 +693,33 @@ function getDispName(id) {
     return "TEMP DISPLAY NAME";
 }
 
-function addComment() {
-    let comment = document.getElementById("comment").value;
-    return comment;
+async function addComment() {
+    let commentBody = document.getElementById("comment").value;
+    let comment = {
+        "id": 1,
+        "wID": sessionStorage.uID,
+        "hID": sessionStorage.userInView,
+        "body": commentBody
+    }
+
+    //console.log(comment);
+
+    res = await fetch(`users/${sessionStorage.uID}/${sessionStorage.userInView}/comment`, {method: `POST`, header:{"Content-Type": "application/json"}, body: JSON.stringify(comment)});
+    if (res.status == 201) {
+        resJson = await res.json()
+        .then((resp) => {
+            setTimeout(function(){window.location.assign("userPage.html")},2000);
+        })
+        .catch((error) => 
+        {
+            console.log(error);
+            alert("Error Posting Comments");
+        });
+    } else {
+        alert("Error Posting Comments")
+    }
+
+    return commentBody;
 }
 
 async function editPage() {  //unfinished
