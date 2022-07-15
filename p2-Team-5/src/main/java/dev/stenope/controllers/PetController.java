@@ -65,7 +65,7 @@ public class PetController {
 	
 	public static void getPetListByPName(Context ctx) {
 		List<Pet> pList = new ArrayList<>(); 
-		pList = pServ.getPetListByPName(ctx.body());
+		pList = pServ.getPetListByPName(ctx.pathParam("{name}"));
 		if (pList != null)
 		{
 			ctx.status(200);
@@ -124,5 +124,15 @@ public class PetController {
 			ctx.json("{error:pet_item_use}");
 		}
 	}
+	
+	public static void doHungerTick(Context ctx)
+	{
+		List<Pet> pList = pServ.getAllPets();
+		Item doodad = new Item(0,new ItemType(0,0,"","",""),0,0);
+		for (Pet p : pList)	{pServ.modifyPet(p, doodad, "hunger");}
+		ctx.status(204);
+	}
+	
+	//Delete
 	//Delete
 }

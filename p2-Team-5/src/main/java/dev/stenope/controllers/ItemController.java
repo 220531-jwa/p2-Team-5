@@ -9,7 +9,7 @@ import io.javalin.http.Context;
 
 public class ItemController {
 	
-	private static ItemService itemService = new ItemService();
+private static ItemService itemService = new ItemService();
 	
 	public static void createItem(Context ctx) {
 		int tID = Integer.parseInt(ctx.queryParam("typeId"));
@@ -60,7 +60,8 @@ public class ItemController {
 		if (items == null) {
 			ctx.status(400);
 		} else if (items.isEmpty()) {
-			ctx.status(404);
+			ctx.json(items);
+			ctx.status(204);
 		} else {
 			ctx.json(items);
 			ctx.status(200);
@@ -71,9 +72,10 @@ public class ItemController {
 		int id = Integer.parseInt(ctx.pathParam("id1"));
 		List<Item> items = itemService.getPetItemList(id);
 		if (items == null) {
-			ctx.status(400);
-		} else if (items.isEmpty()) {
 			ctx.status(404);
+		} else if (items.isEmpty()) {
+			ctx.status(204);
+			ctx.json(items);
 		} else {
 			ctx.json(items);
 			ctx.status(200);
@@ -88,6 +90,16 @@ public class ItemController {
 		} else {
 			//Should never be reached
 			ctx.status(400);
+		}
+	}
+	
+	public static void deleteItem(Context ctx) {
+		int itemId = Integer.parseInt(ctx.pathParam("itemId"));
+		int userId = Integer.parseInt(ctx.pathParam("id0"));
+		if (itemService.deleteItem(userId, itemId)) {
+			ctx.status(200);
+		} else {
+			ctx.status(404);
 		}
 	}
 	
