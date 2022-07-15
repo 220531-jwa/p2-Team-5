@@ -612,6 +612,23 @@ function addComment() {
     return comment;
 }
 
+async function editPage() {  //unfinished
+    let res = await fetch(`users/${sessionStorage.uID}/edit`, 
+        {
+            method: `PUT`,
+            header:{"Content-Type": "application/json"},
+            body: null
+        });
+    let resJson = await res.json()
+        .then((resp) => {
+
+        })
+        .catch((error) => {
+            console.log(error);
+            alert("Couldn't edit user page");
+        });
+}
+
 function viewPet(a) 
 {
     sessionStorage.setItem("pID", a); 
