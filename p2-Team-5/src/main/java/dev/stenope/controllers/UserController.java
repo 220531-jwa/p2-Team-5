@@ -9,6 +9,16 @@ import io.javalin.http.Context;
 public class UserController {
 	private static UserService us = new UserService(new UserDAO());
 	
+	public static void createUser(Context ctx) {
+		User u = ctx.bodyAsClass(User.class);
+		User uCreated = us.createUser(u);
+		if (uCreated != null) {
+			ctx.status(201);
+			ctx.json(uCreated);
+			ctx.sessionAttribute("User created: ", uCreated.getuName());
+		}
+	}
+	
 	public static void login(Context ctx) {
 		User u = ctx.bodyAsClass(User.class);
 		User uLogin = us.login(u.getuName(), u.getpKey());
