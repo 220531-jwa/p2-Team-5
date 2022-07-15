@@ -29,13 +29,13 @@ Feature: petprofile page
     	| 1  | 
     	| 2  | 
     	| 5  | 
-    	| 10 | 
-    	| 25 | 
-    	| 100| 
+    #	| 10 | 
+    #	| 25 | 
+    #	| 100| 
 
   Scenario Outline: Pet data is properly edited 
   	Given pet <id> exists 
-  	And the user is logged in as the pet`s owner 
+  	And the user is logged in as the pet <id>`s owner 
   	And browser is on petpage <id>
   	When user types <petname> into pet data 
   	And user submits pet data
@@ -47,9 +47,9 @@ Feature: petprofile page
     	| 1  | "asdf"  |
     	| 2  | "sjgkl" |
     	| 5  | "test"  |
-    	| 10 | "ababa" | 
-    	| 25 | "Merman"|
-    	| 100| "Dragon"| 
+    #	| 10 | "ababa" | 
+    #	| 25 | "Merman"|
+    #	| 100| "Dragon"| 
   
   #Scenario Outline: Title of your scenario outline
     #Given I want to write a step with <name>
