@@ -116,7 +116,7 @@ public class ItemServiceTest {
 		when(mockItemDao.getItemByID(-1)).thenReturn(null);
 		//when(mockItemDao.modifyItem(testItem)).thenReturn(false);
 		when(mockPetService.getPetByID(1)).thenReturn(testPet);
-		assertEquals(itemService.changeItemOwner(-1, 1, 1), false);
+		assertEquals(itemService.changeItemOwner(-1, 1, 0), false);
 	}
 	
 	@Test
@@ -212,6 +212,13 @@ public class ItemServiceTest {
 		when(mockItemDao.getItemByID(-1)).thenReturn(null);
 		
 		assertEquals(itemService.deleteItem(1, -1), false);
+	}
+	
+	@Test
+	public void getItemTypesTest(){
+		ArrayList<ItemType> testItemTypes = new ArrayList<ItemType>();
+		when(mockItemDao.getItemTypes()).thenReturn(testItemTypes);
+		assertEquals(itemService.getItemTypes(), testItemTypes);
 	}
 	
 }

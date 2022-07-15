@@ -26,6 +26,7 @@ public class Amentum {
 			//S3 link http://p2-t5-stenope-bucket.s3-website-us-west-1.amazonaws.com
 			//get((ctx) ->ctx.redirect("http://http://p2-t5-stenope-bucket.s3-website-us-west-1.amazonaws.com/homePage.html",301));
 			path("/doHungerTick", () -> {get(PetController::doHungerTick);});
+			path("/create", () -> {post(UserController::createUser);});
 			path("/login", () -> {post(UserController::login);});
 			path("/logout", () -> {post(UserController::logout);});
 			path("/petTypes", () -> {get(PetController::getPetTypes);});

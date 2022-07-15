@@ -11,6 +11,11 @@ public class UserService {
 		this.userDao = userDao;
 	}
 	
+	public User createUser(User u) {
+		User uCreated = userDao.createUser(u);
+		return uCreated;
+	}
+	
 	public User login(String uName, String pKey) {
 		User u = userDao.getUserByUserName(uName);
 		if (u != null) {

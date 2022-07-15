@@ -13,6 +13,34 @@ public class UserDAO {
 
 	private static ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
 
+	public User createUser(User u) {
+		//User sender = UserDAO.getUserByID(wId);
+		//User recipient = UserDAO.getUserByID(hId);
+		String sql = "insert into p2t5.users values (default, ?, ?, ?, ?, ?) returning *;";
+		try (Connection conn = cu.getConnection()) {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, u.getuName());
+			ps.setString(2, u.getpKey());
+			ps.setString(3, u.getdName());
+			ps.setInt(4, u.getpSet());
+			ps.setString(5, u.getdBlurb());
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				return new User(
+						rs.getInt("id"),
+						rs.getString("uname"),
+						rs.getString("pkey"),
+						rs.getString("dname"),
+						rs.getString("dblurb"),
+						rs.getInt("pset")
+						);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public User getUserByUserName(String uName) {
 		String sql = "select * from p2t5.users where uname = ?";
 		try (Connection conn = cu.getConnection()) {
