@@ -12,7 +12,7 @@ import dev.stenope.models.PetType;
 import dev.stenope.utils.ConnectionUtil;
 
 public class PetDAO {
-	private static ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
+private static ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
 	
 	//Create
 	public Pet createPet(Pet p) {
