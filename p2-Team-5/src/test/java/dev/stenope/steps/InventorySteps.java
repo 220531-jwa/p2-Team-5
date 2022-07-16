@@ -25,17 +25,26 @@ public class InventorySteps {
 	/**
 	 * Scenario 1
 	 */
-	@Given("the User {int} has Pets")
-	public void the_user_has_pets(int uId) {
-	    PetDAO pd = new PetDAO();
-	    assertNotEquals(pd.getPetListByUserID(uId).size(), 0);
-	    assertNotEquals(pd.getPetListByUserID(uId), null);
+	@Given("the User has Pets")
+	public void the_user_has_pets() {
+		realHumanBeing.get("http://localhost:8080/loginPage.html");
+		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10))
+		.until(ExpectedConditions.urlContains("loginPage"));
+		inventoryPage.uName.sendKeys("Example_Man");
+	    inventoryPage.pKey.sendKeys("Password");
+	    inventoryPage.loginButton.click();
+		PetDAO pd = new PetDAO();
+	    assertNotEquals(pd.getPetListByUserID(1).size(), 0);
+	    assertNotEquals(pd.getPetListByUserID(1), null);
 	}
 
 	@When("the User loads the InventoryPage")
 	public void the_user_loads_the_inventory_page() {
 		//S3 link http://p2-t5-stenope-bucket.s3-website-us-west-1.amazonaws.com
-	    realHumanBeing.get("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/inventory.html");
+	    //realHumanBeing.get("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/inventory.html");
+		inventoryPage.inventoryButton.click();
+		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10))
+		.until(ExpectedConditions.urlContains("inventory"));
 	}
 
 	@Then("the subheadings dividing the inventory should appear")
@@ -49,54 +58,101 @@ public class InventorySteps {
 	 */
 	@Given("the User is on the InventoryPage")
 	public void the_user_is_on_the_inventory_page() {
-		realHumanBeing.get("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/inventory.html");
+		//realHumanBeing.get("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/inventory.html");
+		realHumanBeing.get("http://localhost:8080/loginPage.html");
+		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10))
+		.until(ExpectedConditions.urlContains("loginPage"));
+		inventoryPage.uName.sendKeys("Example_Man");
+	    inventoryPage.pKey.sendKeys("Password");
+	    inventoryPage.loginButton.click();
+	    new WebDriverWait(realHumanBeing, Duration.ofSeconds(10))
+		.until(ExpectedConditions.urlContains("homePage"));
+		inventoryPage.inventoryButton.click();
+		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10))
+		.until(ExpectedConditions.urlContains("inventory"));
 	}
 
-	@When("the User clicks on and Item")
+	@When("the User clicks on an Item")
 	public void the_user_clicks_on_and_item() {
-	    inventoryPage.userItemDropdown1.click();
+		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(inventoryPage.userSelector1));
+		inventoryPage.userSelector1.click();
 	}
 
 	@Then("a dropdown or popup should appear that allows the Item to be assigned to places")
 	public void a_dropdown_or_popup_should_appear_that_allows_the_item_to_be_assigned_to_places() {
-		assertEquals(inventoryPage.userItemDropdownSelect1.getOptions().size(), 2);
+		assertEquals(inventoryPage.userSelector1.isDisplayed(), true);
 	}
 
 	/**
 	 * Scenario 3
 	 */
-	@Given("an Item dropdown is loaded")
-	public void an_item_dropdown_is_loaded() {
-		inventoryPage.userItemDropdown1.click();
-	}
-
-	@When("the User selects an option and presses the submit button")
-	public void the_user_selects_an_option_and_presses_the_submit_button() {
-		inventoryPage.userItemDropdownSelect1.selectByVisibleText("Use");
-	}
-
-	@Then("the option�s associated action should be executed")
-	public void the_option_s_associated_action_should_be_executed() {
-	    assertEquals(inventoryPage.UserItemTest1.isDisplayed(), false);
-	}
-
-	/**
-	 * Scenario 4
-	 */
-	@Given("the Pet {int} exists")
-	public void the_pet_exists(int pId) {
+	@Given("the Pet exists")
+	public void the_pet_exists() {
 		PetDAO pd = new PetDAO();
-		pd.getPetByID(pId);
+		pd.getPetByID(1);
 	}
 
 	@When("an Item is assigned to the Pet inventory")
 	public void an_item_is_assigned_to_the_pet_inventory() {
-		inventoryPage.userItemDropdown2.click();
-		inventoryPage.userItemDropdownSelect2.selectByVisibleText("Give to Pet");
+		realHumanBeing.get("http://localhost:8080/loginPage.html");
+		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10))
+		.until(ExpectedConditions.urlContains("loginPage"));
+		inventoryPage.uName.sendKeys("Example_Man");
+	    inventoryPage.pKey.sendKeys("Password");
+	    inventoryPage.loginButton.click();
+	    new WebDriverWait(realHumanBeing, Duration.ofSeconds(10))
+		.until(ExpectedConditions.urlContains("homePage"));
+		inventoryPage.inventoryButton.click();
+		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10))
+		.until(ExpectedConditions.urlContains("inventory"));
+		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(inventoryPage.userSelector2));
+		inventoryPage.userSelector2.click();
+		new WebDriverWait(realHumanBeing, Duration.ofSeconds(5));
+		inventoryPage.userSelector2.findElement(By.xpath("/html/body/div[2]/div[2]/select/option[3]")).click();
+		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(inventoryPage.giveToPet));
+		inventoryPage.giveToPet.click();
 	}
 
 	@Then("the Item appears in the Pet inventory")
 	public void the_item_appears_in_the_pet_inventory() {
-		assertEquals(inventoryPage.UserItemTest2.isDisplayed(), true);
+		realHumanBeing.navigate().refresh();
+		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10))
+		.until(ExpectedConditions.urlContains("inventory"));
+		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(inventoryPage.petItemDropdown));
+		inventoryPage.petItemDropdown.click();
+		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(inventoryPage.firstPet));
+		inventoryPage.firstPet.click();
+		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOf(inventoryPage.userItemTest2));
+		assertEquals(inventoryPage.userItemTest2.isDisplayed(), true);
 	}
+	/*
+	@Given("an Item dropdown is loaded")
+	public void an_item_dropdown_is_loaded() {
+		realHumanBeing.get("http://localhost:8080/loginPage.html");
+		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10))
+		.until(ExpectedConditions.urlContains("loginPage"));
+		inventoryPage.uName.sendKeys("Example_Man");
+	    inventoryPage.pKey.sendKeys("Password");
+	    inventoryPage.loginButton.click();
+	    new WebDriverWait(realHumanBeing, Duration.ofSeconds(10))
+		.until(ExpectedConditions.urlContains("homePage"));
+		inventoryPage.inventoryButton.click();
+		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10))
+		.until(ExpectedConditions.urlContains("inventory"));
+		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(inventoryPage.userSelector1));
+		inventoryPage.userSelector1.click();
+	}
+
+	@When("the User selects an option and presses the submit button")
+	public void the_user_selects_an_option_and_presses_the_submit_button() {
+		new WebDriverWait(realHumanBeing, Duration.ofSeconds(5));
+		inventoryPage.userSelector1.findElement(By.xpath("/html/body/div[2]/div[1]/select/option[1]")).click();
+		new WebDriverWait(realHumanBeing, Duration.ofSeconds(5));
+	}
+
+	@Then("the option associated action should be executed")
+	public void the_option_s_associated_action_should_be_executed() {
+	    assertNotEquals(inventoryPage.UserItemTest1.getText(), "bread");
+	}
+	*/
 }
