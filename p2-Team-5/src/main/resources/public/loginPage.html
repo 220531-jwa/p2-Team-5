@@ -5,14 +5,15 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Sténopé Login</title>
+        <link rel="stylesheet" href="sténopéStyle.css">
     </head>
 
-    <body onload="populateTopBar()">
+    <body class="page" onload="populateTopBar()">
         <div id="topBarInsert"></div>
         <h4>Login</h4>
         <label>Username: <input type="text" id="uNameBox" maxlength="50"></label>
         <label>Password: <input type="password" id="pKeyBox" maxlength="50"></label>
-        <button id="loginButton" onclick="loginCheck()">Submit</button> <button onclick="hidePass()">👁</button>
+        <button id="loginButton" onclick="loginCheck()">Submit</button> <button id="hidePKey" onclick="hidePass()">👁</button>
         
         <div id="createUser">
             <button id="createUserButton" onclick="location.href='/createUser.html'" type="button">Create New User</button>
