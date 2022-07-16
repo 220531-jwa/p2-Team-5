@@ -14,30 +14,53 @@ private WebDriver realHumanBeing;
 		PageFactory.initElements(realHumanBeing, this);
 	}
 	
-	@FindBy(id = "backpack")
+	@FindBy(id = "inventoryLink")
+	public WebElement inventoryButton;
+	
+	@FindBy(xpath = "/html/body/h4[1]")
 	public WebElement userInventory;
 	
-	@FindBy(id = "petBackpack")
+	@FindBy(xpath = "/html/body/h4[2]")
 	public WebElement petsInventory;
 	
-	@FindBy(name = "userItemDropdown1")
-	public WebElement userItemDropdown1;
-	public Select userItemDropdownSelect1 = new Select(userItemDropdown1);
+	@FindBy(id = "petBackPack")
+	public WebElement petBackPack;
 	
-	@FindBy(name = "userItemDropdown2")
-	public WebElement userItemDropdown2;
-	public Select userItemDropdownSelect2 = new Select(userItemDropdown2);
+	@FindBy(id = "userselector1")
+	public WebElement userSelector1;
+	//public Select uSelect1 = new Select(userSelector1);
 	
-	@FindBy(name = "petItemDropdown")
+	@FindBy(id = "userselector2")
+	public WebElement userSelector2;
+	//public Select uSelect2 = new Select(userSelector2);
+	
+	@FindBy(id = "userselector3")
+	public WebElement userSelector3;
+	//public Select uSelect3 = new Select(userSelector3);
+	
+	@FindBy(id = "petDrop")
 	public WebElement petItemDropdown;
-	public Select petItemDropdownSelect = new Select(petItemDropdown);
+	//public Select pSelect1 = new Select(petItemDropdown);
 	
-	@FindBy(xpath = "/html/body/div[2]/ul/li")
-	public WebElement UserItemTest1;
+	@FindBy(xpath = "/html/body/select/option[2]")
+	public WebElement firstPet;
 	
-	@FindBy(xpath = "/html/body/div[2]/ul/li[2]")
-	public WebElement UserItemTest2;
+	@FindBy(xpath = "/html/body/div[2]/div[1]/div/select")
+	public WebElement whichPet;
+	//public Select whichPetSelect = new Select(whichPet);
 	
-	@FindBy(xpath = "/html/body/div[3]/ul/li")
-	public WebElement PetItemTest1;
+	@FindBy(xpath = "/html/body/div[2]/div[2]/div/button")
+	public WebElement giveToPet;
+	
+	@FindBy(xpath = "//*[@id=\"petitemselector2\"]")
+	public WebElement userItemTest2;
+	
+	@FindBy(id = "uNameBox")
+	public WebElement uName;
+	
+	@FindBy(id = "pKeyBox")
+	public WebElement pKey;
+	
+	@FindBy(id = "loginButton")
+	public WebElement loginButton;
 }
