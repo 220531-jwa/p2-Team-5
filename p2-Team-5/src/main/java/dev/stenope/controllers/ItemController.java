@@ -4,6 +4,7 @@ import java.util.List;
 
 import dev.stenope.models.Item;
 import dev.stenope.models.ItemType;
+import dev.stenope.respositories.ItemDAO;
 import dev.stenope.services.ItemService;
 import io.javalin.http.Context;
 

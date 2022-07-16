@@ -13,12 +13,15 @@ public class ItemService {
 	static ItemDAO itemDao = new ItemDAO();
 	static PetService petService = new PetService(new PetDAO());
 	
+	public ItemService() {
+		super();
+	}
+	
 	public ItemService(ItemDAO i, PetService p) {
+		super();
 		itemDao = i;
 		petService = p;
 	}
-	
-	public ItemService() { }
 	
 	public Item createItem(int type, int owner) {
 		ItemType newType = itemDao.getSpecificItemType(type);
