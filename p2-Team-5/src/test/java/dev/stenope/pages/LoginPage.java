@@ -13,10 +13,10 @@ public class LoginPage {
 		PageFactory.initElements(realHumanBeing, this);
 	}
 	
-	@FindBy(id = "uName")
+	@FindBy(id = "uNameBox")
 	public WebElement uName;
 	
-	@FindBy(id = "pKey")
+	@FindBy(id = "pKeyBox")
 	public WebElement pKey;
 	
 	@FindBy(id = "loginButton")
