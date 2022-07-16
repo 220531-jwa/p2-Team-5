@@ -803,6 +803,7 @@ async function postNewPet()
         .then((resp) => 
         {
             console.log(resp);
+            window.location.assign("userPage.html")
         })
         .catch((error) => console.log(error));
 }
