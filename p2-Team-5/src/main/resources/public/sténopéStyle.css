@@ -58,3 +58,11 @@ select {
 #styleSearch {
     background-color: #1b8bad;
 }
+
+input {
+    background-color: #7bd7a9;
+}
+
+textarea {
+    background-color: #7bd7a9;
+}
