@@ -17,10 +17,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 
-
-
-
-
 //READ THIS
 //S3 link http://p2-t5-stenope-bucket.s3-website-us-west-1.amazonaws.com
 
@@ -28,16 +24,27 @@ public class TopBarSteps {
 	
 	public static WebDriver driver = TopBarRunner.driver;
 	public static TopBarPage topBar = TopBarRunner.topBar;
+	public static String urlBase = "localhost";
+//	public static String urlBase = "ec2-54-67-101-32.us-west-1.compute.amazonaws.com";
 
 	@Given("The User is logged in")
 	public void the_user_is_logged_in() {
 	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		driver.get("http://" + urlBase + ":8080/loginPage.html");
+		new WebDriverWait(driver, Duration.ofSeconds(5));
+		WebElement loginButton = driver.findElement(By.xpath("//*[@id=\"loginLink\"]"));
+		loginButton.click();
+		driver.findElement(By.id("uNameBox")).sendKeys("userCreateTest");
+		driver.findElement(By.id("pKeyBox")).sendKeys("userCreateTest");
+		driver.findElement(By.id("loginButton")).click();
+		new WebDriverWait(driver, Duration.ofSeconds(5))
+		.until(ExpectedConditions.titleIs("Sténopé"));
+	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Given("The User is on the Home Page")
 	public void the_user_is_on_the_home_page() {
-		driver.get("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/homePage.html");
+		driver.get("http://" + urlBase + ":8080/homePage.html");
 	    //throw new io.cucumber.java.PendingException();
 	}
 
@@ -45,16 +52,16 @@ public class TopBarSteps {
 	public void the_user_clicks_on_the_user_profile() {
 		WebElement userButton = driver.findElement(By.xpath("//*[@id=\"userLink\"]"));
 		userButton.click();
+		new WebDriverWait(driver,Duration.ofSeconds(2));
 	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Then("The User navigates to the User Profile page")
 	public void the_user_navigates_to_the_user_profile_page() {
+		new WebDriverWait(driver,Duration.ofSeconds(5))
+		.until(ExpectedConditions.titleContains("User Profile"));
 		
-		new WebDriverWait(driver,Duration.ofSeconds(10))
-		.until(ExpectedConditions.titleContains("User Page"));
-		
-		assertEquals("User Page", driver.getTitle());
+		assertEquals("User Profile", driver.getTitle());
 	    //throw new io.cucumber.java.PendingException();
 	}
 
@@ -62,12 +69,13 @@ public class TopBarSteps {
 	public void the_user_clicks_on_the_inventory() {
 		WebElement inventoryButton = driver.findElement(By.xpath("//*[@id=\"inventoryLink\"]"));
 		inventoryButton.click();
+		new WebDriverWait(driver,Duration.ofSeconds(2));
 	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Then("The User navigates to the Inventory page")
 	public void the_user_navigates_to_the_inventory_page() {
-		new WebDriverWait(driver,Duration.ofSeconds(10))
+		new WebDriverWait(driver,Duration.ofSeconds(5))
 		.until(ExpectedConditions.titleContains("Inventory"));
 		
 		assertEquals("Inventory", driver.getTitle());
@@ -78,33 +86,30 @@ public class TopBarSteps {
 	public void the_user_clicks_on_the_home_page() {
 		WebElement homeButton = driver.findElement(By.xpath("//*[@id=\"homeLink\"]"));
 		homeButton.click();
+		new WebDriverWait(driver,Duration.ofSeconds(2));
 	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Then("The User navigates to the Home Page page")
 	public void the_user_navigates_to_the_home_page_page() {
-		new WebDriverWait(driver,Duration.ofSeconds(10))
-		.until(ExpectedConditions.titleContains("Home Page"));
+		new WebDriverWait(driver,Duration.ofSeconds(5))
+		.until(ExpectedConditions.titleIs("Sténopé"));
 		
-		assertEquals("Home Page", driver.getTitle());
+		assertEquals("Sténopé", driver.getTitle());
 	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Given("The User is on the User Profile")
 	public void the_user_is_on_the_user_profile() {
-		driver.get("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/userPage.html");
-	    //throw new io.cucumber.java.PendingException();
-	}
-
-	@Given("The User is on the Pet Profile")
-	public void the_user_is_on_the_pet_profile() {
-		driver.get("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/petPage.html");
-	    //throw new io.cucumber.java.PendingException();
+		WebElement userButton = driver.findElement(By.xpath("//*[@id=\"userLink\"]"));
+		userButton.click();
+		new WebDriverWait(driver,Duration.ofSeconds(2))
+		.until(ExpectedConditions.titleContains("User Profile"));
 	}
 
 	@Given("The User is on the Inventory")
 	public void the_user_is_on_the_inventory() {
-		driver.get("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/inventory.html");
+		driver.get("http://" + urlBase + ":8080/inventory.html");
 	    //throw new io.cucumber.java.PendingException();
 	}
 	
@@ -112,40 +117,32 @@ public class TopBarSteps {
 	public void the_user_clicks_on_the_login() {
 		WebElement loginButton = driver.findElement(By.xpath("//*[@id=\"loginLink\"]"));
 		loginButton.click();
+		new WebDriverWait(driver,Duration.ofSeconds(2));
 	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Then("The User navigates to the Login page")
 	public void the_user_navigates_to_the_login_page() {
-		new WebDriverWait(driver,Duration.ofSeconds(10))
-		.until(ExpectedConditions.titleContains("Login"));
+		new WebDriverWait(driver,Duration.ofSeconds(5))
+		.until(ExpectedConditions.titleContains("Sténopé Login"));
 		
-		assertEquals("Login", driver.getTitle());
+		assertEquals("Sténopé Login", driver.getTitle());
 	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Then("The User is logged out")
 	public void the_user_is_logged_out() {
 	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		WebElement loginButton = driver.findElement(By.xpath("//*[@id=\"loginLink\"]"));
+		System.out.println(loginButton.getText());
+		assertEquals(loginButton.getText(), "🔑 Login");
+	    //throw new io.cucumber.java.PendingException();
 	}
 
 	@Given("The User is on the log in page")
 	public void the_user_is_on_the_log_in_page() {
-		driver.get("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/loginPage.html");
-	    //throw new io.cucumber.java.PendingException();
-	}
-
-	@Given("The User is not logged in")
-	public void the_user_is_not_logged_in() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
-	}
-
-	@Then("The User is given a logged out error")
-	public void the_user_is_given_a_logged_out_error() {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+		driver.get("http://" + urlBase + ":8080/loginPage.html");
+		//throw new io.cucumber.java.PendingException();
 	}
 	
 }

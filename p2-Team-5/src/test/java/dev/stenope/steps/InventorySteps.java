@@ -27,6 +27,7 @@ public class InventorySteps {
 	 */
 	@Given("the User has Pets")
 	public void the_user_has_pets() {
+		//S3 link http://p2-t5-stenope-bucket.s3-website-us-west-1.amazonaws.com
 		realHumanBeing.get("http://localhost:8080/loginPage.html");
 		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10))
 		.until(ExpectedConditions.urlContains("loginPage"));
@@ -95,6 +96,7 @@ public class InventorySteps {
 	@When("an Item is assigned to the Pet inventory")
 	public void an_item_is_assigned_to_the_pet_inventory() {
 		realHumanBeing.get("http://localhost:8080/loginPage.html");
+		//realHumanBeing.get("http://ec2-54-67-101-32.us-west-1.compute.amazonaws.com:8080/loginPage.html");
 		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10))
 		.until(ExpectedConditions.urlContains("loginPage"));
 		inventoryPage.uName.sendKeys("Example_Man");
