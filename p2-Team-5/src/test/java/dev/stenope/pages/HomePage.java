@@ -39,4 +39,10 @@ public class HomePage {
 	
 	@FindBy(id = "loginButton")
 	public WebElement loginButton;
+	
+	@FindBy(id = "userLink")
+	public WebElement userLink;
+	
+	@FindBy(xpath = "/html/body/a")
+	public WebElement backToHome;
 }
