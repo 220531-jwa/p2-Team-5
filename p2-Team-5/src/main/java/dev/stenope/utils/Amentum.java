@@ -1,3 +1,14 @@
+/**
+ * This is the helper class which is invoked by the AppDriver class 
+ * for the Stenope Pet Management System application.
+ * 
+ * @author joshuacoombs
+ * @author wlcross
+ * @author TCPrater
+ * 
+ * @version 1.0
+ */
+
 package dev.stenope.utils;
 
 import static io.javalin.apibuilder.ApiBuilder.path;
@@ -14,6 +25,11 @@ import io.javalin.http.staticfiles.Location;
 
 /*for those who don't get the joke: an amentum increases javelin speed much like a sling increases rock speed*/
 public class Amentum {
+	
+	/**
+	 * This method is the server request handler which starts Javalin, connects to the database, 
+	 * and outlines the RESTful endpoints of Controller methods.
+	 */
 	public void serverRequestHandler() 
 	{
 		Javalin app = Javalin.create(config -> {

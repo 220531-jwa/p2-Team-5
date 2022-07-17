@@ -1,3 +1,14 @@
+/**
+ * This is the User class for the Stenope Pet Management System application
+ * which includes getters, setters, and a toString() method
+ * 
+ * @author joshuacoombs
+ * @author wlcross
+ * @author TCPrater
+ * 
+ * @version 1.0
+ */
+
 package dev.stenope.models;
 
 public class User {

@@ -1,3 +1,13 @@
+/**
+ * This is the ItemDAO class for the Stenope Pet Management System application
+ * 
+ * @author joshuacoombs
+ * @author wlcross
+ * @author TCPrater
+ * 
+ * @version 1.0
+ */
+
 package dev.stenope.respositories;
 
 import java.sql.Connection;
@@ -15,6 +25,11 @@ public class ItemDAO {
 
 	private static ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
 	
+	/**
+	 * This method creates an Item with the database
+	 * @param i
+	 * @return
+	 */
 	public Item createItem(Item i) {
 		String sql = "insert into p2t5.items "
 				+ "(id, tid, uid, pid) values"
@@ -38,6 +53,11 @@ public class ItemDAO {
 		return i;
 	}
 	
+	/**
+	 * This method modifies an Item with the database
+	 * @param i
+	 * @return
+	 */
 	public boolean modifyItem(Item i) {
 		String sql = "update p2t5.items set "
 				+ "(tid, uid, pid) "
@@ -60,6 +80,11 @@ public class ItemDAO {
 		}
 	}
 	
+	/**
+	 * This method retrieves an Item by its id from the database
+	 * @param id
+	 * @return
+	 */
 	public Item getItemByID(int id) {
 		Item i = null;
 		String sql = "select items.id as itemId, tid, uid, pid, itemtypes.id as typeId,"
@@ -85,6 +110,11 @@ public class ItemDAO {
 		return i;
 	}
 	
+	/**
+	 * This method retrieves the Item list for a User from the database
+	 * @param id
+	 * @return
+	 */
 	public List<Item> getItemList(int id) {
 		ArrayList<Item> list = new ArrayList<Item>();
 		String sql = "select items.id as itemId, tid, uid, pid, itemtypes.id as typeId,"
@@ -116,6 +146,11 @@ public class ItemDAO {
 		return list;
 	}
 	
+	/**
+	 * This method retrieves the Item list for a Pet from the database
+	 * @param id
+	 * @return
+	 */
 	public List<Item> getPetItemList(int id) {
 		ArrayList<Item> list = new ArrayList<Item>();
 		String sql = "select items.id as itemId, tid, uid, pid, itemtypes.id as typeId,"
@@ -144,6 +179,10 @@ public class ItemDAO {
 		return list;
 	}
 	
+	/**
+	 * This method retrieves a list of ItemTypes from the database
+	 * @return
+	 */
 	public List<ItemType> getItemTypes () {
 		ArrayList<ItemType> list = new ArrayList<ItemType>();
 		String sql = "select * from p2t5.itemtypes";
@@ -165,6 +204,11 @@ public class ItemDAO {
 		return list;
 	}
 	
+	/**
+	 * This method retrieves a specific ItemType from the database
+	 * @param id
+	 * @return
+	 */
 	public ItemType getSpecificItemType (int id) {
 		ItemType type = null;
 		String sql = "select * from p2t5.itemtypes "
@@ -184,6 +228,12 @@ public class ItemDAO {
 		return type;
 	}
 
+	/**
+	 * This method returns an Item from a Pet to the owner and makes the associated changes to the
+	 * database
+	 * @param i
+	 * @return
+	 */
 	public boolean returnToOwner(Item i) {
 		String sql = "update p2t5.items set "
 				+ "(tid, uid, pid) "
@@ -205,6 +255,11 @@ public class ItemDAO {
 		}
 	}
 	
+	/**
+	 * This method deletes an Item from the database
+	 * @param i
+	 * @return
+	 */
 	public boolean deleteItem(int i) {
 		String sql = "delete from p2t5.items"
 				+ " where id = ?";
