@@ -1,3 +1,13 @@
+/**
+ * This is the PetController class for the Stenope Pet Management System application.
+ * 
+ * @author joshuacoombs
+ * @author wlcross
+ * @author TCPrater
+ * 
+ * @version 1.0
+ */
+
 package dev.stenope.controllers;
 
 import java.util.ArrayList;
@@ -17,7 +27,10 @@ public class PetController {
 	
 	public PetController(PetService petservice) {pServ = petservice;}
 	
-	//Create
+	/**
+	 * This method creates a Pet
+	 * @param ctx
+	 */
 	public static void createPet(Context ctx) {
 		Pet stray = ctx.bodyAsClass(Pet.class);
 		Pet adopted = pServ.createPet(stray);
@@ -33,7 +46,10 @@ public class PetController {
 		}
 	}
 
-	//Read
+	/**
+	 * This method retrieves a Pet by their id
+	 * @param ctx
+	 */
 	public static void getPetByID(Context ctx) {
 		Pet output = pServ.getPetByID(Integer.parseInt(ctx.pathParam("{id1}")));
 		if (output != null)
@@ -48,6 +64,10 @@ public class PetController {
 		}
 	}
 	
+	/**
+	 * This method retrieves a list of Pets associated with a specific User
+	 * @param ctx
+	 */
 	public static void getPetListByUID(Context ctx) {
 		List<Pet> pList = new ArrayList<>(); 
 		pList = pServ.getPetListByUserID(Integer.parseInt(ctx.pathParam("{id0}")));
@@ -63,6 +83,10 @@ public class PetController {
 		}
 	}
 	
+	/**
+	 * This method retrieves the list of Pets owned by another Pet
+	 * @param ctx
+	 */
 	public static void getPetListByPName(Context ctx) {
 		List<Pet> pList = new ArrayList<>(); 
 		pList = pServ.getPetListByPName(ctx.pathParam("{name}"));
@@ -78,6 +102,10 @@ public class PetController {
 		}
 	}
 	
+	/**
+	 * This method retrieves the list of PetTypes
+	 * @param ctx
+	 */
 	public static void getPetTypes(Context ctx) {
 		List<PetType> ptList = pServ.getPetTypes();
 		if (ptList != null)
@@ -92,7 +120,10 @@ public class PetController {
 		}
 	}
 	
-	//Update
+	/**
+	 * This method modifies the attributes of a Pet
+	 * @param ctx
+	 */
 	public static void modifyPet(Context ctx) {
 		Pet stray = ctx.bodyAsClass(Pet.class);
 		Item doodad = new Item(0,new ItemType(0,0,"","",""),0,0);
@@ -109,6 +140,10 @@ public class PetController {
 		}
 	}
 	
+	/**
+	 * This method allows an Item to be used on a Pet
+	 * @param ctx
+	 */
 	public static void useItemOnPet(Context ctx)
 	{
 		Item input = ctx.bodyAsClass(Item.class);
@@ -125,6 +160,10 @@ public class PetController {
 		}
 	}
 	
+	/**
+	 * This method keeps track of the hunger attribute of a Pet
+	 * @param ctx
+	 */
 	public static void doHungerTick(Context ctx)
 	{
 		List<Pet> pList = pServ.getAllPets();

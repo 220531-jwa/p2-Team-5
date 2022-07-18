@@ -2,6 +2,67 @@
     display: grid;
     grid-template-columns: auto auto auto;
 }
+
 .grid-item {
     text-align: center;
+}
+
+#homeLink {
+    background-color: #339933;
+}
+
+#inventoryLink {
+    background-color: #ccccff;
+}
+
+#loginLink {
+    background-color: #339933;
+}
+
+#marketLink {
+    background-color: #ccccff;
+}
+
+#userLink {
+    background-color: #339933;
+}
+
+#loginButton {
+    background-color: #1b8bad;
+}
+
+#createUserButton {
+    background-color: #1b8bad;
+}
+
+#hidePKey {
+    background-color: #efb55a;
+}
+
+.page {
+    background-color: #607e6f;
+}
+
+#submitComment {
+    background-color: #1b8bad;
+}
+
+select {
+    background-color: #1b8bad;
+}
+
+#styleCreatePet {
+    background-color: #1b8bad;
+}
+
+#styleSearch {
+    background-color: #1b8bad;
+}
+
+input {
+    background-color: #7bd7a9;
+}
+
+textarea {
+    background-color: #7bd7a9;
 }

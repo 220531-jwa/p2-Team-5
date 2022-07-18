@@ -67,8 +67,8 @@ async function search()
             {
                 let pets = document.createElement("div");
                 pets.className = "grid-item";
-                pets.innerHTML= 
-                    `<h1><a onclick="viewPet(${resp[i].id})">${resp[i].type.ssrc}</a></h1><h4>${resp[i].pName}</h4>`;
+                pets.innerHTML= `<h1 id="searchResult_${resp[i].id}"><a onclick="viewPet(${resp[i].id})">${resp[i].type.ssrc}</a></h1>
+                    <h4>${resp[i].pName}</h4>`;
                 document.getElementById("searchResult").appendChild(pets);
             }
         })
@@ -803,6 +803,7 @@ async function postNewPet()
         .then((resp) => 
         {
             console.log(resp);
+            window.location.assign("userPage.html")
         })
         .catch((error) => console.log(error));
 }
@@ -831,6 +832,11 @@ function populateCreatePage()
     getSpeciesList();  
     sessionStorage.setItem("userInView",0);
     getPetsList("poundDiv");
+    if (sessionStorage.getItem("uID")==null) 
+    {
+        document.getElementById("submitNewPet").setAttribute("disabled","");
+        document.getElementById("submitNewPet").setAttribute("title","Log in first!");
+    }
 }
 
 //petPage
@@ -896,7 +902,7 @@ async function populatePetPage()
                 if (sessionStorage.getItem("uID")==owner)
                 {
                     document.getElementById("petName").removeAttribute("readonly");
-                    document.getElementById("pDataHere").innerHTML += `<button onclick="modifyPet()">Submit Changes</button>`;
+                    document.getElementById("pDataHere").innerHTML += `<button id="pSubmit" onclick="modifyPet()">Submit Changes</button>`;
                     document.getElementById("pDataHere").innerHTML += `<button onclick="petToPound()">Send To Pound</button>`;
                 }
                 else {document.getElementById("petPSet").setAttribute("disabled", true);}

@@ -1,3 +1,14 @@
+/**
+ * This is the LoginPage class for the Stenope Pet Management System application.
+ * This class is used in the E2E Selenium tests.
+ * 
+ * @author joshuacoombs
+ * @author wlcross
+ * @author TCPrater
+ * 
+ * @version 1.0
+ */
+
 package dev.stenope.pages;
 
 import org.openqa.selenium.WebDriver;
@@ -13,10 +24,10 @@ public class LoginPage {
 		PageFactory.initElements(realHumanBeing, this);
 	}
 	
-	@FindBy(id = "uName")
+	@FindBy(id = "uNameBox")
 	public WebElement uName;
 	
-	@FindBy(id = "pKey")
+	@FindBy(id = "pKeyBox")
 	public WebElement pKey;
 	
 	@FindBy(id = "loginButton")

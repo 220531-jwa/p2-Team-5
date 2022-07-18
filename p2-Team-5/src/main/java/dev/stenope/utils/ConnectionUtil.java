@@ -1,3 +1,14 @@
+/**
+ * This is the ConnectionUtil class for the Stenope Pet Management System application
+ * which allows Javalin to communicate with the database
+ * 
+ * @author joshuacoombs
+ * @author wlcross
+ * @author TCPrater
+ * 
+ * @version 1.0
+ */
+
 package dev.stenope.utils;
 
 import java.io.IOException;

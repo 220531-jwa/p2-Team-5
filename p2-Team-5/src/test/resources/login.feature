@@ -18,19 +18,23 @@
 #Sample Feature Definition Template
 @tag
 Feature: Login
-	Background:
-		Given the User is on the LoginPage
 		
 		@tag1
+		Scenario: Negative
+			Given the User is on the LoginPage
+			When the User inputs an incorrect combination and clicks the login button
+			Then the User is given an error message
+
+    @tag2
 		Scenario Outline: Positive
+			Given the User is on the LoginPage again
 			When the User inputs a correct <username> and <password> and clicks the login button
 			Then the User is logged in and directed to the HomePage
 			
-		@tag2
-		Scenario Outline: Negative
-			When the User inputs an incorrect <username> or <password> and clicks the login button
-			Then the User is given an error message
-
-    Examples: 
-      | username  | password |
-
+			
+		Examples: 
+      | username        | password     |
+			| "Example_Man"   | "Password"   |
+			| "TEST_OSTERONE" | "STEROIDS"   |
+			| "Testrogen"     | "OpenSesame" |
+			| "Testbot785"    | "jg33:L$@"   |	

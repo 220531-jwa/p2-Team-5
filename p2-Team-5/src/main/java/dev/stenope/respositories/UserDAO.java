@@ -1,3 +1,13 @@
+/**
+ * This is the UserDAO class for the Stenope Pet Management System application
+ * 
+ * @author joshuacoombs
+ * @author wlcross
+ * @author TCPrater
+ * 
+ * @version 1.0
+ */
+
 package dev.stenope.respositories;
 
 import java.sql.Connection;
@@ -16,6 +26,11 @@ public class UserDAO {
 
 	private static ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
 
+	/**
+	 * This method creates a User within the database
+	 * @param u
+	 * @return
+	 */
 	public User createUser(User u) {
 		//User sender = UserDAO.getUserByID(wId);
 		//User recipient = UserDAO.getUserByID(hId);
@@ -44,6 +59,11 @@ public class UserDAO {
 		return null;
 	}
 	
+	/**
+	 * This method retrieves a User by their username from the database
+	 * @param uName
+	 * @return
+	 */
 	public User getUserByUserName(String uName) {
 		String sql = "select * from p2t5.users where uname = ?";
 		try (Connection conn = cu.getConnection()) {
@@ -66,7 +86,12 @@ public class UserDAO {
 		return null;
 	}
 	
-	public static User getUserByID(int id) {
+	/**
+	 * This method retrieves a User by their id from the database
+	 * @param id
+	 * @return
+	 */
+	public User getUserByID(int id) {
 		String sql = "select * from p2t5.users where id = ?";
 		try (Connection conn = cu.getConnection()) {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -88,7 +113,13 @@ public class UserDAO {
 		return null;
 	}
 
-	public User editUser(User u) {
+	/**
+	 * This method modifies a User within the database
+	 * @param uId
+	 * @return
+	 */
+	public User editUser(int uId) {
+		User u = getUserByID(uId);
 		String sql = "update p2t5.users set (uname = ?, dname = ?, dblurb = ?, pset = ?) where id = ? returning *";
 		try (Connection conn = cu.getConnection()) {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -114,6 +145,13 @@ public class UserDAO {
 		return null;
 	}
 	
+	/**
+	 * This method adds a UserComment to the database
+	 * @param wId
+	 * @param hId
+	 * @param commentText
+	 * @return
+	 */
 	public UserComment addComment(int wId, int hId, String commentText) {
 		//User sender = UserDAO.getUserByID(wId);
 		//User recipient = UserDAO.getUserByID(hId);
@@ -138,6 +176,12 @@ public class UserDAO {
 		return null;
 	}
 	
+	/**
+	 * This method retrieves a list of UserComments associated with a User's id
+	 * from the database
+	 * @param hId
+	 * @return
+	 */
 	public List<UserCommentReader> getComments(int hId) {
 		ArrayList<UserCommentReader> commentList = new ArrayList<UserCommentReader>();
 		String sql = "select users.id, dname, hid, body from p2t5.comments, p2t5.users "

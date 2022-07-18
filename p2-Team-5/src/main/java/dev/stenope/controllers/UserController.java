@@ -1,3 +1,13 @@
+/**
+ * This is the UserController class for the Stenope Pet Management System application
+ * 
+ * @author joshuacoombs
+ * @author wlcross
+ * @author TCPrater
+ * 
+ * @version 1.0
+ */
+
 package dev.stenope.controllers;
 
 import java.util.List;
@@ -12,6 +22,10 @@ import io.javalin.http.Context;
 public class UserController {
 	private static UserService us = new UserService(new UserDAO());
 	
+	/**
+	 * This method creates a User
+	 * @param ctx
+	 */
 	public static void createUser(Context ctx) {
 		User u = ctx.bodyAsClass(User.class);
 		User uCreated = us.createUser(u);
@@ -25,6 +39,10 @@ public class UserController {
 		}
 	}
 	
+	/**
+	 * This method allows the User to login to the application
+	 * @param ctx
+	 */
 	public static void login(Context ctx) {
 		User u = ctx.bodyAsClass(User.class);
 		User uLogin = us.login(u.getuName(), u.getpKey());
@@ -38,11 +56,19 @@ public class UserController {
 		}
 	}
 	
+	/**
+	 * This methods allows the User to logout of the application
+	 * @param ctx
+	 */
 	public static void logout(Context ctx) {
 		ctx.status(200);
 		ctx.req.getSession().invalidate();
 	}
 	
+	/**
+	 * This methods retrieves a specific User by their id
+	 * @param ctx
+	 */
 	public static void getUserByID(Context ctx) {
 		String u = ctx.pathParam("{id0}");
 		int uId = Integer.parseInt(u);
@@ -57,9 +83,13 @@ public class UserController {
 		}
 	}
 	
+	/**
+	 * This method allows the User to edit their attributes
+	 * @param ctx
+	 */
 	public static void editUser(Context ctx) {
 		User u = ctx.bodyAsClass(User.class);
-		User uEdit = us.editUser(u);
+		User uEdit = us.editUser(u.getId());
 		if (uEdit != null) {
 			ctx.status(200);
 			ctx.json(uEdit);
@@ -70,6 +100,10 @@ public class UserController {
 		}
 	}
 	
+	/**
+	 * This method allows the User to add a UserComment on a User's Page
+	 * @param ctx
+	 */
 	public static void addComment(Context ctx) {
 		UserComment c = ctx.bodyAsClass(UserComment.class);
 		c.setwID(Integer.parseInt(ctx.pathParam("{id0}")));
@@ -85,6 +119,10 @@ public class UserController {
 		}
 	}
 	
+	/**
+	 * This method allows a User to view another User's Page
+	 * @param ctx
+	 */
 	public static void viewOtherUsersPage(Context ctx) {
 		User u = ctx.bodyAsClass(User.class);
 		User otherU = us.viewOtherUsersPage(u.getuName());
@@ -98,6 +136,10 @@ public class UserController {
 		}
 	}
 	
+	/**
+	 * This method retrieves the comments on a User's Page
+	 * @param ctx
+	 */
 	public static void getComments(Context ctx) {
 		int hId = Integer.parseInt(ctx.pathParam("{id0}"));
 		List<UserCommentReader> comments = us.getComments(hId);

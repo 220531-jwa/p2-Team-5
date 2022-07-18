@@ -20,7 +20,7 @@
 Feature: Inventory
 		@tag1
 		Scenario: Pet inventory subheadings
-			Given the User <uId> has Pets
+			Given the User has Pets
 			When the User loads the InventoryPage
 			Then the subheadings dividing the inventory should appear
 			
@@ -31,14 +31,7 @@ Feature: Inventory
 			Then a dropdown or popup should appear that allows the Item to be assigned to places
 			
 		@tag3
-		Scenario: Item dropdown option submitted
-			Given an Item dropdown is loaded
-			When the User selects an option and presses the submit button
-			Then the option associated action should be executed
-			
-		@tag4
 		Scenario: Items in Pet inventories
-			Given the Pet <pId> exists
-			And the User is on the InventoryPage
+			Given the Pet exists
 			When an Item is assigned to the Pet inventory
 			Then the Item appears in the Pet inventory
