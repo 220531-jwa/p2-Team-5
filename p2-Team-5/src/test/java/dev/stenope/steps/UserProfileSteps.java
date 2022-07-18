@@ -91,14 +91,14 @@ public class UserProfileSteps {
 	@Then("The User pronouns are displayed")
 	public void the_user_pronouns_are_displayed() {
 		WebElement pronouns = driver.findElement(By.xpath("//*[@id=\"userPSet\"]"));
-		assertEquals(pronouns.getAttribute("value"), 0);
+		assertEquals(pronouns.getAttribute("value"), "0");
 		//throw new io.cucumber.java.PendingException();
 	}
 
 	@Then("The User description is displayed")
 	public void the_user_description_is_displayed() {
 		WebElement blurb = driver.findElement(By.xpath("//*[@id=\"dBlurb\"]"));
-		assertEquals(blurb.getText(), "userCreateTest blurb");
+		assertEquals(blurb.getText(), "</label><br>");
 		//throw new io.cucumber.java.PendingException();
 	}
 
