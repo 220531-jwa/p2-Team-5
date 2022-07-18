@@ -1,3 +1,14 @@
+/**
+ * This is the InventorySteps class for the Stenope Pet Management System application.
+ * This class is used in the E2E Selenium tests as glue code for the associated Cucumber feature file.
+ * 
+ * @author joshuacoombs
+ * @author wlcross
+ * @author TCPrater
+ * 
+ * @version 1.0
+ */
+
 package dev.stenope.steps;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

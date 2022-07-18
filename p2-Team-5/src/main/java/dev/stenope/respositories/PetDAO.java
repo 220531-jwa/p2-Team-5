@@ -1,3 +1,13 @@
+/**
+ * This is the PetDAO class for the Stenope Pet Management System application
+ * 
+ * @author joshuacoombs
+ * @author wlcross
+ * @author TCPrater
+ * 
+ * @version 1.0
+ */
+
 package dev.stenope.respositories;
 
 import java.sql.Connection;
@@ -14,7 +24,11 @@ import dev.stenope.utils.ConnectionUtil;
 public class PetDAO {
 private static ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
 	
-	//Create
+	/**
+	 * This method creates a Pet within the database
+	 * @param p
+	 * @return
+	 */
 	public Pet createPet(Pet p) {
 		String sql = "insert into pets values (default,?,?,?,?,?,?,?) returning *;";
 		try (Connection conn = cu.getConnection();)
@@ -40,7 +54,11 @@ private static ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
 		return null;
 	}
 	
-	//Read	
+	/**
+	 * This method gets a specific PetType from the database	
+	 * @param sid
+	 * @return
+	 */
 	public PetType getPTypeByID(int sid) 
 	{
 		String sql = "select * from pettypes where id = ?;";
@@ -60,6 +78,11 @@ private static ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
 		return null;
 	}
 	
+	/**
+	 * This method retrieves a Pet by their id from the database
+	 * @param id
+	 * @return
+	 */
 	public Pet getPetByID(int id) {
 		String sql = "select * from pets where id = ?;";
 		try (Connection conn = cu.getConnection();)
@@ -78,6 +101,11 @@ private static ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
 		return null;
 	}
 	
+	/**
+	 * This method retrieves a Pet list associated with a User's id from the database
+	 * @param uid
+	 * @return
+	 */
 	public List<Pet> getPetListByUserID(int uid) {
 		List<Pet> pList = new ArrayList<>();
 		String sql = (uid == 0) ? "select * from pets where uid is null;":  "select * from pets where uid = ?;";
@@ -98,6 +126,11 @@ private static ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
 		return null;
 	}
 	
+	/**
+	 * This method retrieves a Pet list owned by another Pet from the database
+	 * @param pname
+	 * @return
+	 */
 	public List<Pet> getPetListByPName(String pname)
 	{
 		List<Pet> pList = new ArrayList<>();
@@ -119,6 +152,10 @@ private static ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
 		return null;
 	}
 	
+	/**
+	 * This method retrieves all Pets from the database
+	 * @return
+	 */
 	public List<Pet> getAllPets() 
 	{
 		List<Pet> pList = new ArrayList<>();
@@ -139,6 +176,10 @@ private static ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
 		return null;
 	}
 	
+	/**
+	 * This method retrieves a list of PetTypes from the database
+	 * @return
+	 */
 	public List<PetType> getPetTypes() {
 		List<PetType> ptList = new ArrayList<>();
 		String sql = "select * from pettypes;";
@@ -158,7 +199,11 @@ private static ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
 		return null;
 	}
 	
-	//Update
+	/**
+	 * This method mofifies a Pet within the database
+	 * @param p
+	 * @return
+	 */
 	public Pet modifyPet(Pet p) {
 		Pet output = null;
 		String sql = "update pets set uid = ?, sid = ?, pset = ?, pname = ?, fun = ?, food = ?, plevel = ? where id = ? returning *;";

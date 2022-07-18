@@ -1,3 +1,14 @@
+/**
+ * This is the TopBarRunner class for the Stenope Pet Management System application.
+ * This class is used in the E2E Selenium tests.
+ * 
+ * @author joshuacoombs
+ * @author wlcross
+ * @author TCPrater
+ * 
+ * @version 1.0
+ */
+
 package dev.stenope.runners;
 
 import java.io.File;
