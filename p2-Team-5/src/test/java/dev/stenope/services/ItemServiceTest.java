@@ -1,3 +1,14 @@
+/**
+ * This is the ItemServiceTest class for the Stenope Pet Management System application.
+ * This class is used in the JUnit/Mockito unit tests which cover the Service classes.
+ * 
+ * @author joshuacoombs
+ * @author wlcross
+ * @author TCPrater
+ * 
+ * @version 1.0
+ */
+
 package dev.stenope.services;
 
 import static org.mockito.Mockito.*;

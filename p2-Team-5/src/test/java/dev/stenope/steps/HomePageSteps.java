@@ -1,3 +1,14 @@
+/**
+ * This is the HomePageSteps class for the Stenope Pet Management System application.
+ * This class is used in the E2E Selenium tests as glue code for the associated Cucumber feature file.
+ * 
+ * @author joshuacoombs
+ * @author wlcross
+ * @author TCPrater
+ * 
+ * @version 1.0
+ */
+
 package dev.stenope.steps;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,34 +48,6 @@ public class HomePageSteps {
 	    new WebDriverWait(realHumanBeing, Duration.ofSeconds(10))
 		.until(ExpectedConditions.urlContains("homePage"));
 	}
-	
-	/*
-	@When("the User clicks create a pet and fills out the form")
-	public void the_user_clicks_create_a_pet_and_fills_out_the_form() {
-		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(homePage.createPetButton));
-		homePage.createPetButton.click();
-		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10))
-		.until(ExpectedConditions.urlContains("createPet"));
-		new WebDriverWait(realHumanBeing, Duration.ofSeconds(5));
-		homePage.petName.sendKeys("testCockroach");
-		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(homePage.submitNewPet));
-		homePage.submitNewPet.click();
-		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(homePage.backToHome));
-		homePage.backToHome.click();
-		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10))
-		.until(ExpectedConditions.urlContains("homePage"));
-		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(homePage.userLink));
-		homePage.userLink.click();
-		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10))
-		.until(ExpectedConditions.urlContains("userPage"));
-		new WebDriverWait(realHumanBeing, Duration.ofSeconds(7));
-	}
-
-	@Then("the Pet shows up in the User pets list")
-	public void the_pet_shows_up_in_the_user_pets_list() {
-		assertEquals(realHumanBeing.findElement(By.xpath("/html/body/div[3]/label/div/div[6]")).isDisplayed(), true);
-	}
-	*/
 
 	/**
 	 * Scenario 1
@@ -81,19 +64,4 @@ public class HomePageSteps {
 		new WebDriverWait(realHumanBeing, Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOf(homePage.searchResult));
 		assertEquals(homePage.searchResult.isDisplayed(), true);
 	}
-
-	/*
-	@When("they type in an incorrect query in the search bar")
-	public void they_type_in_an_incorrect_query_in_the_search_bar() {
-		homePage.searchBar.sendKeys("ungabungaungabunga");
-	    new WebDriverWait(realHumanBeing, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(homePage.searchButton));
-	    homePage.searchButton.click();
-	}
-
-	@Then("the query result is not displayed")
-	public void the_query_result_is_not_displayed() {
-		new WebDriverWait(realHumanBeing, Duration.ofSeconds(7));
-		assertEquals(homePage.searchResult.getText(), null);
-	}
-	*/
 }
